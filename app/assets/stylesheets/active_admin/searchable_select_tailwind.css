@@ -1,0 +1,53 @@
+/* Searchable Select Tailwind CSS styles */
+.searchable_select.input .select2-container {
+  @apply min-w-[30%];
+}
+
+/* Ensure Select2 dropdowns work well with Tailwind */
+.select2-container--default .select2-selection--single {
+  @apply h-10 px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500;
+}
+
+.select2-container--default .select2-selection--multiple {
+  @apply min-h-[2.5rem] px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500;
+}
+
+.select2-dropdown {
+  @apply border border-gray-300 rounded-md shadow-lg;
+}
+
+.select2-search--dropdown .select2-search__field {
+  @apply w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500;
+}
+
+.select2-results__option {
+  @apply px-3 py-2 text-sm;
+}
+
+.select2-results__option--highlighted {
+  @apply bg-indigo-600 text-white;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .select2-container--default .select2-selection--single,
+  .select2-container--default .select2-selection--multiple {
+    @apply bg-gray-700 border-gray-600 text-gray-100;
+  }
+  
+  .select2-dropdown {
+    @apply bg-gray-800 border-gray-600;
+  }
+  
+  .select2-search--dropdown .select2-search__field {
+    @apply bg-gray-700 border-gray-600 text-gray-100;
+  }
+  
+  .select2-results__option {
+    @apply text-gray-100;
+  }
+  
+  .select2-results__option--highlighted {
+    @apply bg-indigo-700;
+  }
+}

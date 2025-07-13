@@ -11,3 +11,5 @@ Gemfile.lock
 /spec/examples.txt
 /src
 /node_modules
+/demo-app/node_modules
+/demo_app/node_modules
