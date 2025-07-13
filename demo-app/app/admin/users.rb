@@ -1,7 +1,11 @@
 ActiveAdmin.register User do
   permit_params :name, :email, :department
   
-  searchable_select_options(scope: User, text_attribute: :display_name)
+  searchable_select_options(
+    scope: User,
+    text_attribute: :name,
+    display_text: ->(record) { record.display_name }
+  )
   
   index do
     selectable_column
