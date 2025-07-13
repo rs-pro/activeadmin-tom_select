@@ -1,4 +1,5 @@
 require 'activeadmin/searchable_select/engine'
+require 'activeadmin/searchable_select/config'
 require 'activeadmin/searchable_select/option_collection'
 require 'activeadmin/searchable_select/resource_extension'
 require 'activeadmin/searchable_select/resource_dsl_extension'

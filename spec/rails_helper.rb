@@ -5,6 +5,7 @@ Combustion.initialize!(:active_record, :action_controller, :action_view, :sprock
 
 require 'rspec/rails'
 require 'support/reset_settings'
+require 'support/active_admin_version'
 
 RSpec.configure do |config|
   config.infer_spec_type_from_file_location!

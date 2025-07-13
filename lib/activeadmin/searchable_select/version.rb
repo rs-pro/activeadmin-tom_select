@@ -1,5 +1,5 @@
 module ActiveAdmin
   module SearchableSelect
-    VERSION = '1.9.0.dev'.freeze
+    VERSION = '2.0.0.dev'.freeze
   end
 end
