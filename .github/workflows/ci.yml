@@ -98,7 +98,7 @@ jobs:
           bundler-cache: true
 
       - name: Run RuboCop
-        run: bundle exec rubocop --config .rubocop.yml --force-exclusion
+        run: bundle exec rubocop --force-exclusion
 
   build-npm:
     runs-on: ubuntu-latest

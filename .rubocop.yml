@@ -1,3 +1,7 @@
+inherit_mode:
+  merge:
+    - Exclude
+
 AllCops:
   TargetRubyVersion: 3.0
   NewCops: enable
@@ -6,6 +10,7 @@ AllCops:
     - 'bin/**/*'
     - 'vendor/**/*'
     - 'gemfiles/vendor/**/*'
+    - '**/vendor/**/*'
 
 # The default of 80 characters is a little to narrow.
 Layout/LineLength:
