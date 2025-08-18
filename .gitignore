@@ -11,3 +11,4 @@ Gemfile.lock
 /spec/examples.txt
 /src
 /node_modules
+/vendor/bundle

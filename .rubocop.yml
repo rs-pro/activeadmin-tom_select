@@ -4,6 +4,8 @@ AllCops:
   SuggestExtensions: false
   Exclude:
     - 'bin/**/*'
+    - 'vendor/**/*'
+    - 'gemfiles/vendor/**/*'
 
 # The default of 80 characters is a little to narrow.
 Layout/LineLength:

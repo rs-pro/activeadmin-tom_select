@@ -2,8 +2,8 @@
 
 source 'https://rubygems.org'
 
+gem 'activeadmin', '4.0.0.beta16'
 gem 'rails', '~> 7.1'
-gem 'activeadmin', '4.0.0.beta14'
 gem 'sass-rails'
 
 gemspec path: '../'
