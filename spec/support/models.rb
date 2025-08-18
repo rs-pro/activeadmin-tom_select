@@ -3,7 +3,7 @@ require 'database_cleaner-active_record'
 class User < ActiveRecord::Base; end
 
 class Category < ActiveRecord::Base
-  belongs_to :created_by, class_name: 'User'
+  belongs_to :created_by, class_name: 'User', optional: true
 
   def self.ransackable_attributes(_auth_object = nil)
     ['name']
@@ -15,8 +15,8 @@ class Category < ActiveRecord::Base
 end
 
 class Post < ActiveRecord::Base
-  belongs_to :category
-  belongs_to :user
+  belongs_to :category, optional: true
+  belongs_to :user, optional: true
 
   scope(:published, -> { where(published: true) })
 
@@ -39,7 +39,7 @@ end
 module Internal
   class TagName < ActiveRecord::Base
     self.table_name = :internal_tag_names
-    belongs_to :color, class_name: 'RGB::Color', foreign_key: :color_id
+    belongs_to :color, class_name: 'RGB::Color', foreign_key: :color_id, optional: true
 
     def self.ransackable_attributes(_auth_object = nil)
       ['color_id']
@@ -54,7 +54,7 @@ end
 class OptionType < ActiveRecord::Base; end
 
 class OptionValue < ActiveRecord::Base
-  belongs_to :option_type
+  belongs_to :option_type, optional: true
 
   def self.ransackable_attributes(_auth_object = nil)
     ['value']
@@ -66,13 +66,13 @@ class OptionValue < ActiveRecord::Base
 end
 
 class Product < ActiveRecord::Base
-  belongs_to :option_type
+  belongs_to :option_type, optional: true
   has_many :variants
 end
 
 class Variant < ActiveRecord::Base
-  belongs_to :product
-  belongs_to :option_value
+  belongs_to :product, optional: true
+  belongs_to :option_value, optional: true
 end
 
 RSpec.configure do |config|

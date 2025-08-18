@@ -4,7 +4,7 @@ require 'support/models'
 require 'support/capybara'
 require 'support/active_admin_helpers'
 
-RSpec.describe 'searchable select', type: :request do
+RSpec.describe 'searchable select', type: :feature do
   it 'fails with helpful error message if ajax resource cannot be auto detected' do
     expect do
       ActiveAdminHelpers.setup do
@@ -15,7 +15,7 @@ RSpec.describe 'searchable select', type: :request do
         end
       end
 
-      get '/admin/posts'
+      visit '/admin/posts'
     end.to raise_error(/Cannot auto detect resource/)
   end
 
@@ -35,7 +35,7 @@ RSpec.describe 'searchable select', type: :request do
         end
       end
 
-      get '/admin/posts'
+      visit '/admin/posts'
     end.to raise_error(/No option collection named 'custom' defined in 'Category' admin./)
   end
 
@@ -49,7 +49,7 @@ RSpec.describe 'searchable select', type: :request do
         end
       end
 
-      get '/admin/posts'
+      visit '/admin/posts'
     end.to raise_error(/No admin found for 'Category'/)
   end
 end
