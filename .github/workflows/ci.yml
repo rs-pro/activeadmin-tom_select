@@ -14,23 +14,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: ['3.0', '3.1', '3.2', '3.3']
+        ruby: ['3.3', '3.4']
         gemfile:
-          - rails_6.x_active_admin_2.x
-          - rails_6.x_active_admin_3.x
-          - rails_7.x_active_admin_3.x
           - rails_7.x_active_admin_4.x
-        exclude:
-          # Rails 7+ requires Ruby 3.1+
-          - ruby: '3.0'
-            gemfile: rails_7.x_active_admin_3.x
-          - ruby: '3.0'
-            gemfile: rails_7.x_active_admin_4.x
-          # ActiveAdmin 4 requires Ruby 3.2+
-          - ruby: '3.0'
-            gemfile: rails_7.x_active_admin_4.x
-          - ruby: '3.1'
-            gemfile: rails_7.x_active_admin_4.x
 
     env:
       BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}.gemfile
@@ -59,7 +45,7 @@ jobs:
           bundle exec rspec
 
       - name: Upload coverage reports
-        if: matrix.ruby == '3.2' && matrix.gemfile == 'rails_7.x_active_admin_4.x'
+        if: matrix.ruby == '3.4' && matrix.gemfile == 'rails_7.x_active_admin_4.x'
         uses: codecov/codecov-action@v3
         with:
           file: ./coverage/coverage.xml
@@ -74,7 +60,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.2'
+          ruby-version: '3.4'
           bundler-cache: true
 
       - name: Run RuboCop
@@ -89,7 +75,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       - name: Install dependencies
