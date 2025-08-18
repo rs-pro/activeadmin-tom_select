@@ -17,6 +17,47 @@ Add `activeadmin-searchable_select` to your Gemfile:
    gem 'activeadmin-searchable_select'
 ```
 
+### ActiveAdmin 4.x (esbuild/importmap)
+
+ActiveAdmin 4 uses modern JavaScript bundlers. If you encounter "select2 is not a function" errors in production, see the [complete setup guide](docs/setup-active-admin.md).
+
+#### Quick Install with Generator
+
+```bash
+# For esbuild (recommended)
+rails generate active_admin:searchable_select:install
+
+# For importmap
+rails generate active_admin:searchable_select:install --bundler=importmap
+```
+
+#### Manual Setup for esbuild
+
+1. Install npm packages:
+```bash
+npm install @codevise/activeadmin-searchable_select jquery select2
+```
+
+2. In `app/javascript/active_admin.js`:
+```javascript
+import "@activeadmin/activeadmin";
+import $ from 'jquery';
+import select2 from 'select2';
+
+// Critical: Initialize select2 on jQuery (fixes production builds)
+select2($);
+window.$ = window.jQuery = $;
+
+import '@codevise/activeadmin-searchable_select';
+```
+
+3. Add Select2 CSS to your ActiveAdmin stylesheet:
+```css
+@import url('https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css');
+```
+
+### ActiveAdmin 3.x and older
+
 ##### Using assets via Sprockets
 Import stylesheets and require javascripts:
 
@@ -30,35 +71,21 @@ Import stylesheets and require javascripts:
 //= require active_admin/searchable_select
 ```
 
-##### Using assets via Webpacker (or any other assets bundler) as a NPM module (Yarn package)
+##### Using assets via Webpacker
 
-Execute:
-
-    $ npm i @codevise/activeadmin-searchable_select
-
-Or
-
-    $ yarn add @codevise/activeadmin-searchable_select
-
-Or add manually to `package.json`:
-
+Add to `package.json`:
 ```json
 "dependencies": {
-  "@codevise/activeadmin-searchable_select": "1.6.0"
+  "@codevise/activeadmin-searchable_select": "^1.8.0"
 }
 ```
-and execute:
 
-    $ yarn
-
-Add the following line into `app/javascript/active_admin.js`:
-
+In `app/javascript/packs/active_admin.js`:
 ```javascript
 import '@codevise/activeadmin-searchable_select';
 ```
 
-Add the following line into `app/javascript/stylesheets/active_admin.scss`:
-
+In `app/javascript/stylesheets/active_admin.scss`:
 ```css
 @import '@codevise/activeadmin-searchable_select';
 ```

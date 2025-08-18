@@ -1,5 +1,16 @@
 (function() {
+  // Wait for jQuery to be available
+  if (typeof $ === 'undefined' && typeof jQuery !== 'undefined') {
+    window.$ = jQuery;
+  }
+  
   function initSearchableSelects(inputs, extra) {
+    // Ensure select2 is available
+    if (!$.fn.select2) {
+      console.error('Select2 is not loaded. Please ensure select2 is properly imported.');
+      return;
+    }
+    
     inputs.each(function() {
       var item = $(this);
 
@@ -36,7 +47,8 @@
     initSearchableSelects(fieldset.find('.searchable-select-input'));
   });
 
-  $(document).on('page:load turbolinks:load', function() {
+  // Support both Turbolinks and Turbo
+  $(document).on('page:load turbolinks:load turbo:load', function() {
     initSearchableSelects($(".searchable-select-input"), {placeholder: ""});
   });
 
