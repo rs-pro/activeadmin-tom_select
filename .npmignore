@@ -1,0 +1,58 @@
+# Ruby/Rails files
+*.gemspec
+Gemfile
+Gemfile.lock
+Rakefile
+Appraisals
+.rubocop.yml
+.rubocop.todo.yml
+.ruby-version
+.ruby-gemset
+.rspec
+
+# Ruby source code (not needed for npm package)
+/lib/
+/app/assets/stylesheets/
+
+# Test files
+/spec/
+/test/
+/gemfiles/
+
+# Documentation
+*.md
+LICENSE
+CHANGELOG*
+
+# Development files
+.gitignore
+.actrc
+
+# CI/CD
+.github/
+.travis.yml
+
+# Build artifacts
+/pkg/
+/tmp/
+/log/
+*.gem
+
+# Bundler
+/.bundle/
+/vendor/bundle/
+/vendor/cache/
+
+# Node modules (shouldn't be in package)
+/node_modules/
+
+# Editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Keep only the built JavaScript and CSS files
+!src/
