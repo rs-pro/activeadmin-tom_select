@@ -21,7 +21,7 @@ class Post < ActiveRecord::Base
   scope(:published, -> { where(published: true) })
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w(category_id title)
+    %w[category_id title]
   end
 
   def self.ransackable_associations(_auth_object = nil)

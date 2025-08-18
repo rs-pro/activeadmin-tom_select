@@ -1,12 +1,60 @@
 AllCops:
-  TargetRubyVersion: 2.3
+  TargetRubyVersion: 3.0
+  NewCops: enable
+  SuggestExtensions: false
   Exclude:
     - 'bin/**/*'
 
 # The default of 80 characters is a little to narrow.
-Metrics/LineLength:
+Layout/LineLength:
   Max: 100
 
 # Do not warn about missing magic comment
 Style/FrozenStringLiteralComment:
   Enabled: false
+
+# Disable block length checks for spec files
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+    - 'spec/internal/db/schema.rb'
+    - '*.gemspec'
+
+# Allow empty blocks in specs (for ActiveAdmin.setup {})
+Lint/EmptyBlock:
+  Exclude:
+    - 'spec/**/*'
+
+# Naming exception for gem main file
+Naming/FileName:
+  Exclude:
+    - 'lib/activeadmin-searchable_select.rb'
+
+# Allow development dependencies in gemspec
+Gemspec/DevelopmentDependencies:
+  Enabled: false
+
+# Allow Ruby version mismatch (we support multiple versions)
+Gemspec/RequiredRubyVersion:
+  Enabled: false
+
+# Allow longer classes for generators
+Metrics/ClassLength:
+  Exclude:
+    - 'lib/generators/**/*'
+
+# Allow longer methods for generators
+Metrics/MethodLength:
+  Exclude:
+    - 'lib/generators/**/*'
+
+# Allow complex methods for generators
+Metrics/AbcSize:
+  Exclude:
+    - 'lib/generators/**/*'
+
+# Documentation not required for generators and test support files
+Style/Documentation:
+  Exclude:
+    - 'lib/generators/**/*'
+    - 'spec/**/*'

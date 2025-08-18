@@ -5,9 +5,7 @@ require 'combustion'
 # Fix for FrozenError - initialize Combustion with proper configuration
 Combustion.path = 'spec/internal'
 Combustion.initialize!(:active_record, :action_controller, :action_view) do
-  if Rails::VERSION::MAJOR >= 7
-    config.load_defaults Rails::VERSION::STRING.to_f
-  end
+  config.load_defaults Rails::VERSION::STRING.to_f if Rails::VERSION::MAJOR >= 7
 end
 
 require 'rspec/rails'
@@ -19,9 +17,8 @@ require 'support/reset_settings'
 # Configure Capybara with Playwright for modern browser testing
 Capybara.register_driver :playwright do |app|
   Capybara::Playwright::Driver.new(app,
-    browser_type: :chromium,
-    headless: ENV['HEADLESS'] != 'false'
-  )
+                                   browser_type: :chromium,
+                                   headless: ENV['HEADLESS'] != 'false')
 end
 
 Capybara.default_driver = :rack_test

@@ -1,0 +1,20 @@
+# Act configuration for local GitHub Actions testing
+# This file configures act to work efficiently with caching
+
+# Use medium-sized runner image for better compatibility
+--platform ubuntu-latest=catthehacker/ubuntu:act-latest
+
+# Enable reuse of containers for faster subsequent runs
+--reuse
+
+# Use local .env file if it exists (for secrets during local testing)
+--env-file .env.local
+
+# Pull docker images if newer version exists
+--pull=false
+
+# Bind working directory for better performance with local files
+--bind
+
+# Use host network for faster downloads and to avoid network issues
+--network host

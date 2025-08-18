@@ -49,6 +49,7 @@ module ActiveAdmin
 
       def ajax_url
         return unless options[:ajax]
+
         [ajax_resource.route_collection_path(path_params),
          '/',
          option_collection.collection_action_name,
@@ -80,7 +81,7 @@ module ActiveAdmin
       end
 
       def selected_values
-        @object.send(input_name) if @object
+        @object&.send(input_name)
       end
 
       def option_collection_scope
@@ -112,12 +113,12 @@ module ActiveAdmin
 
       def raise_cannot_auto_detect_resource
         raise('Cannot auto detect resource to fetch options for searchable select input from. ' \
-              "Explicitly pass class of an ActiveAdmin resource:\n\n" \
-              "  f.input(:custom_category,\n" \
-              "          type: :searchable_select,\n" \
-              "          ajax: {\n" \
-              "            resource: Category\n" \
-              "          })\n")
+              "Explicitly pass class of an ActiveAdmin resource:\n\n  " \
+              "f.input(:custom_category,\n          " \
+              "type: :searchable_select,\n          " \
+              "ajax: {\n            " \
+              "resource: Category\n          " \
+              "})\n")
       end
 
       def ajax_option_collection_name

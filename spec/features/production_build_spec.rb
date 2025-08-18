@@ -12,7 +12,7 @@ RSpec.describe 'production build compatibility', type: :feature do
 
       ActiveAdmin.register(Post) do
         permit_params :category_id, :title
-        
+
         filter(:category, as: :searchable_select, ajax: true)
 
         form do |f|
@@ -31,10 +31,10 @@ RSpec.describe 'production build compatibility', type: :feature do
   describe 'select2 initialization', js: true do
     it 'initializes select2 on searchable select inputs' do
       visit '/admin/posts'
-      
+
       # Check that the searchable-select-input class is present
       expect(page).to have_css('.searchable-select-input')
-      
+
       # Check that Select2 container is created
       expect(page).to have_css('.select2-container', wait: 5)
     end
@@ -44,9 +44,9 @@ RSpec.describe 'production build compatibility', type: :feature do
     it 'renders searchable select as a regular select' do
       Category.create(name: 'Books')
       Category.create(name: 'Movies')
-      
+
       visit '/admin/posts/new'
-      
+
       # Should have a select input with the searchable-select-input class
       expect(page).to have_css('select.searchable-select-input')
     end
@@ -56,14 +56,14 @@ RSpec.describe 'production build compatibility', type: :feature do
     it 'loads options via ajax when clicked' do
       Category.create(name: 'Technology')
       Category.create(name: 'Science')
-      
+
       visit '/admin/posts'
-      
+
       # Open the filter select
       within '.filter_form' do
         find('.select2-container').click
       end
-      
+
       # Wait for ajax to load options
       expect(page).to have_css('.select2-results__option', text: 'Technology', wait: 5)
       expect(page).to have_css('.select2-results__option', text: 'Science')
@@ -73,16 +73,16 @@ RSpec.describe 'production build compatibility', type: :feature do
       Category.create(name: 'Ruby Programming')
       Category.create(name: 'Python Programming')
       Category.create(name: 'JavaScript')
-      
+
       visit '/admin/posts'
-      
+
       within '.filter_form' do
         find('.select2-container').click
       end
-      
+
       # Type in search box
       find('.select2-search__field').set('Ruby')
-      
+
       # Should only show matching option
       expect(page).to have_css('.select2-results__option', text: 'Ruby Programming', wait: 5)
       expect(page).not_to have_css('.select2-results__option', text: 'Python Programming')
@@ -93,17 +93,17 @@ RSpec.describe 'production build compatibility', type: :feature do
   describe 'form submission', js: true do
     it 'submits selected value correctly' do
       category = Category.create(name: 'Test Category')
-      
+
       visit '/admin/posts/new'
-      
+
       fill_in 'Title', with: 'Test Post'
-      
+
       # Select category using Select2
       find('.select2-container').click
       find('.select2-results__option', text: 'Test Category').click
-      
+
       click_button 'Create Post'
-      
+
       # Verify the post was created with the correct category
       post = Post.last
       expect(post).to be_present
@@ -116,9 +116,9 @@ RSpec.describe 'production build compatibility', type: :feature do
     it 'shows preselected value when editing' do
       category = Category.create(name: 'Selected Category')
       post = Post.create(title: 'Test', category: category)
-      
+
       visit "/admin/posts/#{post.id}/edit"
-      
+
       # Check that the selected value is displayed
       within '.select2-container' do
         expect(page).to have_content('Selected Category')

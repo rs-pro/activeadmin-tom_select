@@ -34,7 +34,7 @@ RSpec.describe 'end to end', type: :feature, js: true do
         expand_select_box
         wait_for_ajax
 
-        expect(select_box_items).to eq(%w(Music Travel))
+        expect(select_box_items).to eq(%w[Music Travel])
       end
 
       it 'allows filtering options by term' do
@@ -47,7 +47,7 @@ RSpec.describe 'end to end', type: :feature, js: true do
         enter_search_term('T')
         wait_for_ajax
 
-        expect(select_box_items).to eq(%w(Travel))
+        expect(select_box_items).to eq(%w[Travel])
       end
 
       it 'loads more items when scrolling down' do
@@ -89,7 +89,7 @@ RSpec.describe 'end to end', type: :feature, js: true do
         expand_select_box
         wait_for_ajax
 
-        expect(select_box_items).to eq(%w(#eac112 #19bf25))
+        expect(select_box_items).to eq(%w[#eac112 #19bf25])
       end
     end
   end
@@ -145,7 +145,7 @@ RSpec.describe 'end to end', type: :feature, js: true do
         expand_select_box
         wait_for_ajax
 
-        expect(select_box_items).to eq(%w(Black Orange))
+        expect(select_box_items).to eq(%w[Black Orange])
       end
 
       it 'allows filtering options by term' do
@@ -162,7 +162,7 @@ RSpec.describe 'end to end', type: :feature, js: true do
         enter_search_term('O')
         wait_for_ajax
 
-        expect(select_box_items).to eq(%w(Orange))
+        expect(select_box_items).to eq(%w[Orange])
       end
 
       it 'loads more items when scrolling down' do

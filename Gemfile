@@ -4,4 +4,7 @@ source 'https://rubygems.org'
 # see https://github.com/activeadmin/activeadmin/issues/5226
 gem 'sass-rails'
 
+# Use ActiveAdmin 4.x beta
+gem 'activeadmin', '4.0.0.beta14'
+
 gemspec
