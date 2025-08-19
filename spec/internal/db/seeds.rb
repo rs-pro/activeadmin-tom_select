@@ -51,7 +51,7 @@ option_types = []
 3.times do |i|
   option_type = OptionType.create!(name: "Option Type #{i + 1}")
   option_types << option_type
-  
+
   5.times do |j|
     OptionValue.create!(
       value: "Value #{j + 1} for #{option_type.name}",
@@ -66,7 +66,7 @@ end
     name: "Product #{i + 1}",
     option_type: option_types.sample
   )
-  
+
   3.times do |j|
     Variant.create!(
       price: (10 + j) * 100,
@@ -76,7 +76,7 @@ end
   end
 end
 
-puts "Seed data created successfully!"
+puts 'Seed data created successfully!'
 puts "Created #{User.count} users"
 puts "Created #{Category.count} categories"
 puts "Created #{Post.count} posts"

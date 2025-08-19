@@ -4,7 +4,8 @@ require 'combustion'
 if Rails.env.test?
   # Configure Combustion for test app
   Combustion.path = 'spec/internal'
-  Combustion.initialize!(:active_record, :action_controller, :action_view, :sprockets, :action_mailer) do
+  Combustion.initialize!(:active_record, :action_controller, :action_view, :sprockets,
+                         :action_mailer) do
     config.load_defaults Rails::VERSION::STRING.to_f if Rails::VERSION::MAJOR >= 7
 
     # Development environment settings

@@ -9,21 +9,21 @@ require 'combustion'
 Combustion.path = 'spec/internal'
 Combustion.initialize!(:all) do
   config.load_defaults Rails::VERSION::STRING.to_f if Rails::VERSION::MAJOR >= 7
-  
+
   # Development settings
   config.eager_load = false
   config.consider_all_requests_local = true
   config.action_controller.perform_caching = false
   config.action_dispatch.show_exceptions = :all
-  
+
   # Assets
   config.assets.debug = true
   config.assets.compile = true
   config.assets.digest = false
-  
+
   # Logging
   config.log_level = :debug
-  
+
   # Mailer
   if config.respond_to?(:action_mailer)
     config.action_mailer.raise_delivery_errors = false
@@ -44,7 +44,7 @@ Dir[File.expand_path('spec/internal/app/admin/*.rb', __dir__)].each { |f| requir
 begin
   ActiveRecord::Base.connection
 rescue ActiveRecord::NoDatabaseError
-  puts "Creating database..."
+  puts 'Creating database...'
   ActiveRecord::Tasks::DatabaseTasks.create_current
 end
 
@@ -52,14 +52,14 @@ end
 ActiveRecord::Base.connection.migration_context.migrate
 
 # Seed data if empty
-if User.count == 0
-  puts "Seeding database..."
+if User.count.zero?
+  puts 'Seeding database...'
   load File.expand_path('spec/internal/db/seeds.rb', __dir__)
 end
 
-puts "\n" + "="*60
-puts "ActiveAdmin Searchable Select - Test App"
-puts "="*60
+puts "\n#{'=' * 60}"
+puts 'ActiveAdmin Searchable Select - Test App'
+puts '=' * 60
 puts "\nStarting server at: http://localhost:3000/admin"
 puts "Use Ctrl+C to stop\n\n"
 

@@ -3,7 +3,7 @@ ActiveAdmin.setup do |config|
   config.authentication_method = false
   config.current_user_method = false
   config.batch_actions = true
-  config.filter_attributes = [:encrypted_password, :password, :password_confirmation]
+  config.filter_attributes = %i[encrypted_password password password_confirmation]
   config.localize_format = :long
   # Avoid rendering ActiveAdmin comments (routes are not mounted in Combustion app)
   config.comments = false
@@ -36,24 +36,30 @@ module ActionView
       def javascript_importmap_tags(*, **)
         # In the test environment, manually include jQuery, Select2, and our custom JS
         content = []
-        
+        add_external_dependencies(content)
+        add_searchable_select_js(content)
+        content.join("\n").html_safe
+      end
+
+      private
+
+      def add_external_dependencies(content)
         # Add Select2 CSS from CDN
-        content << '<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />'
-        
+        css_url = 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css'
+        content << "<link href=\"#{css_url}\" rel=\"stylesheet\" />"
         # Add jQuery from CDN
         content << '<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>'
-        
         # Add Select2 from CDN
         content << '<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>'
-        
-        # Add our searchable select initialization code
+      end
+
+      def add_searchable_select_js(content)
         content << '<script type="text/javascript">'
-        # Use the correct path relative to the gem root
-        js_file_path = File.expand_path('../../../../../app/assets/javascripts/active_admin/searchable_select/init.js', __FILE__)
+        js_file_path = File.expand_path(
+          '../../../../app/assets/javascripts/active_admin/searchable_select/init.js', __dir__
+        )
         content << File.read(js_file_path)
         content << '</script>'
-        
-        content.join("\n").html_safe
       end
     end
   end

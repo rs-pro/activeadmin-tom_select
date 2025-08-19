@@ -19,10 +19,10 @@ RSpec.describe 'debug searchable select rendering', type: :request do
     get '/admin/posts/new'
     if response.status != 200
       body = response.body
-      msg = body.match(/<div class=\"exception-message\">\s*<div class=\"message\">([^<]+)<\/div>/m)
+      msg = body.match(%r{<div class="exception-message">\s*<div class="message">([^<]+)</div>}m)
       puts "\n===== EXCEPTION: #{msg && msg[1]} =====\n"
       # Print first lines of backtrace snippet if present
-      snippet = body.match(/<code class=\"traces\">[\s\S]*?<pre class=\"\">([\s\S]*?)<\/pre>/m)
+      snippet = body.match(%r{<code class="traces">[\s\S]*?<pre class="">([\s\S]*?)</pre>}m)
       puts(snippet && snippet[1])
     end
     expect(response.status).to eq(200)
