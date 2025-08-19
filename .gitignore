@@ -12,3 +12,5 @@ Gemfile.lock
 /src
 /node_modules
 /vendor/bundle
+.cache
+/.cache
