@@ -60,7 +60,7 @@ RSpec.describe 'production build compatibility', type: :feature do
       visit '/admin/posts'
 
       # Open the filter select
-      within '.filter_form' do
+      within '.filters-form' do
         find('.select2-container').click
       end
 
@@ -76,7 +76,7 @@ RSpec.describe 'production build compatibility', type: :feature do
 
       visit '/admin/posts'
 
-      within '.filter_form' do
+      within '.filters-form' do
         find('.select2-container').click
       end
 

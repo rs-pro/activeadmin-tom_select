@@ -1,3 +1,7 @@
+development:
+  adapter:  sqlite3
+  database: db/combustion_dev.sqlite
+
 test:
   adapter:  sqlite3
   database: db/combustion_test.sqlite
