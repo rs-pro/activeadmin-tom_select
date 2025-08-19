@@ -98,8 +98,11 @@ RSpec.describe 'production build compatibility', type: :feature do
 
       fill_in 'Title', with: 'Test Post'
 
-      # Select category using Select2
-      find('.select2-container').click
+      # Wait for Select2 to initialize and select category using Select2
+      sleep 0.1 # Allow 100ms for everything to render
+      within '#post_category_input' do
+        find('.select2-container').click
+      end
       find('.select2-results__option', text: 'Test Category').click
 
       click_button 'Create Post'
