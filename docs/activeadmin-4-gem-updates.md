@@ -35,22 +35,80 @@ ActiveAdmin 4 moved away from the traditional Rails asset pipeline to modern Jav
 
 Create multiple module formats to support different bundlers:
 
-1. **ESM Module** (`searchable_select.esm.js`):
+1. **ESM Module** (`your_gem.esm.js`):
 ```javascript
 import $ from 'jquery';
-import select2 from 'select2';
+import select2 from 'select2';  // Or your jQuery plugin
 
-// Critical: Initialize select2 on jQuery for production builds
+// Critical: Initialize jQuery plugins on the jQuery object for production builds
+// This ensures the plugin methods are available on jQuery selections
 select2($);
 
-// Ensure jQuery is globally available
+// Ensure jQuery is globally available for other scripts
 window.$ = window.jQuery = $;
 
-// Your initialization code here
+// Your initialization code wrapped in a DOM ready handler
+$(() => {
+  // Initialize your plugin on specific selectors
+  $('.your-selector').yourPlugin({
+    // plugin options
+  });
+  
+  // Listen for Turbo/Turbolinks events for dynamic content
+  $(document).on('turbo:load turbolinks:load', () => {
+    $('.your-selector').yourPlugin();
+  });
+  
+  // For ActiveAdmin's dynamic content (filters, forms)
+  $(document).on('has_many_add:after', '.has_many_container', () => {
+    $('.your-selector').yourPlugin();
+  });
+});
+
+// Export for use as a module
+export default function initializeYourGem() {
+  // Initialization logic
+}
 ```
 
-2. **Traditional Module** (for backward compatibility)
-3. **CDN-compatible version** (for importmap users)
+2. **Traditional Module** (`your_gem.js` for backward compatibility):
+```javascript
+//= require jquery
+//= require select2
+
+(function($) {
+  'use strict';
+  
+  $(document).ready(function() {
+    $('.your-selector').yourPlugin();
+  });
+  
+  // Turbolinks/Turbo support
+  $(document).on('turbo:load turbolinks:load', function() {
+    $('.your-selector').yourPlugin();
+  });
+})(jQuery);
+```
+
+3. **CDN-compatible version** (for importmap users):
+```javascript
+// Assumes jQuery and plugins are loaded via CDN
+(() => {
+  'use strict';
+  
+  const $ = window.jQuery || window.$;
+  
+  if (!$) {
+    console.error('jQuery is required for YourGem');
+    return;
+  }
+  
+  // Wait for DOM ready
+  $(() => {
+    $('.your-selector').yourPlugin();
+  });
+})();
+```
 
 ### 3. Installation Generator
 
@@ -116,8 +174,9 @@ If your gem includes JavaScript, consider publishing an NPM package:
 #### Package.json Configuration
 ```json
 {
-  "name": "@your-scope/your-gem",
+  "name": "@activeadmin/your-gem",
   "version": "1.0.0",
+  "description": "Your gem description for ActiveAdmin",
   "main": "src/index.js",
   "module": "src/index.js",
   "exports": {
@@ -129,16 +188,47 @@ If your gem includes JavaScript, consider publishing an NPM package:
     "./css": "./src/styles.scss"
   },
   "peerDependencies": {
-    "jquery": ">= 3.0, < 5"
+    "jquery": ">= 3.0, < 5",
+    "select2": "^4.0.13"  // Add your dependencies here
   },
   "files": [
     "src/**/*",
+    "app/assets/**/*",
     "vendor/assets/**/*"
   ],
   "scripts": {
+    "prepare_sources": "mkdir -p src && cp -r app/assets/javascripts/active_admin/* src/ && cp -r app/assets/stylesheets/active_admin/* src/",
     "prepublishOnly": "npm run prepare_sources"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/your-gem.git"
+  },
+  "keywords": ["activeadmin", "rails", "your-feature"],
+  "author": "Your Name",
+  "license": "MIT"
 }
+```
+
+#### Preparing JavaScript Assets for NPM
+
+Create a script to copy your assets to the NPM package structure:
+
+```bash
+#!/bin/bash
+# scripts/prepare_npm_package.sh
+
+# Create src directory for NPM
+mkdir -p src
+
+# Copy JavaScript files
+cp -r app/assets/javascripts/active_admin/* src/
+
+# Copy SCSS files if needed
+cp -r app/assets/stylesheets/active_admin/* src/
+
+# Ensure ESM module is included
+cp app/assets/javascripts/active_admin/your_gem.esm.js src/index.js
 ```
 
 ### 5. CSS Selector Updates
@@ -160,33 +250,131 @@ $('.filter_form select').select2();
 $('.filters-form select').select2();
 ```
 
-### 6. Testing Updates
+### 6. Testing Updates with Combustion
 
-#### Test Environment Setup
+#### Setting up Combustion for Testing
+
+Combustion provides a minimal Rails app for testing engines. Here's the proper setup:
+
+##### Basic Combustion Configuration
 ```ruby
-# spec/rails_helper.rb or test_helper.rb
-RSpec.configure do |config|
-  config.before(:each, type: :feature) do
-    # ActiveAdmin 4 requires explicit asset loading in tests
-    ActiveAdmin.application.stylesheets.clear
-    ActiveAdmin.application.javascripts.clear
+# spec/rails_helper.rb
+ENV['RAILS_ENV'] ||= 'test'
+
+require 'combustion'
+
+# Initialize Combustion with only needed components
+Combustion.path = 'spec/internal'
+Combustion.initialize!(:active_record, :action_controller, :action_view) do
+  config.load_defaults Rails::VERSION::STRING.to_f if Rails::VERSION::MAJOR >= 7
+end
+
+require 'rspec/rails'
+require 'capybara/rails'
+```
+
+##### Test App Structure
+```
+spec/internal/
+├── app/
+│   ├── models/       # Test models (auto-loaded by Rails)
+│   └── admin/        # Static ActiveAdmin registrations
+├── config/
+│   ├── database.yml
+│   ├── routes.rb
+│   └── initializers/
+│       └── active_admin.rb
+└── db/
+    └── schema.rb     # Define test database structure
+```
+
+#### Critical Testing Pitfall: Model Registration Conflicts
+
+**Problem**: Dynamic ActiveAdmin registrations in tests conflict with static admin files.
+
+**Solution**: Choose ONE approach per model:
+
+1. **Static Registration** (for consistent configs):
+```ruby
+# spec/internal/app/admin/users.rb
+ActiveAdmin.register User do
+  permit_params :name, :email
+  # Fixed configuration
+end
+```
+
+2. **Dynamic Registration** (for varying configs):
+```ruby
+# spec/support/active_admin_helpers.rb
+module ActiveAdminHelpers
+  module_function
+
+  def setup
+    ActiveAdmin.application = nil
+    yield  # Dynamic registration block
+    reload_routes!
+  end
+  
+  def reload_routes!
+    Rails.application.reload_routes!
+  end
+end
+
+# In test - NO static admin file for Post model
+ActiveAdminHelpers.setup do
+  ActiveAdmin.register(Post) do
+    # Test-specific configuration
   end
 end
 ```
 
-#### Capybara Configuration
+**Important**: Never mix static and dynamic registration for the same model!
+
+#### Capybara Configuration with Playwright
 ```ruby
-# For Playwright driver (recommended for JavaScript testing)
+# spec/support/capybara.rb
+require 'capybara-playwright-driver'
+
 Capybara.register_driver :playwright do |app|
   Capybara::Playwright::Driver.new(
     app,
     browser_type: :chromium,
-    headless: true
+    headless: true,
+    viewport: { width: 1920, height: 1080 }
   )
 end
 
-Capybara.default_driver = :playwright
+Capybara.default_driver = :rack_test
 Capybara.javascript_driver = :playwright
+
+# Important: Set server for JS tests
+Capybara.server = :puma, { Silent: true }
+```
+
+#### Waiting for JavaScript/AJAX in Tests
+```ruby
+# spec/support/wait_helpers.rb
+module WaitHelpers
+  def wait_for_ajax
+    Timeout.timeout(Capybara.default_max_wait_time) do
+      sleep 0.1
+      loop until finished_all_ajax_requests?
+    end
+  end
+  
+  def finished_all_ajax_requests?
+    page.evaluate_script('jQuery.active').zero?
+  end
+  
+  # For Select2 or similar plugins
+  def wait_for_select2
+    expect(page).to have_css('.select2-container', wait: 5)
+  end
+end
+
+RSpec.configure do |config|
+  config.include WaitHelpers, type: :feature
+end
 ```
 
 ### 7. Production Build Issues
@@ -289,18 +477,70 @@ end
 #### Pitfall 1: Select2 or similar jQuery plugins not working
 **Root Cause**: Plugin not attached to jQuery object in production
 **Solution**: Explicitly call `plugin($)` after importing
+```javascript
+import select2 from 'select2';
+import $ from 'jquery';
+select2($);  // Critical - attaches plugin to jQuery
+```
 
 #### Pitfall 2: CSS classes not found
 **Root Cause**: ActiveAdmin 4 changed many CSS selectors
 **Solution**: Search and replace old selectors with new ones
+- `.filter_form` → `.filters-form`
+- `.select2-container` needs explicit initialization in tests
 
 #### Pitfall 3: Tests passing locally but failing in CI
 **Root Cause**: Missing JavaScript dependencies or browser drivers
-**Solution**: Install Playwright or proper WebDriver, ensure npm packages are installed
+**Solution**: 
+```yaml
+# .github/workflows/ci.yml
+- name: Install Playwright browsers
+  run: npx playwright install chromium
+```
 
 #### Pitfall 4: Assets not compiling in production
 **Root Cause**: Missing bundler configuration
-**Solution**: Provide clear setup instructions for each bundler type
+**Solution**: Provide clear setup instructions for each bundler type in your README
+
+#### Pitfall 5: Model registration conflicts in tests
+**Root Cause**: Static admin files override dynamic test registrations
+**Solution**: 
+- Delete static admin files for models that need dynamic config
+- Keep static files only for models with consistent config
+- Never mix both approaches for the same model
+
+#### Pitfall 6: Input HTML options not passing through
+**Root Cause**: Options can be lost during form DSL processing
+**Solution**: Test with clean models not affected by other registrations
+```ruby
+# Test with a model that has no static admin file
+ActiveAdmin.register(TestModel) do
+  form do |f|
+    f.input :field, as: :searchable_select, 
+            input_html: { class: 'custom-class' }
+  end
+end
+```
+
+#### Pitfall 7: Flaky JavaScript tests
+**Root Cause**: Not waiting for AJAX/DOM updates
+**Solution**: Add proper wait helpers
+```ruby
+def wait_for_select2
+  expect(page).to have_css('.select2-container', wait: 5)
+end
+```
+
+#### Pitfall 8: Rails 8 compatibility issues
+**Root Cause**: Formtastic 5.0 changes, Ransack updates
+**Solution**: 
+- Test against multiple Rails versions using Appraisal
+- Ensure Ransack methods are defined in models
+```ruby
+def self.ransackable_attributes(_auth_object = nil)
+  %w[name title]
+end
+```
 
 ## Migration Checklist
 
