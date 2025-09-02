@@ -1,15 +1,15 @@
 {
   "name": "@rocket-sensei/activeadmin-searchable_select",
-  "version": "0.5.0",
+  "version": "4.0.0",
   "description": "Use searchable selects based on Select2 in Active Admin forms and filters.",
-  "main": "src/searchable_select.js",
-  "module": "src/searchable_select.js",
+  "main": "src/index.js",
+  "module": "src/index.js",
   "style": "src/searchable_select.scss",
   "exports": {
     ".": {
-      "import": "./src/searchable_select.js",
-      "require": "./src/searchable_select.js",
-      "default": "./src/searchable_select.js"
+      "import": "./src/index.js",
+      "require": "./src/index.js",
+      "default": "./src/index.js"
     },
     "./css": "./src/searchable_select.scss",
     "./style": "./src/searchable_select.scss"
@@ -39,12 +39,6 @@
     "select2": "^4.0.0 || ^4.1.0-rc.0"
   },
   "files": [
-    "src/**/*",
-    "vendor/assets/**/*"
-  ],
-  "scripts": {
-    "prepare_javascripts_src": "rm -rf src && cp -R app/assets/javascripts/active_admin/ src && mv src/searchable_select_pack.js src/searchable_select.js",
-    "prepare_stylesheets_src": "cp -R app/assets/stylesheets/active_admin/* src",
-    "prepublishOnly": "npm run prepare_javascripts_src && npm run prepare_stylesheets_src"
-  }
+    "src/**/*"
+  ]
 }
