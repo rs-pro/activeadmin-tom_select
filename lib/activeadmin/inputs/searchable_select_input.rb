@@ -5,7 +5,7 @@ module ActiveAdmin
     # @see ActiveAdmin::SearchableSelect::SelectInputExtension
     #   SelectInputExtension for list of available options.
     class SearchableSelectInput < Formtastic::Inputs::SelectInput
-      include SearchableSelect::SelectInputExtension
+      include ActiveAdmin::SearchableSelect::SelectInputExtension
     end
   end
 end

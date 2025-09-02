@@ -9,6 +9,9 @@ ActiveAdmin.setup do |config|
   config.comments = false
 end
 
+# Load the searchable_select module first
+require 'activeadmin/searchable_select'
+
 # Register custom inputs with Formtastic
 require 'activeadmin/inputs/searchable_select_input'
 require 'activeadmin/inputs/filters/searchable_select_input'
@@ -56,7 +59,7 @@ module ActionView
       def add_searchable_select_js(content)
         content << '<script type="text/javascript">'
         js_file_path = File.expand_path(
-          '../../../../app/assets/javascripts/active_admin/searchable_select/init.js', __dir__
+          '../../../../src/searchable_select/init.js', __dir__
         )
         content << File.read(js_file_path)
         content << '</script>'

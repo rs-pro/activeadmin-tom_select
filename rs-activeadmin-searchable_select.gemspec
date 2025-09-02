@@ -3,13 +3,13 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'activeadmin/searchable_select/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'activeadmin-searchable_select'
+  spec.name          = 'rs-activeadmin-searchable_select'
   spec.version       = ActiveAdmin::SearchableSelect::VERSION
   spec.summary       = 'Use searchable selects based on Select2 in Active Admin forms and filters.'
   spec.license       = 'MIT'
-  spec.authors       = ['Codevise Solutions Ltd']
-  spec.email         = 'info@codevise.de'
-  spec.homepage      = 'https://github.com/codevise/activeadmin-searchable_select'
+  spec.authors       = ['Rocket Sensei']
+  spec.email         = 'glebtv@gmail.com'
+  spec.homepage      = 'https://github.com/glebtv/activeadmin-searchable_select'
 
   spec.files         = `git ls-files -z`.split("\x0")
   spec.require_paths = ['lib']
@@ -32,9 +32,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rails'
   spec.add_development_dependency 'rubocop', '~> 1.50.0'
   spec.add_development_dependency 'semmy', '~> 1.0'
-  spec.add_development_dependency 'sprockets', '~> 3.7'
+  spec.add_development_dependency 'propshaft'
 
-  spec.add_dependency 'activeadmin', ['>= 1.x', '< 4']
+  spec.add_dependency 'activeadmin', '~> 4.0.0.beta'
   spec.add_dependency 'jquery-rails', ['>= 3.0', '< 5']
   spec.add_dependency 'select2-rails', '~> 4.0'
   spec.metadata['rubygems_mfa_required'] = 'true'
