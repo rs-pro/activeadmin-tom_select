@@ -9,7 +9,6 @@ Gemfile.lock
 /spec/internal/db/*.sqlite-shm
 /spec/internal/db/*.sqlite-wal
 /spec/examples.txt
-/src
 /node_modules
 /vendor/bundle
 .cache
