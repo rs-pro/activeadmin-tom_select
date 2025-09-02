@@ -1,6 +1,6 @@
 {
   "name": "@rocket-sensei/activeadmin-searchable_select",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Use searchable selects based on Select2 in Active Admin forms and filters.",
   "main": "src/index.js",
   "module": "src/index.js",
