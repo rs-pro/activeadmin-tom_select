@@ -12,12 +12,12 @@
     }
     
     inputs.each(function() {
-      var item = $(this);
+      const item = $(this);
 
       // reading from data allows <input data-searchable_select='{"tags": ['some']}'>
       // to be passed to select2
-      var options = $.extend(extra || {}, item.data('searchableSelect'));
-      var url = item.data('ajaxUrl');
+      const options = $.extend(extra || {}, item.data('searchableSelect'));
+      const url = item.data('ajaxUrl');
 
       if (url) {
         $.extend(options, {
