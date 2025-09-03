@@ -17,6 +17,10 @@ require 'database_cleaner/active_record'
 
 # Load ActiveAdmin and models
 require_relative 'internal/config/initializers/active_admin'
+
+# Ensure ActiveAdmin loads properly with batch actions
+ActiveAdmin.application.load!
+
 require_relative 'internal/app/models/category'
 require_relative 'internal/app/models/post'
 require_relative 'internal/app/models/user'
