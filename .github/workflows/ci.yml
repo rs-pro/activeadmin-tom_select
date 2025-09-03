@@ -62,6 +62,9 @@ jobs:
             ${{ runner.os }}-playwright-${{ steps.playwright-version.outputs.version }}-
             ${{ runner.os }}-playwright-
 
+      - name: Install npm dependencies
+        run: npm install
+
       - name: Build and install npm package
         run: |
           # Build the npm package

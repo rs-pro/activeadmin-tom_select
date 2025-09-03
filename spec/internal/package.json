@@ -15,7 +15,7 @@
   "dependencies": {
     "@activeadmin/activeadmin": "^4.0.0-beta10",
     "@rails/ujs": "^7.1.400",
-    "@rocket-sensei/activeadmin-searchable_select": "file:../../../../tmp/npm-package/package",
+    "@rocket-sensei/activeadmin-searchable_select": "file:package",
     "esbuild": "^0.24.2",
     "jquery": "^3.7.1",
     "select2": "^4.1.0-rc.0"

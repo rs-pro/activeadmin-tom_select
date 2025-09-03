@@ -2,27 +2,10 @@ require 'rails_helper'
 
 require 'support/models'
 require 'support/capybara'
-require 'support/active_admin_helpers'
 
 RSpec.describe 'end to end', type: :feature, js: true do
   context 'class name without namespaces' do
-    before(:each) do
-      ActiveAdminHelpers.setup do
-        ActiveAdmin.register(Category) do
-          searchable_select_options(scope: Category, text_attribute: :name)
-        end
-
-        ActiveAdmin.register(Post) do
-          filter(:category, as: :searchable_select, ajax: true)
-
-          form do |f|
-            f.input(:category, as: :searchable_select, ajax: true)
-          end
-        end
-
-        ActiveAdmin.setup {}
-      end
-    end
+    # Using static admin/posts.rb and admin/categories.rb files
 
     describe 'index page with searchable select filter' do
       it 'loads filter input options' do
@@ -65,19 +48,7 @@ RSpec.describe 'end to end', type: :feature, js: true do
   end
 
   context 'class name with namespace' do
-    before(:each) do
-      ActiveAdminHelpers.setup do
-        ActiveAdmin.register RGB::Color, as: 'color' do
-          searchable_select_options scope: RGB::Color, text_attribute: :code
-        end
-
-        ActiveAdmin.register Internal::TagName, as: 'Tag Name' do
-          filter :color, as: :searchable_select, ajax: { resource: RGB::Color }
-        end
-
-        ActiveAdmin.setup {}
-      end
-    end
+    # Using static admin/colors.rb and admin/tag_names.rb files
 
     describe 'index page with searchable select filter' do
       it 'loads filter input options' do
@@ -95,41 +66,7 @@ RSpec.describe 'end to end', type: :feature, js: true do
   end
 
   context 'class with nested belongs_to association' do
-    before(:all) do
-      ActiveAdminHelpers.setup do
-        ActiveAdmin.register(OptionType)
-
-        ActiveAdmin.register(Product)
-
-        ActiveAdmin.register(OptionValue) do
-          belongs_to :option_type
-          searchable_select_options(scope: lambda do |params|
-                                             OptionValue.where(
-                                               option_type_id: params[:option_type_id]
-                                             )
-                                           end,
-                                    text_attribute: :value)
-        end
-
-        ActiveAdmin.register(Variant) do
-          belongs_to :product
-
-          form do |f|
-            input :price
-            input(:option_value,
-                  as: :searchable_select,
-                  ajax: {
-                    resource: OptionValue,
-                    path_params: {
-                      option_type_id: f.object.product.option_type_id
-                    }
-                  })
-          end
-        end
-
-        ActiveAdmin.setup {}
-      end
-    end
+    # Using static admin files: option_types.rb, products.rb, option_values.rb, variants.rb
 
     describe 'new page with searchable select filter' do
       it 'loads filter input options' do
@@ -199,7 +136,9 @@ RSpec.describe 'end to end', type: :feature, js: true do
   end
 
   def expand_select_box
-    find('.select2-container').click
+    # Just click the first select2 container on the page
+    # This works for both filter forms and regular forms
+    find('.select2-container', match: :first).click
   end
 
   def enter_search_term(term)

@@ -1,6 +1,18 @@
 require 'database_cleaner-active_record'
 
-class User < ActiveRecord::Base; end
+class User < ActiveRecord::Base
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[name email]
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    []
+  end
+
+  def to_s
+    name.presence || "User #{id}"
+  end
+end
 
 class Category < ActiveRecord::Base
   belongs_to :created_by, class_name: 'User', optional: true
@@ -21,7 +33,7 @@ class Post < ActiveRecord::Base
   scope(:published, -> { where(published: true) })
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[category_id title]
+    %w[category_id title user_id]
   end
 
   def self.ransackable_associations(_auth_object = nil)

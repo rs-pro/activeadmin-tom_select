@@ -4,29 +4,7 @@ require 'support/capybara'
 require 'support/active_admin_helpers'
 
 RSpec.describe 'production build compatibility', type: :feature do
-  before(:each) do
-    ActiveAdminHelpers.setup do
-      ActiveAdmin.register(Category) do
-        searchable_select_options(scope: Category, text_attribute: :name)
-      end
-
-      ActiveAdmin.register(Post) do
-        permit_params :category_id, :title
-
-        filter(:category, as: :searchable_select, ajax: true)
-
-        form do |f|
-          f.inputs do
-            f.input(:title)
-            f.input(:category, as: :searchable_select, ajax: true)
-          end
-          f.actions
-        end
-      end
-
-      ActiveAdmin.setup {}
-    end
-  end
+  # Using static admin files configured with searchable_select
 
   describe 'select2 initialization', js: true do
     it 'initializes select2 on searchable select inputs' do
@@ -59,10 +37,8 @@ RSpec.describe 'production build compatibility', type: :feature do
 
       visit '/admin/posts'
 
-      # Open the filter select
-      within '.filters-form' do
-        find('.select2-container').click
-      end
+      # Open the filter select - click the first select2 container
+      find('.select2-container', match: :first).click
 
       # Wait for ajax to load options
       expect(page).to have_css('.select2-results__option', text: 'Technology', wait: 5)
@@ -76,9 +52,8 @@ RSpec.describe 'production build compatibility', type: :feature do
 
       visit '/admin/posts'
 
-      within '.filters-form' do
-        find('.select2-container').click
-      end
+      # Open the filter select - click the first select2 container
+      find('.select2-container', match: :first).click
 
       # Type in search box
       find('.select2-search__field').set('Ruby')
@@ -99,7 +74,7 @@ RSpec.describe 'production build compatibility', type: :feature do
       fill_in 'Title', with: 'Test Post'
 
       # Wait for Select2 to initialize and select category using Select2
-      sleep 0.1 # Allow 100ms for everything to render
+      sleep 0.5 # Allow time for Select2 to initialize
       within '#post_category_input' do
         find('.select2-container').click
       end
@@ -123,8 +98,10 @@ RSpec.describe 'production build compatibility', type: :feature do
       visit "/admin/posts/#{post.id}/edit"
 
       # Check that the selected value is displayed
-      within '.select2-container' do
-        expect(page).to have_content('Selected Category')
+      within '#post_category_input' do
+        within '.select2-container' do
+          expect(page).to have_content('Selected Category')
+        end
       end
     end
   end

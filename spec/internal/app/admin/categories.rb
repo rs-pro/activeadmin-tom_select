@@ -2,6 +2,7 @@ ActiveAdmin.register Category do
   permit_params :name, :description, :created_at, :updated_at
 
   searchable_select_options(scope: Category, text_attribute: :name)
+  searchable_select_options(name: 'custom', scope: Category, text_attribute: :name)
 
   index do
     selectable_column

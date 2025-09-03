@@ -31,7 +31,7 @@ module ActiveAdmin
       def input_html_options
         super.tap do |options|
           options[:class] = [options[:class], 'searchable-select-input'].compact.join(' ')
-          options['data-ajax-url'] = ajax_url
+          options['data-ajax-url'] = ajax_url if ajax_url && !SearchableSelect.inline_ajax_options
         end
       end
 

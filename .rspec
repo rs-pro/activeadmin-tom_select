@@ -1,1 +1,2 @@
 --require spec_helper
+--exclude-pattern "vendor/**/*_spec.rb,node_modules/**/*_spec.rb"

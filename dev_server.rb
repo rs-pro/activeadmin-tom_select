@@ -52,7 +52,7 @@ end
 ActiveRecord::Base.connection.migration_context.migrate
 
 # Seed data if empty
-if User.count.zero?
+if User.none?
   puts 'Seeding database...'
   load File.expand_path('spec/internal/db/seeds.rb', __dir__)
 end

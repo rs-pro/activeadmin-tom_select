@@ -1,3 +1,10 @@
+require_relative 'spec_helper'
+
+require 'zeitwerk'
+loader = Zeitwerk::Loader.new
+loader.push_dir("#{__dir__}/page_objects")
+loader.setup
+
 ENV['RAILS_ENV'] ||= 'test'
 
 require 'combustion'
@@ -6,21 +13,14 @@ require 'combustion'
 Combustion.path = 'spec/internal'
 Combustion.initialize!(:active_record, :action_controller, :action_view) do
   config.load_defaults Rails::VERSION::STRING.to_f if Rails::VERSION::MAJOR >= 7
-
-  # Use Propshaft instead of Sprockets
-  config.assets.paths << Rails.root.join('app/assets/builds')
-  config.assets.compile = true
-  config.assets.debug = false
 end
-
-# Load Propshaft after Rails is initialized
-require 'propshaft' if defined?(Rails.application)
 
 require 'rspec/rails'
 require 'capybara/rails'
 require 'capybara-playwright-driver'
 require 'database_cleaner/active_record'
-require 'support/reset_settings'
+
+Dir[File.expand_path('support/**/*.rb', __dir__)].each { |f| require_relative f }
 
 # Configure Capybara with Playwright for modern browser testing
 Capybara.register_driver :playwright do |app|

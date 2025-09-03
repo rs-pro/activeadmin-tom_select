@@ -1,27 +1,11 @@
 require 'rails_helper'
 
 require 'support/capybara'
-require 'support/active_admin_helpers'
 
 RSpec.describe 'input_html options issue', type: :request do
   it 'should pass input_html class option to searchable select element' do
-    ActiveAdminHelpers.setup do
-      ActiveAdmin.register(Category) do
-        searchable_select_options(scope: Category, text_attribute: :name)
-      end
-
-      ActiveAdmin.register(Post) do
-        permit_params :title, :category_id
-
-        form do |f|
-          f.input :title
-          f.input :category, as: :searchable_select, input_html: { class: 'custom-class' },
-                             ajax: { resource: Category }
-        end
-      end
-    end
-
-    get '/admin/posts/new'
+    # Using static TestInputHtmlPost and Category admins
+    get '/admin/test_input_html_posts/new'
 
     # Parse the HTML response
     doc = Nokogiri::HTML(response.body)
