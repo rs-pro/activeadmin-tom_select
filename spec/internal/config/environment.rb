@@ -1,32 +1,34 @@
-# Load the Rails application.
 require 'combustion'
 
-if Rails.env.test?
-  # Configure Combustion for test app
-  Combustion.path = 'spec/internal'
-  Combustion.initialize!(:active_record, :action_controller, :action_view, :propshaft,
-                         :action_mailer) do
-    config.load_defaults Rails::VERSION::STRING.to_f if Rails::VERSION::MAJOR >= 7
+# Initialize the Combustion app in all environments (dev server and tests)
+Combustion.path = 'spec/internal'
+Combustion.initialize!(
+  :active_record,
+  :action_controller,
+  :action_view,
+  :propshaft,
+  :action_mailer
+) do
+  config.load_defaults Rails::VERSION::STRING.to_f if Rails::VERSION::MAJOR >= 7
 
-    # Development environment settings
-    config.eager_load = false
-    config.consider_all_requests_local = true
-    config.action_controller.perform_caching = false
+  # Friendly defaults for dev/test
+  config.eager_load = false
+  config.consider_all_requests_local = true
+  config.action_controller.perform_caching = false
+  config.action_dispatch.show_exceptions = :all
 
-    # Show full error reports
-    config.action_dispatch.show_exceptions = :all
-
-    # ActiveAdmin configuration
+  # Propshaft assets (guarded in case of alternate stacks)
+  if config.respond_to?(:assets)
     config.assets.debug = true
     config.assets.compile = true
-
-    # Logging
-    config.log_level = :debug
-
-    # Action Mailer settings
-    config.action_mailer.raise_delivery_errors = false
-    config.action_mailer.perform_caching = false
   end
+
+  # Logging
+  config.log_level = :debug
+
+  # Action Mailer
+  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.perform_caching = false
 end
 
 # Load ActiveAdmin configuration

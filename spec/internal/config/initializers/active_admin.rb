@@ -37,14 +37,12 @@ module ActionView
   module Helpers
     module ImportmapHelperShim
       def javascript_importmap_tags(*, **)
-        # In the test environment, load the built CSS and JavaScript bundles
-        # Use raw link tags to avoid SASS processing
-        content = []
-        css_tag = '<link rel="stylesheet" href="/assets/active_admin.css" ' \
-                  'data-turbo-track="reload">'
-        content << css_tag
-        content << %(<script src="/assets/active_admin.js" data-turbo-track="reload"></script>)
-        content.join("\n").html_safe
+        # In tests/dev, include built assets via Rails helpers so Propshaft
+        # can resolve digested paths.
+        safe_join([
+                    stylesheet_link_tag('active_admin', 'data-turbo-track': 'reload'),
+                    javascript_include_tag('active_admin', 'data-turbo-track': 'reload')
+                  ], "\n")
       end
     end
   end

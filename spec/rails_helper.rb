@@ -3,10 +3,17 @@ require_relative 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
 
 require 'combustion'
+require 'propshaft'
 
 # Fix for FrozenError - initialize Combustion with proper configuration
 Combustion.path = 'spec/internal'
-Combustion.initialize!(:active_record, :action_controller, :action_view) do
+# Always include Propshaft so test app serves assets from app/assets/builds
+Combustion.initialize!(
+  :active_record,
+  :action_controller,
+  :action_view,
+  :propshaft
+) do
   config.load_defaults Rails::VERSION::STRING.to_f if Rails::VERSION::MAJOR >= 7
 end
 

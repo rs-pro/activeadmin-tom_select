@@ -22,8 +22,10 @@ Combustion.initialize!(:active_record, :action_controller, :action_view,
   config.action_dispatch.show_exceptions = :all
 
   # ActiveAdmin configuration
-  config.assets.debug = true
-  config.assets.compile = true
+  if config.respond_to?(:assets)
+    config.assets.debug = true
+    config.assets.compile = true
+  end
 
   # Logging
   config.log_level = :debug

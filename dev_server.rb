@@ -17,9 +17,11 @@ Combustion.initialize!(:all) do
   config.action_dispatch.show_exceptions = :all
 
   # Assets
-  config.assets.debug = true
-  config.assets.compile = true
-  config.assets.digest = false
+  if config.respond_to?(:assets)
+    config.assets.debug = true
+    config.assets.compile = true
+    config.assets.digest = false
+  end
 
   # Logging
   config.log_level = :debug

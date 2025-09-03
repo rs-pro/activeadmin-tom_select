@@ -100,3 +100,5 @@ Tests use RSpec with Capybara for feature specs. The `spec/internal` directory c
 - `ActiveAdminHelpers`: Provides DSL for interacting with ActiveAdmin pages
 - `inline_ajax_options` mode: Renders all options inline during feature tests
 - Database cleaner ensures test isolation
+- ABSOLUTELY NO GIT PUSH WITH --no-verify FLAG
+- ABSOLUTELY NO GIT PUSH WITH --no-verify FLAG
