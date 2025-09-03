@@ -16,7 +16,6 @@ Gemfile.lock
 
 # Generated/built files only
 /spec/internal/node_modules/
-/spec/internal/app/assets/builds/
 /spec/internal/package-lock.json
 
 # Debug and temporary files

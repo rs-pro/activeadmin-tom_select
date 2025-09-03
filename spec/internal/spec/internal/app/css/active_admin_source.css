@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Searchable Select Styles */
+.searchable_select.input .select2-container {
+  min-width: 30%;
+}
+
+/* Custom Select2 overrides */
+.select2-container {
+  @apply w-full;
+}
+
+.select2-selection {
+  @apply border border-gray-300 rounded-md min-h-[40px];
+}
+
+.select2-selection__rendered {
+  @apply p-2;
+}
+
+/* Dark mode support */
+.dark .select2-selection {
+  @apply border-gray-600 bg-gray-800 text-gray-100;
+}
+
+.dark .select2-dropdown {
+  @apply bg-gray-800 border-gray-600;
+}
+
+.dark .select2-results__option {
+  @apply text-gray-100;
+}
+
+.dark .select2-results__option--highlighted {
+  @apply bg-gray-700;
+}
