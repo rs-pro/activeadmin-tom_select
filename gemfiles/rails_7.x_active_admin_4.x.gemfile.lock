@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    rs-activeadmin-searchable_select (0.5.0)
+    rs-activeadmin-searchable_select (4.0.5)
       activeadmin (~> 4.0.0.beta)
 
 GEM

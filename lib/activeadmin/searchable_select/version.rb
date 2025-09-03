@@ -1,5 +1,5 @@
 module ActiveAdmin
   module SearchableSelect
-    VERSION = '0.5.0'.freeze
+    VERSION = '4.0.5'.freeze
   end
 end

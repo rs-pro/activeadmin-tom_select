@@ -15,7 +15,7 @@ Working on standardizing two ActiveAdmin gems:
 3. ✅ Forked both gems with new names (rs- prefix)
 4. ✅ Published NPM packages:
    - `@rocket-sensei/activeadmin_trumbowyg@4.0.4`
-   - `@rocket-sensei/activeadmin-searchable_select@4.0.2`
+   - `@rocket-sensei/activeadmin-searchable_select@4.0.5`
 5. ✅ Updated documentation for ActiveAdmin 4 and Propshaft
 6. ✅ Both gems support ActiveAdmin 4.0.0.beta only
 7. ✅ Fixed jQuery loading issues with proper module exports
@@ -193,7 +193,7 @@ bundle exec rspec --fail-fast
   - CSS properly bundled with Tailwind + ActiveAdmin plugin + Trumbowyg
   - Documentation updated
   - CI workflow fixed to build/extract npm package (avoids vendor symlinks)
-- activeadmin-searchable_select: 4.0.2 (needs similar updates)
+- activeadmin-searchable_select: 4.0.5 (needs similar updates)
   - Gem: `rs-activeadmin-searchable_select`
   - NPM: `@rocket-sensei/activeadmin-searchable_select`
   - Needs: Tailwind CSS build, CI workflow fix, test app setup
