@@ -114,18 +114,19 @@ RSpec.describe 'end to end', type: :feature, js: true do
         puts "Has form elements: #{page.has_css?('form')}"
 
         # Debug: Check if searchable select input exists
-        expect(page).to have_css('.searchable-select-input', wait: 5)
+        searchable_select_css = '.searchable-select-input'
+        expect(page).to have_css(searchable_select_css, wait: 5)
 
         # Debug: Check what Select2-related elements are present
         puts "Page HTML includes .select2-container: #{page.has_css?('.select2-container',
                                                                      wait: 2)}"
         puts "Page HTML includes .select2: #{page.has_css?('.select2', wait: 2)}"
-        has_searchable = page.has_css?('.searchable-select-input')
+        has_searchable = page.has_css?(searchable_select_css)
         puts "Page HTML includes searchable-select-input: #{has_searchable}"
 
         # Debug: Print the actual HTML around the select
-        if page.has_css?('.searchable-select-input')
-          select_element = find('.searchable-select-input', visible: :all)
+        if page.has_css?(searchable_select_css)
+          select_element = find(searchable_select_css, visible: :all)
           parent_html = begin
             select_element.find(:xpath,
                                 '..')['outerHTML'][0..500]

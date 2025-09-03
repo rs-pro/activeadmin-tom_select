@@ -3,6 +3,8 @@ require 'rails_helper'
 require 'support/models'
 require 'support/capybara'
 
+ADMIN_POSTS_PATH = '/admin/posts'.freeze
+
 RSpec.describe 'form input', type: :request do
   # The static admin/posts.rb file already configures searchable_select with ajax: true
   # So we'll test with that configuration
@@ -15,7 +17,7 @@ RSpec.describe 'form input', type: :request do
       ActiveAdmin::SearchableSelect.inline_ajax_options = false
     end
     it 'renders select input with searchable-select-input css class' do
-      get '/admin/posts/new'
+      get "#{ADMIN_POSTS_PATH}/new"
       expect(response.body).to have_selector('select.searchable-select-input')
     end
 
@@ -23,14 +25,14 @@ RSpec.describe 'form input', type: :request do
       Category.create!(name: 'Travel')
       Category.create!(name: 'Music')
 
-      get '/admin/posts/new'
+      get "#{ADMIN_POSTS_PATH}/new"
 
       expect(response.body).to have_selector('.searchable-select-input option', text: 'Travel')
       expect(response.body).to have_selector('.searchable-select-input option', text: 'Music')
     end
 
     it 'does not set data-ajax-url attribute' do
-      get '/admin/posts/new'
+      get "#{ADMIN_POSTS_PATH}/new"
 
       expect(response.body).not_to have_selector('.searchable-select-input[data-ajax-url]')
     end
@@ -38,7 +40,7 @@ RSpec.describe 'form input', type: :request do
 
   shared_examples 'renders ajax based searchable select input' do
     it 'renders select input with searchable-select-input css class' do
-      get '/admin/posts/new'
+      get "#{ADMIN_POSTS_PATH}/new"
 
       expect(response.body).to have_selector('select.searchable-select-input')
     end
@@ -46,13 +48,13 @@ RSpec.describe 'form input', type: :request do
     it 'does not render options statically' do
       Category.create!(name: 'Travel')
 
-      get '/admin/posts/new'
+      get "#{ADMIN_POSTS_PATH}/new"
 
       expect(response.body).not_to have_selector('.searchable-select-input option', text: 'Travel')
     end
 
     it 'sets data-ajax-url attribute' do
-      get '/admin/posts/new'
+      get "#{ADMIN_POSTS_PATH}/new"
 
       expect(response.body).to have_selector('.searchable-select-input[data-ajax-url]')
     end
@@ -61,7 +63,7 @@ RSpec.describe 'form input', type: :request do
       category = Category.create!(name: 'Travel')
       post = Post.create!(title: 'A post', category: category)
 
-      get "/admin/posts/#{post.id}/edit"
+      get "#{ADMIN_POSTS_PATH}/#{post.id}/edit"
 
       expect(response.body).to have_selector('.searchable-select-input option[selected]',
                                              text: 'Travel')
@@ -79,7 +81,7 @@ RSpec.describe 'form input', type: :request do
       let(:admin_path_prefix) { 'test_form_post_customs' }
 
       def get(path)
-        path = path.sub('/admin/posts', '/admin/test_form_post_customs')
+        path = path.sub(ADMIN_POSTS_PATH, '/admin/test_form_post_customs')
         super
       end
     end
@@ -91,7 +93,7 @@ RSpec.describe 'form input', type: :request do
       let(:admin_path_prefix) { 'test_form_post_resources' }
 
       def get(path)
-        path = path.sub('/admin/posts', '/admin/test_form_post_resources')
+        path = path.sub(ADMIN_POSTS_PATH, '/admin/test_form_post_resources')
         super
       end
     end
@@ -103,7 +105,7 @@ RSpec.describe 'form input', type: :request do
       let(:admin_path_prefix) { 'test_form_post_resource_customs' }
 
       def get(path)
-        path = path.sub('/admin/posts', '/admin/test_form_post_resource_customs')
+        path = path.sub(ADMIN_POSTS_PATH, '/admin/test_form_post_resource_customs')
         super
       end
     end
