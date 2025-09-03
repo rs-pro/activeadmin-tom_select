@@ -92,9 +92,9 @@ module ActiveAdmin
           RUBY
         end
 
-        private
-
         PACKAGE_JSON_FILE = 'package.json'.freeze
+
+        private
 
         def setup_esbuild
           say 'Setting up for esbuild...', :green
