@@ -1,10 +1,5 @@
 require_relative 'spec_helper'
 
-require 'zeitwerk'
-loader = Zeitwerk::Loader.new
-loader.push_dir("#{__dir__}/page_objects")
-loader.setup
-
 ENV['RAILS_ENV'] ||= 'test'
 
 require 'combustion'

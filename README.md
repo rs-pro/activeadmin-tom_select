@@ -1,9 +1,9 @@
-# ActiveAdmin Searchable Select
+# ActiveAdmin Searchable Select (RocketSensei Fork)
 
-[![Gem Version](https://badge.fury.io/rb/activeadmin-searchable_select.svg)](http://badge.fury.io/rb/activeadmin-searchable_select)
-[![NPM Version](https://badge.fury.io/js/@codevise%2Factiveadmin-searchable_select.svg)](https://badge.fury.io/js/@codevise%2Factiveadmin-searchable_select)
-[![npm](https://img.shields.io/npm/dm/@codevise/activeadmin-searchable_select)](https://www.npmjs.com/package/@codevise/activeadmin-searchable_select)
-[![Build Status](https://github.com/codevise/activeadmin-searchable_select/actions/workflows/tests.yml/badge.svg)](https://github.com/codevise/activeadmin-searchable_select/actions)
+[![Gem Version](https://badge.fury.io/rb/rs-activeadmin-searchable_select.svg)](http://badge.fury.io/rb/rs-activeadmin-searchable_select)
+[![NPM Version](https://badge.fury.io/js/@rocket-sensei%2Factiveadmin-searchable_select.svg)](https://badge.fury.io/js/@rocket-sensei%2Factiveadmin-searchable_select)
+[![npm](https://img.shields.io/npm/dm/@rocket-sensei/activeadmin-searchable_select)](https://www.npmjs.com/package/@rocket-sensei/activeadmin-searchable_select)
+[![Build Status](https://github.com/glebtv/activeadmin-searchable_select/actions/workflows/ci.yml/badge.svg)](https://github.com/glebtv/activeadmin-searchable_select/actions)
 
 Searchable select boxes (via [Select2](https://select2.org/)) for
 ActiveAdmin forms and filters. Extends the ActiveAdmin resource DSL to
@@ -11,15 +11,15 @@ allow defining JSON endpoints to fetch options from asynchronously.
 
 ## Installation
 
-Add `activeadmin-searchable_select` to your Gemfile:
+Add `rs-activeadmin-searchable_select` to your Gemfile:
 
 ```ruby
-   gem 'activeadmin-searchable_select'
+   gem 'rs-activeadmin-searchable_select'
 ```
 
-### ActiveAdmin 4.x (esbuild/importmap)
+### ActiveAdmin 4.x with Rails 8 (esbuild/importmap/Propshaft)
 
-ActiveAdmin 4 uses modern JavaScript bundlers. If you encounter "select2 is not a function" errors in production, see the [complete setup guide](docs/setup-active-admin.md).
+This fork is optimized for ActiveAdmin 4.x with Rails 8, supporting modern JavaScript bundlers and Propshaft. If you encounter "select2 is not a function" errors in production, see the [complete setup guide](docs/guide-update-your-app.md).
 
 #### Quick Install with Generator
 
@@ -35,7 +35,7 @@ rails generate active_admin:searchable_select:install --bundler=importmap
 
 1. Install npm packages:
 ```bash
-npm install @codevise/activeadmin-searchable_select jquery select2
+npm install @rocket-sensei/activeadmin-searchable_select jquery select2
 ```
 
 2. In `app/javascript/active_admin.js`:
@@ -48,7 +48,7 @@ import select2 from 'select2';
 select2($);
 window.$ = window.jQuery = $;
 
-import '@codevise/activeadmin-searchable_select';
+import '@rocket-sensei/activeadmin-searchable_select';
 ```
 
 3. Add Select2 CSS to your ActiveAdmin stylesheet:
@@ -76,18 +76,18 @@ Import stylesheets and require javascripts:
 Add to `package.json`:
 ```json
 "dependencies": {
-  "@codevise/activeadmin-searchable_select": "^1.8.0"
+  "@rocket-sensei/activeadmin-searchable_select": "^4.0.0"
 }
 ```
 
 In `app/javascript/packs/active_admin.js`:
 ```javascript
-import '@codevise/activeadmin-searchable_select';
+import '@rocket-sensei/activeadmin-searchable_select';
 ```
 
 In `app/javascript/stylesheets/active_admin.scss`:
 ```css
-@import '@codevise/activeadmin-searchable_select';
+@import '@rocket-sensei/activeadmin-searchable_select';
 ```
 
 ## Usage
