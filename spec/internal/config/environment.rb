@@ -32,9 +32,6 @@ end
 # Load ActiveAdmin configuration
 require_relative 'initializers/active_admin'
 
-# Load admin files - this is crucial for static admin resources to be registered
-Dir[File.join(__dir__, '../app/admin/*.rb')].each { |f| require f }
-
 # Load models
 require_relative '../app/models/category'
 require_relative '../app/models/post'
