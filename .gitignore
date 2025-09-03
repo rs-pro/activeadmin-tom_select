@@ -13,3 +13,14 @@ Gemfile.lock
 /vendor/bundle
 .cache
 /.cache
+
+# Generated/built files only
+/spec/internal/node_modules/
+/spec/internal/app/assets/builds/
+/spec/internal/package-lock.json
+
+# Debug and temporary files
+/debug_*.rb
+/spec/debug_*.rb
+/*.tgz
+/docs/
