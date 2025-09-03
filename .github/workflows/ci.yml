@@ -74,17 +74,29 @@ jobs:
           mkdir -p /tmp/npm-package
           tar -xzf rocket-sensei-activeadmin-searchable_select-*.tgz -C /tmp/npm-package
           
-          # Update spec/internal to use the extracted package instead of file:../..
+          # Copy the package to the expected location for spec/internal
+          cp -r /tmp/npm-package/package spec/internal/
+          
+          # Now install and build in spec/internal
           cd spec/internal
-          # Remove the symlink if it exists
-          rm -rf node_modules/@rocket-sensei/activeadmin-searchable_select
           npm install
           
-          # Install from the extracted package
-          npm install /tmp/npm-package/package
+          # Build assets (JS and CSS)
+          echo "Building JavaScript assets..."
+          npm run build:js
           
-          # Build assets
-          npm run build
+          echo "Building CSS assets..."
+          npm run build:css:activeadmin
+          
+          echo "Copying Select2 assets..."
+          npm run copy:select2
+          
+          # Verify assets were built
+          echo "Checking built assets..."
+          ls -la app/assets/builds/
+          
+          echo "Checking public/select2..."
+          ls -la public/select2/ || echo "public/select2 not found"
 
       - name: Install Playwright browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
