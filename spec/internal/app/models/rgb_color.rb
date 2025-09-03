@@ -1,5 +1,6 @@
 class RgbColor < ActiveRecord::Base
   has_many :internal_tag_names, foreign_key: :color_id
+  has_many :tags, class_name: 'Internal::TagName', foreign_key: :color_id
 
   def display_name
     "#{code} - #{description}"
@@ -10,6 +11,6 @@ class RgbColor < ActiveRecord::Base
   end
 
   def self.ransackable_associations(_auth_object = nil)
-    ['internal_tag_names']
+    %w[internal_tag_names tags]
   end
 end

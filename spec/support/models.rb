@@ -41,17 +41,10 @@ class Post < ActiveRecord::Base
   end
 end
 
-module RGB
-  class Color < ActiveRecord::Base
-    self.table_name = :rgb_colors
-    has_many :tags, class_name: 'Internal::TagName'
-  end
-end
-
 module Internal
   class TagName < ActiveRecord::Base
     self.table_name = :internal_tag_names
-    belongs_to :color, class_name: 'RGB::Color', foreign_key: :color_id, optional: true
+    belongs_to :color, class_name: 'RgbColor', foreign_key: :color_id, optional: true
 
     def self.ransackable_attributes(_auth_object = nil)
       ['color_id']

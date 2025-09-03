@@ -1,7 +1,7 @@
 module Internal
   class TagName < ActiveRecord::Base
     self.table_name = :internal_tag_names
-    belongs_to :color, class_name: 'RGB::Color', foreign_key: :color_id, optional: true
+    belongs_to :color, class_name: 'RgbColor', foreign_key: :color_id, optional: true
 
     def self.ransackable_attributes(_auth_object = nil)
       %w[color_id name]

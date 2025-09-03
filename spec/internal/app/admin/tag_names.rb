@@ -9,12 +9,12 @@ ActiveAdmin.register Internal::TagName, as: 'Tag Name' do
     actions
   end
 
-  filter :color, as: :searchable_select, ajax: { resource: RGB::Color }
+  filter :color, as: :searchable_select, ajax: { resource: RgbColor }
 
   form do |f|
     f.inputs do
       f.input :name
-      f.input :color, as: :searchable_select, ajax: { resource: RGB::Color }
+      f.input :color, as: :searchable_select, ajax: { resource: RgbColor }
     end
     f.actions
   end

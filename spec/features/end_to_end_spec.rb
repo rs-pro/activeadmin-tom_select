@@ -52,8 +52,8 @@ RSpec.describe 'end to end', type: :feature, js: true do
 
     describe 'index page with searchable select filter' do
       it 'loads filter input options' do
-        RGB::Color.create(code: '#eac112', description: 'Orange')
-        RGB::Color.create(code: '#19bf25', description: 'Green')
+        RgbColor.create(code: '#eac112', description: 'Orange')
+        RgbColor.create(code: '#19bf25', description: 'Green')
 
         visit '/admin/tag_names'
 
