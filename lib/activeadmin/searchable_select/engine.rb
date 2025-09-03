@@ -1,5 +1,4 @@
 require 'active_admin'
-require 'select2-rails'
 
 module ActiveAdmin
   module SearchableSelect

@@ -35,7 +35,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'semmy', '~> 1.0'
 
   spec.add_dependency 'activeadmin', '~> 4.0.0.beta'
-  spec.add_dependency 'jquery-rails', ['>= 3.0', '< 5']
-  spec.add_dependency 'select2-rails', '~> 4.0'
   spec.metadata['rubygems_mfa_required'] = 'true'
 end
