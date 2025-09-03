@@ -94,6 +94,8 @@ module ActiveAdmin
 
         private
 
+        PACKAGE_JSON_FILE = 'package.json'.freeze
+
         def setup_esbuild
           say 'Setting up for esbuild...', :green
 
@@ -132,9 +134,9 @@ module ActiveAdmin
           end
 
           # Update package.json scripts if needed
-          return unless File.exist?('package.json')
+          return unless File.exist?(PACKAGE_JSON_FILE)
 
-          package_json = JSON.parse(File.read('package.json'))
+          package_json = JSON.parse(File.read(PACKAGE_JSON_FILE))
 
           return if package_json['scripts'] && package_json['scripts']['build']
 
@@ -144,7 +146,7 @@ module ActiveAdmin
             'esbuild app/javascript/*.* --bundle --sourcemap --format=esm ' \
             '--outdir=app/assets/builds --public-path=/assets'
 
-          File.write('package.json', JSON.pretty_generate(package_json))
+          File.write(PACKAGE_JSON_FILE, JSON.pretty_generate(package_json))
         end
 
         def setup_importmap
