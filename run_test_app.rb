@@ -9,7 +9,7 @@ Dir[File.expand_path('spec/internal/app/models/*.rb', __dir__)].each { |f| requi
 
 # Initialize Combustion with the test Rails app
 Combustion.path = 'spec/internal'
-Combustion.initialize!(:active_record, :action_controller, :action_view, :sprockets,
+Combustion.initialize!(:active_record, :action_controller, :action_view,
                        :action_mailer) do
   config.load_defaults Rails::VERSION::STRING.to_f if Rails::VERSION::MAJOR >= 7
 
