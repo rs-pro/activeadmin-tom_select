@@ -74,12 +74,15 @@ jobs:
           mkdir -p /tmp/npm-package
           tar -xzf rocket-sensei-activeadmin-searchable_select-*.tgz -C /tmp/npm-package
           
-          # Copy the package to the expected location for spec/internal
-          cp -r /tmp/npm-package/package spec/internal/
-          
-          # Now install and build in spec/internal
+          # Update spec/internal to use the extracted package
           cd spec/internal
+          # Remove any existing symlink/folder
+          rm -rf package
+          rm -rf node_modules/@rocket-sensei/activeadmin-searchable_select
           npm install
+          
+          # Install from the extracted package
+          npm install /tmp/npm-package/package
           
           # Build assets (JS and CSS)
           echo "Building JavaScript assets..."
