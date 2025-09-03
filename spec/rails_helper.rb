@@ -15,6 +15,23 @@ require 'capybara/rails'
 require 'capybara-playwright-driver'
 require 'database_cleaner/active_record'
 
+# Load ActiveAdmin and models
+require_relative 'internal/config/initializers/active_admin'
+require_relative 'internal/app/models/category'
+require_relative 'internal/app/models/post'
+require_relative 'internal/app/models/user'
+require_relative 'internal/app/models/rgb_color'
+require_relative 'internal/app/models/rgb/color'
+require_relative 'internal/app/models/internal_tag_name'
+require_relative 'internal/app/models/internal/tag_name'
+require_relative 'internal/app/models/option_type'
+require_relative 'internal/app/models/option_value'
+require_relative 'internal/app/models/product'
+require_relative 'internal/app/models/variant'
+
+# Load admin files - this is crucial for static admin resources to be registered
+Dir[File.expand_path('internal/app/admin/*.rb', __dir__)].each { |f| require f }
+
 Dir[File.expand_path('support/**/*.rb', __dir__)].each { |f| require_relative f }
 
 # Configure Capybara with Playwright for modern browser testing
