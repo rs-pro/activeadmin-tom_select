@@ -3,7 +3,6 @@ appraise 'rails-7.x-active-admin-4.x' do
   gem 'activeadmin', '4.0.0.beta16'
   gem 'rspec_junit_formatter', require: false
   gem 'simplecov', require: false
-  gem 'simplecov-cobertura', require: false
 end
 
 appraise 'rails-8.x-active-admin-4.x' do
@@ -11,5 +10,4 @@ appraise 'rails-8.x-active-admin-4.x' do
   gem 'activeadmin', '4.0.0.beta16'
   gem 'rspec_junit_formatter', require: false
   gem 'simplecov', require: false
-  gem 'simplecov-cobertura', require: false
 end

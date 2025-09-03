@@ -2,15 +2,16 @@
 # Make SimpleCov optional so tests can run without it (e.g., in Appraisal gemfiles)
 begin
   require 'simplecov'
-  require 'simplecov-cobertura'
+  require 'simplecov_json_formatter'
+
+  SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new(
+    [
+      SimpleCov::Formatter::HTMLFormatter,
+      SimpleCov::Formatter::JSONFormatter
+    ]
+  )
 
   SimpleCov.start do
-    # Use multiple formatters to generate both HTML and Cobertura XML reports
-    formatter SimpleCov::Formatter::MultiFormatter.new([
-                                                         SimpleCov::Formatter::HTMLFormatter,
-                                                         SimpleCov::Formatter::CoberturaFormatter
-                                                       ])
-
     # Configure coverage directory
     coverage_dir 'coverage'
 
