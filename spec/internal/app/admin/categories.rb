@@ -1,6 +1,6 @@
 ActiveAdmin.register Category do
   permit_params :name, :description, :created_at, :updated_at
-  
+
   searchable_select_options(scope: Category, text_attribute: :name)
 
   index do

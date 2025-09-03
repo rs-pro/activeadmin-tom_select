@@ -6,9 +6,9 @@ require 'combustion'
 Combustion.path = 'spec/internal'
 Combustion.initialize!(:active_record, :action_controller, :action_view) do
   config.load_defaults Rails::VERSION::STRING.to_f if Rails::VERSION::MAJOR >= 7
-  
+
   # Use Propshaft instead of Sprockets
-  config.assets.paths << Rails.root.join("app/assets/builds")
+  config.assets.paths << Rails.root.join('app/assets/builds')
   config.assets.compile = true
   config.assets.debug = false
 end

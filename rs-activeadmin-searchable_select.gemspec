@@ -29,10 +29,10 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'puma', '~> 6.0'
 
   spec.add_development_dependency 'coffee-rails'
+  spec.add_development_dependency 'propshaft'
   spec.add_development_dependency 'rails'
   spec.add_development_dependency 'rubocop', '~> 1.50.0'
   spec.add_development_dependency 'semmy', '~> 1.0'
-  spec.add_development_dependency 'propshaft'
 
   spec.add_dependency 'activeadmin', '~> 4.0.0.beta'
   spec.add_dependency 'jquery-rails', ['>= 3.0', '< 5']

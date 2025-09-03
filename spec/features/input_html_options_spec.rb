@@ -33,7 +33,6 @@ RSpec.describe 'input_html options issue', type: :request do
     unless category_select
       raise "Category select element with ID 'post_category_id' not found in response"
     end
-    
 
     classes = category_select['class'].to_s.split
 

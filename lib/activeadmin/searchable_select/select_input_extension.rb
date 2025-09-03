@@ -137,6 +137,7 @@ module ActiveAdmin
       def ajax_options
         # ActiveAdmin 4 may transform ajax hash to boolean
         return {} if options[:ajax] == true || options[:ajax].nil?
+
         options[:ajax]
       end
     end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require "rubygems"
-require "bundler"
+require 'rubygems'
+require 'bundler'
 
 # Don't auto-require gems - we need to control loading order
 Bundler.setup(:default, :development)
