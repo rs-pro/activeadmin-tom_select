@@ -9,8 +9,11 @@ Bundler.setup(:default, :development)
 # Load Rails and combustion first
 require 'combustion'
 
+# Require propshaft explicitly before initializing
+require 'propshaft' if defined?(Propshaft) || Bundler.load.specs.find { |s| s.name == 'propshaft' }
+
 # Initialize Combustion with the Rails components we need
-Combustion.initialize! :active_record, :action_controller, :action_view do
+Combustion.initialize! :active_record, :action_controller, :action_view, :propshaft do
   config.load_defaults Rails::VERSION::STRING.to_f if Rails::VERSION::MAJOR >= 7
 end
 

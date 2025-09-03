@@ -28,10 +28,20 @@ module ActiveAdmin
     # ignored.
     module SelectInputExtension
       # @api private
+      def to_html
+        super
+      rescue RuntimeError => e
+        # In development/test, display the error message
+        raise e unless Rails.env.development? || Rails.env.test?
+
+        template.content_tag(:div, e.message, class: 'searchable-select-error')
+      end
+
+      # @api private
       def input_html_options
         super.tap do |options|
           options[:class] = [options[:class], 'searchable-select-input'].compact.join(' ')
-          options['data-ajax-url'] = ajax_url if ajax_url && !SearchableSelect.inline_ajax_options
+          options['data-ajax-url'] = ajax_url if ajax? && !SearchableSelect.inline_ajax_options
         end
       end
 
@@ -47,6 +57,10 @@ module ActiveAdmin
       end
 
       private
+
+      def ajax?
+        options[:ajax].present?
+      end
 
       def ajax_url
         return unless options[:ajax]
