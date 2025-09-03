@@ -62,8 +62,26 @@ jobs:
             ${{ runner.os }}-playwright-${{ steps.playwright-version.outputs.version }}-
             ${{ runner.os }}-playwright-
 
-      - name: Install npm dependencies
-        run: npm install
+      - name: Build and install npm package
+        run: |
+          # Build the npm package
+          npm pack
+          
+          # Extract it to a temporary location
+          mkdir -p /tmp/npm-package
+          tar -xzf rocket-sensei-activeadmin-searchable_select-*.tgz -C /tmp/npm-package
+          
+          # Update spec/internal to use the extracted package instead of file:../..
+          cd spec/internal
+          # Remove the symlink if it exists
+          rm -rf node_modules/@rocket-sensei/activeadmin-searchable_select
+          npm install
+          
+          # Install from the extracted package
+          npm install /tmp/npm-package/package
+          
+          # Build assets
+          npm run build
 
       - name: Install Playwright browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'

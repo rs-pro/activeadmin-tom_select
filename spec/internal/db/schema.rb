@@ -10,14 +10,18 @@ ActiveRecord::Schema.define do
 
   create_table(:categories, force: true) do |t|
     t.string :name
+    t.text :description
     t.belongs_to :created_by
+    t.timestamps
   end
 
   create_table(:posts, force: true) do |t|
     t.string :title
+    t.text :body
     t.belongs_to :category
     t.belongs_to :user
     t.boolean :published
+    t.timestamps
   end
 
   create_table(:rgb_colors, force: true) do |t|
@@ -53,5 +57,7 @@ ActiveRecord::Schema.define do
 
   create_table(:users, force: true) do |t|
     t.string :name
+    t.string :email
+    t.timestamps
   end
 end

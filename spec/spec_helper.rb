@@ -14,6 +14,9 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
+  # Exclude vendor and node_modules directories from spec discovery
+  # This prevents RSpec from picking up specs from dependencies
+  config.exclude_pattern = '**/vendor/**/*,**/node_modules/**/*'
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.

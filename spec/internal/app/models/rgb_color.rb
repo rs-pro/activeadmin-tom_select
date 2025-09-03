@@ -4,4 +4,12 @@ class RgbColor < ActiveRecord::Base
   def display_name
     "#{code} - #{description}"
   end
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["code", "description", "id", "created_at", "updated_at"]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["internal_tag_names"]
+  end
 end

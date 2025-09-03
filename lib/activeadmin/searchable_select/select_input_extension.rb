@@ -29,9 +29,10 @@ module ActiveAdmin
     module SelectInputExtension
       # @api private
       def input_html_options
-        options = super
-        options[:class] = [options[:class], 'searchable-select-input'].compact.join(' ')
-        options.merge('data-ajax-url' => ajax_url)
+        super.tap do |options|
+          options[:class] = [options[:class], 'searchable-select-input'].compact.join(' ')
+          options['data-ajax-url'] = ajax_url
+        end
       end
 
       # @api private
@@ -134,7 +135,9 @@ module ActiveAdmin
       end
 
       def ajax_options
-        options[:ajax] == true ? {} : options[:ajax]
+        # ActiveAdmin 4 may transform ajax hash to boolean
+        return {} if options[:ajax] == true || options[:ajax].nil?
+        options[:ajax]
       end
     end
   end

@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Select2 overrides for ActiveAdmin compatibility */
+
+.select2-selection {
+  @apply border border-gray-300 rounded-md min-h-[40px];
+}
+
+.select2-selection__rendered {
+  @apply p-2;
+}
+
+.select2-selection__arrow {
+  @apply h-full;
+}
+
+/* Multiple selection styles */
+.select2-selection--multiple {
+  @apply min-h-[40px];
+}
+
+.select2-selection__choice {
+  @apply bg-gray-100 border-gray-300 rounded;
+}
+
+/* Dropdown styles */
+.select2-dropdown {
+  @apply absolute block w-auto box-border border border-gray-300 rounded-md shadow-lg z-50 float-left;
+}
+
+/* Fix positioning when dropdown is open */
+.select2-container--open .select2-dropdown {
+  @apply left-0;
+}
+
+.select2-container--open .select2-dropdown--above {
+  @apply border-b-0 rounded-t-none;
+}
+
+.select2-container--open .select2-dropdown--below {
+  @apply border-t-0 rounded-t-none;
+}
+
+.select2-search__field {
+  @apply border border-gray-300 rounded p-2 w-full;
+}
+
+.select2-results__option {
+  @apply p-2 hover:bg-gray-100;
+}
+
+.select2-results__option--highlighted {
+  @apply bg-blue-500 text-white;
+}
+
+/* Dark mode support */
+.dark .select2-selection {
+  @apply border-gray-600 bg-gray-800 text-gray-100;
+}
+
+.dark .select2-dropdown {
+  @apply bg-gray-800 border-gray-600;
+}
+
+.dark .select2-results__option {
+  @apply text-gray-100 hover:bg-gray-700;
+}
+
+.dark .select2-results__option--highlighted {
+  @apply bg-blue-600 text-white;
+}
+
+.dark .select2-selection__choice {
+  @apply bg-gray-700 border-gray-600 text-gray-100;
+}
+
+.dark .select2-search__field {
+  @apply bg-gray-700 border-gray-600 text-gray-100;
+}

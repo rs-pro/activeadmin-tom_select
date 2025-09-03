@@ -9,25 +9,19 @@ ActiveAdmin.register_page 'Dashboard' do
       end
     end
 
-    columns do
-      column do
-        panel 'Info' do
-          ul do
-            li "Posts: #{Post.count}"
-            li "Categories: #{Category.count}"
-            li "Users: #{User.count}"
-            li "RGB Colors: #{RgbColor.count}"
-          end
-        end
+    panel 'Info' do
+      ul do
+        li "Posts: #{Post.count}"
+        li "Categories: #{Category.count}"
+        li "Users: #{User.count}"
+        li "RGB Colors: #{RgbColor.count}"
       end
+    end
 
-      column do
-        panel 'Recent Posts' do
-          ul do
-            Post.limit(5).map do |post|
-              li link_to(post.title, admin_post_path(post))
-            end
-          end
+    panel 'Recent Posts' do
+      ul do
+        Post.limit(5).map do |post|
+          li link_to(post.title, admin_post_path(post))
         end
       end
     end

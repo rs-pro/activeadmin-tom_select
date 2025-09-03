@@ -11,8 +11,9 @@
       "require": "./src/index.js",
       "default": "./src/index.js"
     },
-    "./css": "./src/searchable_select.scss",
-    "./style": "./src/searchable_select.scss"
+    "./css": "./src/searchable_select.css",
+    "./style": "./src/searchable_select.css",
+    "./scss": "./src/searchable_select.scss"
   },
   "repository": {
     "type": "git",

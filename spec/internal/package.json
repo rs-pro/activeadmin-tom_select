@@ -1,0 +1,26 @@
+{
+  "name": "internal",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "copy:select2": "mkdir -p public/select2 && cp -r node_modules/select2/dist/css/* public/select2/",
+    "build:js": "node esbuild.config.js",
+    "build:css:activeadmin": "node build_activeadmin_css.js",
+    "build:assets": "npm run copy:select2 && npm run build:js && npm run build:css:activeadmin",
+    "build": "npm run build:assets",
+    "watch:js": "node esbuild.config.js --watch",
+    "watch": "npm run watch:js",
+    "start": "npm run watch"
+  },
+  "dependencies": {
+    "@activeadmin/activeadmin": "^4.0.0-beta10",
+    "@rails/ujs": "^7.1.400",
+    "@rocket-sensei/activeadmin-searchable_select": "file:../../../../tmp/npm-package/package",
+    "esbuild": "^0.24.2",
+    "jquery": "^3.7.1",
+    "select2": "^4.1.0-rc.0"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}
