@@ -2,6 +2,21 @@
 
 This guide will help you migrate from the original `activeadmin-searchable_select` gem to our forked and updated version `rs-activeadmin-searchable_select`.
 
+## Quick Start (New Installation)
+
+For new installations without a previous version:
+
+```bash
+# Add to Gemfile
+echo "gem 'rs-activeadmin-searchable_select', '~> 4.0.5'" >> Gemfile
+bundle install
+
+# Install NPM packages
+npm install @rocket-sensei/activeadmin-searchable_select jquery select2
+
+# Then follow Step 3 and onward below
+```
+
 ## Why Update?
 
 Our fork provides:
@@ -12,6 +27,14 @@ Our fork provides:
 - ✅ Fixed production build issues with select2
 - ✅ Improved test suite with static ActiveAdmin registrations
 - ✅ Active maintenance and support
+
+## What's New in Version 4.0.5
+
+- 🚀 **SonarQube Integration**: Full code quality analysis with 98% test coverage
+- 📊 **SimpleCov JSON Reporting**: Coverage reports now use JSON format for better compatibility
+- 🔧 **CI/CD Improvements**: Consolidated GitHub Actions workflow with SonarQube scanning
+- 🧹 **Code Quality**: Reduced code duplication and improved maintainability
+- 📦 **Synchronized Versioning**: Ruby gem and NPM package now share the same version number
 
 ## Migration Steps
 
@@ -24,7 +47,7 @@ Replace the old gem with our fork:
 # gem 'activeadmin-searchable_select'
 
 # Add this:
-gem 'rs-activeadmin-searchable_select', '~> 4.0'
+gem 'rs-activeadmin-searchable_select', '~> 4.0.5'
 
 # For Rails 7, also ensure you have Propshaft:
 gem 'propshaft' # Rails 8 includes this by default
@@ -51,6 +74,8 @@ npm install @rocket-sensei/activeadmin-searchable_select jquery select2
 
 Update your `app/javascript/active_admin.js`:
 
+#### Option A: Auto-initialization (Recommended)
+
 ```javascript
 import "@activeadmin/activeadmin";
 import $ from 'jquery';
@@ -60,8 +85,29 @@ import select2 from 'select2';
 select2($);
 window.$ = window.jQuery = $;
 
-// Import the searchable select functionality
-import '@rocket-sensei/activeadmin-searchable_select';
+// Import and auto-initialize searchable selects
+import { setupAutoInit } from '@rocket-sensei/activeadmin-searchable_select';
+setupAutoInit();
+```
+
+#### Option B: Manual initialization
+
+```javascript
+import "@activeadmin/activeadmin";
+import $ from 'jquery';
+import select2 from 'select2';
+
+// Critical: Initialize select2 on jQuery (fixes production builds)
+select2($);
+window.$ = window.jQuery = $;
+
+// Import the initialization function
+import { initSearchableSelects } from '@rocket-sensei/activeadmin-searchable_select';
+
+// Initialize manually when needed
+$(document).ready(function() {
+  initSearchableSelects($('.searchable-select-input'));
+});
 ```
 
 ### Step 4: Add Select2 CSS
@@ -106,8 +152,9 @@ window.$ = window.jQuery = jquery;
 // Initialize select2
 select2(jquery);
 
-// Import searchable select
-import "@rocket-sensei/activeadmin-searchable_select";
+// Import and auto-initialize searchable selects
+import { setupAutoInit } from "@rocket-sensei/activeadmin-searchable_select";
+setupAutoInit();
 ```
 
 ### Step 6: Update Your ActiveAdmin Resources
