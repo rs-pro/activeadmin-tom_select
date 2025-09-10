@@ -36,6 +36,7 @@ Lint/EmptyBlock:
 Naming/FileName:
   Exclude:
     - 'lib/activeadmin-searchable_select.rb'
+    - 'lib/rs-activeadmin-searchable_select.rb'
 
 # Allow development dependencies in gemspec
 Gemspec/DevelopmentDependencies:

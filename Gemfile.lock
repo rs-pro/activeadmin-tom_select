@@ -181,7 +181,7 @@ GEM
     mime-types (3.7.0)
       logger
       mime-types-data (~> 3.2025, >= 3.2025.0507)
-    mime-types-data (3.2025.0902)
+    mime-types-data (3.2025.0909)
     mini_mime (1.1.5)
     minitest (5.25.5)
     net-imap (0.5.10)
@@ -262,7 +262,7 @@ GEM
       activerecord (>= 6.1.5)
       activesupport (>= 6.1.5)
       i18n
-    rchardet (1.9.0)
+    rchardet (1.10.0)
     rdoc (6.14.2)
       erb
       psych (>= 4.0.0)
@@ -272,7 +272,7 @@ GEM
     responders (3.1.1)
       actionpack (>= 5.2)
       railties (>= 5.2)
-    rexml (3.4.2)
+    rexml (3.4.3)
     rspec-core (3.13.5)
       rspec-support (~> 3.13.0)
     rspec-expectations (3.13.5)
