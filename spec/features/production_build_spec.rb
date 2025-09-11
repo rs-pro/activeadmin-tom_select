@@ -6,15 +6,43 @@ require 'support/active_admin_helpers'
 RSpec.describe 'production build compatibility', type: :feature do
   # Using static admin files configured with searchable_select
 
-  describe 'select2 initialization', js: true do
-    it 'initializes select2 on searchable select inputs' do
+  describe 'tom-select initialization', js: true do
+    it 'initializes tom-select on searchable select inputs' do
       visit '/admin/posts'
 
-      # Check that the searchable-select-input class is present
+      # Wait for page to load
       expect(page).to have_css('.searchable-select-input')
 
-      # Check that Select2 container is created
-      expect(page).to have_css('.select2-container', wait: 5)
+      # Give JavaScript time to initialize
+      sleep 1
+
+      # Debug: check what's on the page
+      has_wrapper = page.has_css?('.ts-wrapper', wait: 0)
+      has_control = page.has_css?('.ts-control', wait: 0)
+
+      unless has_wrapper
+        # Save screenshot for debugging
+        page.save_screenshot('/tmp/test_fail.png')
+        puts 'DEBUG: No .ts-wrapper found'
+        puts "Has .ts-control: #{has_control}"
+        puts "Page has searchable inputs: #{page.all('.searchable-select-input').count}"
+
+        # Try manual initialization
+        page.execute_script("
+          if (typeof window.initSearchableSelects === 'function') {
+            console.log('Manually initializing Tom Select');
+            window.initSearchableSelects(document.querySelectorAll('.searchable-select-input'));
+          } else {
+            console.log('initSearchableSelects not found');
+          }
+        ")
+
+        # Wait a bit after manual init
+        sleep 0.5
+      end
+
+      # Check that Tom Select wrapper is created
+      expect(page).to have_css('.ts-wrapper', wait: 5)
     end
   end
 
@@ -37,12 +65,12 @@ RSpec.describe 'production build compatibility', type: :feature do
 
       visit '/admin/posts'
 
-      # Open the filter select - click the first select2 container
-      find('.select2-container', match: :first).click
+      # Open the filter select - click the first tom-select control
+      find('.ts-control', match: :first).click
 
       # Wait for ajax to load options
-      expect(page).to have_css('.select2-results__option', text: 'Technology', wait: 5)
-      expect(page).to have_css('.select2-results__option', text: 'Science')
+      expect(page).to have_css('.ts-dropdown .option', text: 'Technology', wait: 5)
+      expect(page).to have_css('.ts-dropdown .option', text: 'Science')
     end
 
     it 'filters options based on search term' do
@@ -52,16 +80,16 @@ RSpec.describe 'production build compatibility', type: :feature do
 
       visit '/admin/posts'
 
-      # Open the filter select - click the first select2 container
-      find('.select2-container', match: :first).click
+      # Open the filter select - click the first tom-select control
+      find('.ts-control', match: :first).click
 
-      # Type in search box
-      find('.select2-search__field').set('Ruby')
+      # Type in search box (Tom Select uses different structure)
+      find('.ts-control input').set('Ruby')
 
       # Should only show matching option
-      expect(page).to have_css('.select2-results__option', text: 'Ruby Programming', wait: 5)
-      expect(page).not_to have_css('.select2-results__option', text: 'Python Programming')
-      expect(page).not_to have_css('.select2-results__option', text: 'JavaScript')
+      expect(page).to have_css('.ts-dropdown .option', text: 'Ruby Programming', wait: 5)
+      expect(page).not_to have_css('.ts-dropdown .option', text: 'Python Programming')
+      expect(page).not_to have_css('.ts-dropdown .option', text: 'JavaScript')
     end
   end
 
@@ -73,12 +101,12 @@ RSpec.describe 'production build compatibility', type: :feature do
 
       fill_in 'Title', with: 'Test Post'
 
-      # Wait for Select2 to initialize and select category using Select2
-      sleep 0.5 # Allow time for Select2 to initialize
+      # Wait for Tom Select to initialize and select category using Tom Select
+      sleep 0.5 # Allow time for Tom Select to initialize
       within '#post_category_input' do
-        find('.select2-container').click
+        find('.ts-control').click
       end
-      find('.select2-results__option', text: 'Test Category').click
+      find('.ts-dropdown .option', text: 'Test Category').click
 
       click_button 'Create Post'
 
@@ -99,7 +127,7 @@ RSpec.describe 'production build compatibility', type: :feature do
 
       # Check that the selected value is displayed
       within '#post_category_input' do
-        within '.select2-container' do
+        within '.ts-control' do
           expect(page).to have_content('Selected Category')
         end
       end

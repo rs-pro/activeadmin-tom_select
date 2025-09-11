@@ -42,6 +42,7 @@ module ActiveAdmin
         super.tap do |options|
           options[:class] = [options[:class], 'searchable-select-input'].compact.join(' ')
           options['data-ajax-url'] = ajax_url if ajax? && !SearchableSelect.inline_ajax_options
+          options['data-clearable'] = true if clearable?
         end
       end
 
@@ -49,17 +50,25 @@ module ActiveAdmin
       def collection_from_options
         return super unless options[:ajax]
 
-        if SearchableSelect.inline_ajax_options
-          all_options_collection
-        else
-          selected_value_collection
-        end
+        collection = if SearchableSelect.inline_ajax_options
+                       all_options_collection
+                     else
+                       selected_value_collection
+                     end
+
+        # Remove any empty/blank options since we use clear button instead
+        collection.reject { |item| item.first.to_s.strip.empty? && item.last.to_s.strip.empty? }
       end
 
       private
 
       def ajax?
         options[:ajax].present?
+      end
+
+      def clearable?
+        # Default to true unless explicitly set to false
+        options.fetch(:clearable, true)
       end
 
       def ajax_url

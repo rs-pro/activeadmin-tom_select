@@ -1,5 +1,5 @@
 module Internal
-  class TagName < ActiveRecord::Base
+  class TagName < ApplicationRecord
     self.table_name = :internal_tag_names
     belongs_to :color, class_name: 'RgbColor', foreign_key: :color_id, optional: true
 
@@ -8,7 +8,7 @@ module Internal
     end
 
     def self.ransackable_associations(_auth_object = nil)
-      []
+      ['color']
     end
   end
 end

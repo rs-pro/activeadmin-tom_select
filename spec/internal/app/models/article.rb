@@ -1,4 +1,4 @@
-class Article < ActiveRecord::Base
+class Article < ApplicationRecord
   belongs_to :category, optional: true
   belongs_to :user, optional: true
 

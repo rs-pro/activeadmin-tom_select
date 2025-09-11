@@ -5,9 +5,11 @@
 [![npm](https://img.shields.io/npm/dm/@rocket-sensei/activeadmin-searchable_select)](https://www.npmjs.com/package/@rocket-sensei/activeadmin-searchable_select)
 [![Build Status](https://github.com/glebtv/activeadmin-searchable_select/actions/workflows/ci.yml/badge.svg)](https://github.com/glebtv/activeadmin-searchable_select/actions)
 
-Searchable select boxes (via [Select2](https://select2.org/)) for
+Searchable select boxes (via [Tom Select](https://tom-select.js.org/)) for
 ActiveAdmin forms and filters. Extends the ActiveAdmin resource DSL to
 allow defining JSON endpoints to fetch options from asynchronously.
+
+**Note:** Version 5.0+ migrated from Select2 to Tom Select for better performance and smaller bundle size.
 
 ## Installation
 
@@ -412,9 +414,11 @@ has stopped typing before sending the request:
 
 ## Development
 
+### Running Tests
+
 To run the tests install bundled gems and invoke RSpec:
 
-```
+```bash
 $ bundle
 $ bundle exec rspec
 ```
@@ -422,14 +426,51 @@ $ bundle exec rspec
 The test suite can be run against different versions of Rails and
 Active Admin (see `Appraisals` file):
 
-```
+```bash
 $ appraisal install
 $ appraisal rspec
 ```
 
+### Running the Test Application
+
+A full Rails 8 test application is included for manual testing and development:
+
+```bash
+# Start the test app
+$ cd spec/internal
+$ bundle exec rackup
+
+# The app will be available at http://localhost:9292
+# Default admin credentials: admin@example.com / password
+```
+
+The test app includes:
+- Sample models (User, Category, Post, Color) with seed data
+- Various admin resources demonstrating different searchable select configurations
+- ActiveAdmin with Tailwind CSS integration
+- Tom Select with full Tailwind styling
+
+### Building Assets in Test App
+
+```bash
+$ cd spec/internal
+
+# Build CSS (Tailwind)
+$ bundle exec rake active_admin:build
+
+# Build JavaScript
+$ npm run build:js
+
+# Watch for changes during development
+$ bundle exec rake active_admin:watch  # CSS
+$ npm run watch:js                     # JavaScript
+```
+
+### Code Style
+
 Please make sure changes conform with the styleguide:
 
-```
+```bash
 $ bundle exec rubocop
 ```
 

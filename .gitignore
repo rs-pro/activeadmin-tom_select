@@ -17,6 +17,11 @@
 /spec/internal/node_modules/
 /spec/internal/app/assets/builds/
 /spec/internal/public/select2/
+/spec/internal/public/assets/
+/spec/internal/public/assets-test/
+/spec/internal/storage/*
+/public/assets/
+/public/assets-test/
 
 # Debug and temporary files
 /debug_*.rb

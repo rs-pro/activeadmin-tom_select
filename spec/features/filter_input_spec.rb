@@ -52,11 +52,18 @@ RSpec.describe 'filter input', type: :request do
       expect(response.body).to include('data-ajax-url="/admin/users/all_options?"')
     end
 
-    it 'includes empty "Any" option by default' do
+    it 'does not include empty option (uses clear button instead)' do
       get '/admin/posts'
 
-      expect(response.body).to have_selector('.searchable-select-input option[value=""]',
-                                             text: 'Any')
+      # We use Tom Select's clear button instead of an empty option
+      expect(response.body).not_to have_selector('.searchable-select-input option[value=""]')
+      expect(response.body).to have_selector('.searchable-select-input[data-clearable="true"]')
+    end
+
+    it 'adds data-clearable attribute by default' do
+      get '/admin/posts'
+
+      expect(response.body).to have_selector('.searchable-select-input[data-clearable="true"]')
     end
   end
 

@@ -4,13 +4,17 @@ const path = require('path');
 
 // Configuration for esbuild with proper module resolution
 const config = {
-  entryPoints: ['app/js/active_admin.js'],
+  entryPoints: ['app/javascript/active_admin.js'],
   bundle: true,
   sourcemap: true,
   format: 'iife',
   outdir: 'app/assets/builds',
   publicPath: '/assets',
-  inject: ['./inject-jquery.js']
+  // Add node paths for module resolution
+  nodePaths: [
+    path.join(__dirname, 'node_modules'),
+    path.join(__dirname, '../../node_modules')
+  ]
 };
 
 // Check if we're in watch mode

@@ -11,6 +11,8 @@ AllCops:
     - 'vendor/**/*'
     - 'gemfiles/vendor/**/*'
     - '**/vendor/**/*'
+    - 'spec/internal/bin/**/*'
+    - 'spec/internal/Gemfile'
 
 # The default of 80 characters is a little to narrow.
 Layout/LineLength:

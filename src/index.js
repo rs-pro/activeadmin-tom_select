@@ -1,86 +1,133 @@
 // ES Module version for ActiveAdmin 4+ with esbuild/webpack
-// The consuming app must import jQuery and Select2 BEFORE importing this module
+// Tom Select version - no jQuery dependency required
+import TomSelect from 'tom-select';
 
 const MODULE_NAME = 'ActiveAdmin Searchable Select';
 const SELECTOR = '.searchable-select-input';
-const SELECT2_HIDDEN_CLASS = '.select2-hidden-accessible';
-
-// Helper to get jQuery reference
-function getJQuery() {
-  return window.jQuery || window.$;
-}
+const INITIALIZED_CLASS = 'tom-select-initialized';
 
 // Core initialization function
 export function initSearchableSelects(inputs, extra) {
-  const $ = getJQuery();
+  if (!inputs || inputs.length === 0) return;
   
-  if (!$?.fn) {
-    console.error(`${MODULE_NAME}: jQuery not found`);
-    return;
-  }
+  // Handle both NodeList and array of elements
+  const elements = inputs instanceof NodeList ? Array.from(inputs) : 
+                   inputs.length !== undefined ? inputs : [inputs];
   
-  // Ensure select2 is available
-  if (!$.fn.select2) {
-    console.error(`${MODULE_NAME}: Select2 is not loaded. Please ensure select2 is properly imported.`);
-    return;
-  }
-  
-  inputs.each(function() {
-    const item = $(this);
-
-    // reading from data allows <input data-searchable_select='{"tags": ['some']}'>
-    // to be passed to select2
-    const options = $.extend(extra || {}, item.data('searchableSelect'));
-    const url = item.data('ajaxUrl');
-
-    if (url) {
-      $.extend(options, {
-        ajax: {
-          url: url,
-          dataType: 'json',
-
-          data: function (params) {
-            return {
-              term: params.term,
-              page: pageParamWithBaseZero(params)
-            };
-          }
+  elements.forEach(element => {
+    // Skip if already initialized
+    if (element.classList.contains(INITIALIZED_CLASS)) return;
+    
+    // Mark as initialized
+    element.classList.add(INITIALIZED_CLASS);
+    
+    // Get options from data attributes
+    const dataOptions = element.dataset.searchableSelect ? 
+                       JSON.parse(element.dataset.searchableSelect) : {};
+    
+    // Merge with extra options
+    const options = Object.assign({}, extra || {}, dataOptions);
+    
+    // Configure AJAX if URL is provided
+    const ajaxUrl = element.dataset.ajaxUrl;
+    if (ajaxUrl) {
+      options.load = function(query, callback) {
+        const url = new URL(ajaxUrl, window.location.href);
+        url.searchParams.set('term', query);
+        
+        // Tom Select uses 1-based pagination
+        if (this.currentPage) {
+          url.searchParams.set('page', this.currentPage - 1);
         }
-      });
+        
+        fetch(url)
+          .then(response => response.json())
+          .then(json => {
+            // Handle pagination info if present
+            if (json.pagination) {
+              this.currentPage = (json.pagination.current || 0) + 1;
+            }
+            callback(json.results || json);
+          })
+          .catch(() => callback());
+      };
+      
+      // Map Select2-style options to Tom Select
+      options.valueField = options.valueField || 'id';
+      options.labelField = options.labelField || 'text';
+      options.searchField = options.searchField || ['text'];
+      
+      // Enable remote loading features
+      options.preload = options.preload !== false ? 'focus' : false;
+      options.loadThrottle = options.loadThrottle || 300;
     }
-
-    item.select2(options);
+    
+    // Handle placeholder
+    if (element.placeholder) {
+      options.placeholder = element.placeholder;
+    }
+    
+    // Check if element should be clearable (default to true for searchable selects)
+    const isClearable = element.dataset.clearable !== 'false';
+    
+    // Map common Select2 options to Tom Select equivalents
+    if (options.allowClear || isClearable) {
+      // Don't add empty option - we use clear_button plugin instead
+      // options.allowEmptyOption = true;
+      
+      // Add clear_button plugin
+      options.plugins = options.plugins || [];
+      if (!options.plugins.includes('clear_button')) {
+        options.plugins.push('clear_button');
+      }
+    }
+    
+    if (options.minimumInputLength) {
+      options.shouldLoad = function(query) {
+        return query.length >= options.minimumInputLength;
+      };
+    }
+    
+    // Initialize Tom Select
+    new TomSelect(element, options);
   });
-}
-
-function pageParamWithBaseZero(params) {
-  return params.page ? params.page - 1 : undefined;
 }
 
 // Auto-initialize on common events  
 export function setupAutoInit() {
-  const $ = getJQuery();
-  if (!$) {
-    console.error(`${MODULE_NAME}: jQuery not found for auto-init`);
-    return;
-  }
-
   // Initialize on DOM ready
-  $(function() {
-    initSearchableSelects($(SELECTOR));
-  });
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      initSearchableSelects(document.querySelectorAll(SELECTOR));
+    });
+  } else {
+    initSearchableSelects(document.querySelectorAll(SELECTOR));
+  }
 
   // Support Turbo (Rails 7+)
   document.addEventListener('turbo:load', function() {
-    initSearchableSelects($(SELECTOR), {placeholder: ""});
+    initSearchableSelects(document.querySelectorAll(`${SELECTOR}:not(.${INITIALIZED_CLASS})`));
   });
 
   // ActiveAdmin 4 uses .has-many-add button click for dynamic content
-  $(document).on('click', '.has-many-add', function() {
-    setTimeout(function() {
-      initSearchableSelects($(`${SELECTOR}:not(${SELECT2_HIDDEN_CLASS})`));
-    }, 10);
+  document.addEventListener('click', function(event) {
+    if (event.target.closest('.has-many-add')) {
+      setTimeout(function() {
+        initSearchableSelects(
+          document.querySelectorAll(`${SELECTOR}:not(.${INITIALIZED_CLASS})`)
+        );
+      }, 10);
+    }
+  });
+  
+  // Support has_many_add:after event (ActiveAdmin specific)
+  document.addEventListener('has_many_add:after', function(event) {
+    const fieldset = event.detail || event.target;
+    if (fieldset) {
+      const selects = fieldset.querySelectorAll(`${SELECTOR}:not(.${INITIALIZED_CLASS})`);
+      initSearchableSelects(selects);
+    }
   });
 
-  console.log(`${MODULE_NAME} initialized`);
+  console.log(`${MODULE_NAME} (Tom Select) initialized`);
 }

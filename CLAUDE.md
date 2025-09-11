@@ -95,10 +95,63 @@ npm run prepublishOnly
 
 ## Testing Approach
 
-Tests use RSpec with Capybara for feature specs. The `spec/internal` directory contains a minimal Rails app for testing. Key test helpers:
+Tests use RSpec with Capybara for feature specs. The `spec/internal` directory contains a full Rails 8 application for testing.
+
+### Running the Test App
+
+```bash
+# Start the test app for manual testing/demo
+cd spec/internal
+bundle exec rackup
+
+# Or from project root
+cd spec/internal && bundle exec rackup
+
+# The app will be available at http://localhost:9292
+# Default admin credentials: admin@example.com / password
+```
+
+### Test App Structure
+
+The test app is a full Rails 8 application with:
+- ActiveAdmin configured with Tailwind CSS
+- Tom Select integrated for searchable select functionality
+- Sample models (User, Category, Post, Color) with seed data
+- Various admin resources demonstrating different searchable select configurations
+
+### Building Assets in Test App
+
+```bash
+cd spec/internal
+
+# Build CSS (Tailwind)
+bundle exec rake active_admin:build
+
+# Build JavaScript
+npm run build:js
+
+# Watch for changes during development
+bundle exec rake active_admin:watch  # CSS
+npm run watch:js                     # JavaScript
+```
+
+### Key Test Helpers
 
 - `ActiveAdminHelpers`: Provides DSL for interacting with ActiveAdmin pages
 - `inline_ajax_options` mode: Renders all options inline during feature tests
 - Database cleaner ensures test isolation
 - ABSOLUTELY NO GIT PUSH WITH --no-verify FLAG
 - ABSOLUTELY NO GIT PUSH WITH --no-verify FLAG
+
+## Recent Updates (2025)
+
+### Tom Select Migration
+- Migrated from Select2 to Tom Select for better performance and smaller bundle size
+- Tom Select is now bundled with the gem (no external CDN dependency)
+- Full Tailwind CSS styling support for Tom Select components
+
+### Rails 8 Test App
+- Replaced Combustion-based test app with full Rails 8 application
+- Proper asset pipeline with esbuild and cssbundling-rails
+- Tailwind CSS v3 integration with ActiveAdmin's Tailwind plugin
+- Complete test environment for manual testing and development

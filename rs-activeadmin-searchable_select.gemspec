@@ -28,6 +28,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'capybara-playwright-driver', '~> 0.5'
   spec.add_development_dependency 'puma', '~> 6.0'
 
+  spec.add_development_dependency 'devise'
   spec.add_development_dependency 'propshaft'
   spec.add_development_dependency 'rails'
   spec.add_development_dependency 'rubocop', '~> 1.50.0'

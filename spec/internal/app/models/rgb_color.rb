@@ -1,4 +1,4 @@
-class RgbColor < ActiveRecord::Base
+class RgbColor < ApplicationRecord
   has_many :internal_tag_names, foreign_key: :color_id
   has_many :tags, class_name: 'Internal::TagName', foreign_key: :color_id
 

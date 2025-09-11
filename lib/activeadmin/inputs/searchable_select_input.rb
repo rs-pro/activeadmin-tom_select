@@ -6,6 +6,11 @@ module ActiveAdmin
     #   SelectInputExtension for list of available options.
     class SearchableSelectInput < Formtastic::Inputs::SelectInput
       include ActiveAdmin::SearchableSelect::SelectInputExtension
+
+      # Override to prevent adding empty options
+      def input_options
+        super.merge(include_blank: false)
+      end
     end
   end
 end

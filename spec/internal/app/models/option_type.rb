@@ -1,4 +1,4 @@
-class OptionType < ActiveRecord::Base
+class OptionType < ApplicationRecord
   has_many :option_values
   has_many :products
 

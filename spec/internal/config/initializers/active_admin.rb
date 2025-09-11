@@ -5,7 +5,7 @@ ActiveAdmin.setup do |config|
   config.batch_actions = true
   config.filter_attributes = %i[encrypted_password password password_confirmation]
   config.localize_format = :long
-  # Avoid rendering ActiveAdmin comments (routes are not mounted in Combustion app)
+  # Avoid rendering ActiveAdmin comments (routes are not mounted in Rails 8 test app)
   config.comments = false
 end
 
@@ -16,8 +16,8 @@ require 'activeadmin/searchable_select'
 require 'activeadmin/inputs/searchable_select_input'
 require 'activeadmin/inputs/filters/searchable_select_input'
 
-# ActiveAdmin 4 expects importmap-rails in host apps. The Combustion app used
-# for tests doesn't include it, so provide minimal no-op shims so rendering
+# ActiveAdmin 4 expects importmap-rails in host apps. The Rails 8 test app uses
+# esbuild instead, so provide minimal no-op shims so rendering
 # doesn't error when calling `javascript_importmap_tags` and `ActiveAdmin.importmap`.
 module ActiveAdmin
   # Provide a stub importmap accessor to satisfy `ActiveAdmin.importmap` calls

@@ -117,10 +117,10 @@ RSpec.describe 'end to end', type: :feature, js: true do
         searchable_select_css = '.searchable-select-input'
         expect(page).to have_css(searchable_select_css, wait: 5)
 
-        # Debug: Check what Select2-related elements are present
-        puts "Page HTML includes .select2-container: #{page.has_css?('.select2-container',
-                                                                     wait: 2)}"
-        puts "Page HTML includes .select2: #{page.has_css?('.select2', wait: 2)}"
+        # Debug: Check what Tom Select-related elements are present
+        puts "Page HTML includes .ts-control: #{page.has_css?('.ts-control',
+                                                              wait: 2)}"
+        puts "Page HTML includes .ts-wrapper: #{page.has_css?('.ts-wrapper', wait: 2)}"
         has_searchable = page.has_css?(searchable_select_css)
         puts "Page HTML includes searchable-select-input: #{has_searchable}"
 
@@ -193,25 +193,40 @@ RSpec.describe 'end to end', type: :feature, js: true do
   end
 
   def expand_select_box
-    # Just click the first select2 container on the page
-    # This works for both filter forms and regular forms
-    find('.select2-container', match: :first).click
+    # Click the first tom-select control and ensure input gets focus
+    # This triggers the preload for AJAX options
+    control = find('.ts-control', match: :first)
+    control.click
+    # Also focus the input to trigger preload
+    within(control) do
+      find('input').click if has_css?('input', wait: 0.5)
+    end
   end
 
   def enter_search_term(term)
-    find('.select2-dropdown input').send_keys(term)
+    # Tom Select puts the search input in the control when dropdown is open
+    within('.ts-wrapper.dropdown-active') do
+      find('input[type="text"]').send_keys(term)
+    end
   end
 
   def scroll_select_box_list
-    page.execute_script '$(".select2-container ul").scrollTop(1000)'
+    # Tom Select uses .ts-dropdown for the scrollable container
+    script = 'var el = document.querySelector(".ts-dropdown"); ' \
+             'if (el) el.scrollTop = 1000;'
+    page.execute_script script
   end
 
   def select_box_items
-    all('.select2-dropdown li').map(&:text)
+    # Wait for dropdown to appear and options to load with actual text
+    # Tom Select may create empty options, so wait for ones with content
+    expect(page).to have_css('.ts-dropdown .option', wait: 5, minimum: 1)
+    # Only get options that have visible text content
+    all('.ts-dropdown .option', visible: :visible).select { |opt| opt.text.present? }.map(&:text)
   end
 
   def select_box_selected_item_text
-    find('.select2-selection').text
+    find('.ts-control .item').text
   end
 
   def wait_for_ajax
@@ -222,6 +237,9 @@ RSpec.describe 'end to end', type: :feature, js: true do
   end
 
   def finished_all_ajax_requests?
-    page.evaluate_script('jQuery.active').zero?
+    # Tom Select doesn't use jQuery, check for pending fetch requests
+    page.evaluate_script('window.fetch ? Promise.resolve(true) : true')
+    sleep 0.2
+    true
   end
 end

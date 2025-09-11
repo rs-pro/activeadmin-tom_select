@@ -1,4 +1,4 @@
-class Variant < ActiveRecord::Base
+class Variant < ApplicationRecord
   belongs_to :product, optional: true
   belongs_to :option_value, optional: true
 

@@ -1,4 +1,4 @@
-class InternalTagName < ActiveRecord::Base
+class InternalTagName < ApplicationRecord
   belongs_to :color, class_name: 'RgbColor', optional: true
 
   def self.ransackable_attributes(_auth_object = nil)
