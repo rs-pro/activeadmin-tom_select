@@ -1,6 +1,6 @@
-# Migration Guide: Updating to rs-activeadmin-searchable_select
+# Migration Guide: Updating to rs-activeadmin-searchable_select with Tom Select
 
-This guide will help you migrate from the original `activeadmin-searchable_select` gem to our forked and updated version `rs-activeadmin-searchable_select`.
+This guide will help you migrate from the original `activeadmin-searchable_select` gem to our forked and updated version `rs-activeadmin-searchable_select`, which now uses Tom Select instead of Select2.
 
 ## Quick Start (New Installation)
 
@@ -8,11 +8,11 @@ For new installations without a previous version:
 
 ```bash
 # Add to Gemfile
-echo "gem 'rs-activeadmin-searchable_select', '~> 4.0.5'" >> Gemfile
+echo "gem 'rs-activeadmin-searchable_select', '~> 5.0.0'" >> Gemfile
 bundle install
 
 # Install NPM packages
-npm install @rocket-sensei/activeadmin-searchable_select jquery select2
+npm install @rocket-sensei/activeadmin-searchable_select tom-select
 
 # Then follow Step 3 and onward below
 ```
@@ -23,18 +23,20 @@ Our fork provides:
 - ✅ Full ActiveAdmin 4.0 support
 - ✅ Rails 8 and Propshaft compatibility  
 - ✅ Modern JavaScript bundler support (esbuild/webpack/importmap)
+- ✅ **Tom Select** instead of Select2 (no jQuery dependency!)
+- ✅ Virtual scroll for large datasets with pagination
 - ✅ Proper NPM package distribution under @rocket-sensei scope
-- ✅ Fixed production build issues with select2
 - ✅ Improved test suite with static ActiveAdmin registrations
 - ✅ Active maintenance and support
 
-## What's New in Version 4.0.5
+## What's New in Version 5.0.0
 
-- 🚀 **SonarQube Integration**: Full code quality analysis with 98% test coverage
-- 📊 **SimpleCov JSON Reporting**: Coverage reports now use JSON format for better compatibility
-- 🔧 **CI/CD Improvements**: Consolidated GitHub Actions workflow with SonarQube scanning
-- 🧹 **Code Quality**: Reduced code duplication and improved maintainability
-- 📦 **Synchronized Versioning**: Ruby gem and NPM package now share the same version number
+- 🎉 **Tom Select**: Migrated from Select2 to Tom Select - no jQuery dependency!
+- 📜 **Virtual Scroll**: Automatic pagination for large datasets
+- 🚀 **Better Performance**: Lighter bundle size without jQuery
+- 🔧 **Rails 8 Ready**: Full compatibility with Propshaft and Rails 8
+- 📊 **98% Test Coverage**: Comprehensive test suite with SimpleCov
+- 📦 **Modern JavaScript**: ES6 modules, vanilla JavaScript
 
 ## Migration Steps
 
@@ -47,7 +49,7 @@ Replace the old gem with our fork:
 # gem 'activeadmin-searchable_select'
 
 # Add this:
-gem 'rs-activeadmin-searchable_select', '~> 4.0.5'
+gem 'rs-activeadmin-searchable_select', '~> 5.0.0'
 
 # For Rails 7, also ensure you have Propshaft:
 gem 'propshaft' # Rails 8 includes this by default
@@ -64,10 +66,10 @@ Remove old packages and install the new ones:
 
 ```bash
 # Remove old packages if present
-npm uninstall @codevise/activeadmin-searchable_select
+npm uninstall @codevise/activeadmin-searchable_select jquery select2
 
-# Install new packages
-npm install @rocket-sensei/activeadmin-searchable_select jquery select2
+# Install new packages (Tom Select instead of Select2)
+npm install @rocket-sensei/activeadmin-searchable_select tom-select
 ```
 
 ### Step 3: Update JavaScript Imports
@@ -78,12 +80,10 @@ Update your `app/javascript/active_admin.js`:
 
 ```javascript
 import "@activeadmin/activeadmin";
-import $ from 'jquery';
-import select2 from 'select2';
 
-// Critical: Initialize select2 on jQuery (fixes production builds)
-select2($);
-window.$ = window.jQuery = $;
+// Import Tom Select (no jQuery required!)
+import TomSelect from 'tom-select';
+window.TomSelect = TomSelect;
 
 // Import and auto-initialize searchable selects
 import { setupAutoInit } from '@rocket-sensei/activeadmin-searchable_select';
@@ -94,29 +94,31 @@ setupAutoInit();
 
 ```javascript
 import "@activeadmin/activeadmin";
-import $ from 'jquery';
-import select2 from 'select2';
 
-// Critical: Initialize select2 on jQuery (fixes production builds)
-select2($);
-window.$ = window.jQuery = $;
+// Import Tom Select (no jQuery required!)
+import TomSelect from 'tom-select';
+window.TomSelect = TomSelect;
 
 // Import the initialization function
 import { initSearchableSelects } from '@rocket-sensei/activeadmin-searchable_select';
 
 // Initialize manually when needed
-$(document).ready(function() {
-  initSearchableSelects($('.searchable-select-input'));
+document.addEventListener('DOMContentLoaded', function() {
+  const selects = document.querySelectorAll('.searchable-select-input');
+  initSearchableSelects(selects);
 });
 ```
 
-### Step 4: Add Select2 CSS
+### Step 4: Add Tom Select CSS
 
 Add to your ActiveAdmin stylesheet (`app/assets/stylesheets/active_admin.css` or `.scss`):
 
 ```css
-/* Import Select2 styles */
-@import url('https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css');
+/* Import Tom Select styles */
+@import 'tom-select/dist/css/tom-select.css';
+
+/* Or if using CDN: */
+@import url('https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/css/tom-select.css');
 
 /* Optional: Custom styling for searchable selects */
 .searchable-select-input {
@@ -124,7 +126,7 @@ Add to your ActiveAdmin stylesheet (`app/assets/stylesheets/active_admin.css` or
 }
 
 /* Fix for ActiveAdmin form layout */
-.select2-container {
+.ts-wrapper {
   min-width: 50%;
 }
 ```
@@ -134,8 +136,7 @@ Add to your ActiveAdmin stylesheet (`app/assets/stylesheets/active_admin.css` or
 If you're using importmap instead of esbuild, add to `config/importmap.rb`:
 
 ```ruby
-pin "jquery", to: "https://ga.jspm.io/npm:jquery@3.7.1/dist/jquery.js"
-pin "select2", to: "https://ga.jspm.io/npm:select2@4.1.0-rc.0/dist/js/select2.full.js"
+pin "tom-select", to: "https://ga.jspm.io/npm:tom-select@2.4.3/dist/js/tom-select.complete.min.js"
 pin "@rocket-sensei/activeadmin-searchable_select", to: "@rocket-sensei--activeadmin-searchable_select.js"
 ```
 
@@ -143,14 +144,10 @@ And update your `app/javascript/active_admin.js`:
 
 ```javascript
 import "@activeadmin/activeadmin";
-import jquery from "jquery";
-import select2 from "select2";
+import TomSelect from "tom-select";
 
-// Make jQuery available globally
-window.$ = window.jQuery = jquery;
-
-// Initialize select2
-select2(jquery);
+// Make Tom Select available globally
+window.TomSelect = TomSelect;
 
 // Import and auto-initialize searchable selects
 import { setupAutoInit } from "@rocket-sensei/activeadmin-searchable_select";
@@ -188,17 +185,17 @@ end
 
 ## Troubleshooting
 
-### "select2 is not a function" Error
+### "TomSelect is not defined" Error
 
-This usually happens in production when select2 isn't properly initialized. Ensure:
+This usually happens when Tom Select isn't properly imported. Ensure:
 
-1. jQuery is loaded before select2
-2. `select2($)` is called to initialize it on jQuery
-3. jQuery is made globally available with `window.$ = window.jQuery = $`
+1. Tom Select is imported in your JavaScript file
+2. `window.TomSelect = TomSelect` is set to make it globally available
+3. The NPM package is installed: `npm install tom-select`
 
 ### Styles Not Loading
 
-1. Verify the Select2 CSS import is in your stylesheet
+1. Verify the Tom Select CSS import is in your stylesheet
 2. Check that your build process includes the stylesheets
 3. Clear your browser cache and restart Rails server
 
@@ -229,11 +226,36 @@ f.input :tags, as: :searchable_select, ajax: true, multiple: true
 
 ## Differences from Original Gem
 
-1. **NPM Scope**: Package is now `@rocket-sensei/activeadmin-searchable_select`
-2. **Gem Name**: Gem is now `rs-activeadmin-searchable_select`
-3. **Better Production Support**: Fixed select2 initialization issues
-4. **Rails 8 Ready**: Full support for Propshaft and modern Rails
-5. **Improved Tests**: Static ActiveAdmin registrations for better test isolation
+1. **Tom Select instead of Select2**: No jQuery dependency required!
+2. **NPM Scope**: Package is now `@rocket-sensei/activeadmin-searchable_select`
+3. **Gem Name**: Gem is now `rs-activeadmin-searchable_select`
+4. **Virtual Scroll**: Automatic pagination for large datasets
+5. **Rails 8 Ready**: Full support for Propshaft and modern Rails
+6. **Better Performance**: Smaller bundle size without jQuery
+7. **Modern JavaScript**: ES6 modules and vanilla JavaScript
+
+## Migration Notes for Select2 Users
+
+If you're migrating from a Select2-based version to this Tom Select version:
+
+### CSS Class Changes
+| Select2 Class | Tom Select Class |
+|---------------|------------------|
+| `.select2-container` | `.ts-wrapper` |
+| `.select2-dropdown` | `.ts-dropdown` |
+| `.select2-selection` | `.ts-control` |
+| `.select2-results` | `.ts-dropdown-content` |
+| `.select2-search__field` | `.ts-control input` |
+
+### JavaScript API Changes
+- No jQuery dependency required
+- Tom Select instances are attached directly to the DOM element: `element.tomselect`
+- Options are configured differently (see Tom Select documentation)
+
+### Features
+- Virtual scroll is automatically enabled for AJAX-loaded options
+- Clear button is included by default (can be disabled with `clearable: false`)
+- Pagination now uses 1-based indexing (page 1 is the first page)
 
 ## Need Help?
 

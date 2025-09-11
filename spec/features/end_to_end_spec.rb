@@ -39,10 +39,25 @@ RSpec.describe 'end to end', type: :feature, js: true do
 
         expand_select_box
         wait_for_ajax
+
+        # Initial load should have 10 items plus "Loading more results..."
+        initial_items = select_box_items
+        # Filter out virtual scroll UI messages
+        initial_categories = initial_items.reject do |item|
+          item.include?('Loading') || item.include?('No more')
+        end
+        expect(initial_categories.size).to eq(10)
+
         scroll_select_box_list
         wait_for_ajax
 
-        expect(select_box_items.size).to eq(15)
+        # After scroll should have all 15 items plus "No more results"
+        final_items = select_box_items
+        # Filter out virtual scroll UI messages
+        final_categories = final_items.reject do |item|
+          item.include?('Loading') || item.include?('No more')
+        end
+        expect(final_categories.size).to eq(15)
       end
     end
   end
@@ -193,14 +208,12 @@ RSpec.describe 'end to end', type: :feature, js: true do
   end
 
   def expand_select_box
-    # Click the first tom-select control and ensure input gets focus
-    # This triggers the preload for AJAX options
+    # Click the first tom-select control to open the dropdown
+    # Tom Select will show the dropdown when the control is clicked
     control = find('.ts-control', match: :first)
     control.click
-    # Also focus the input to trigger preload
-    within(control) do
-      find('input').click if has_css?('input', wait: 0.5)
-    end
+    # Wait for dropdown to become visible
+    expect(page).to have_css('.ts-dropdown', visible: true, wait: 2)
   end
 
   def enter_search_term(term)
@@ -212,10 +225,17 @@ RSpec.describe 'end to end', type: :feature, js: true do
   end
 
   def scroll_select_box_list
-    # Tom Select uses .ts-dropdown for the scrollable container
-    script = 'var el = document.querySelector(".ts-dropdown"); ' \
-             'if (el) el.scrollTop = 1000;'
+    # Tom Select uses .ts-dropdown-content for the scrollable container with virtual scroll
+    # Try both .ts-dropdown-content and .ts-dropdown
+    script = 'var el = document.querySelector(".ts-dropdown-content"); ' \
+             'if (el) { el.scrollTop = el.scrollHeight; } ' \
+             'else {   ' \
+             'var el2 = document.querySelector(".ts-dropdown");   ' \
+             'if (el2) { el2.scrollTop = el2.scrollHeight; } ' \
+             '}'
     page.execute_script script
+    # Give virtual scroll time to load more items
+    sleep 0.5
   end
 
   def select_box_items
@@ -223,8 +243,14 @@ RSpec.describe 'end to end', type: :feature, js: true do
     # Tom Select may create empty options, so wait for ones with content
     # Use visible: :all to find options even if they're not fully visible
     expect(page).to have_css('.ts-dropdown .option', wait: 5, minimum: 1, visible: :all)
-    # Get all options, including those that might not be fully visible
-    all('.ts-dropdown .option', visible: :all).select { |opt| opt.text.present? }.map(&:text)
+    # Find only the visible dropdown (Tom Select shows only one at a time)
+    # The active dropdown has display:block, others have display:none
+    dropdown = all('.ts-dropdown', visible: true).first
+    if dropdown
+      dropdown.all('.option', visible: :all).select { |opt| opt.text.present? }.map(&:text)
+    else
+      []
+    end
   end
 
   def select_box_selected_item_text

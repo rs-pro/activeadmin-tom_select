@@ -14,7 +14,7 @@ RSpec.describe 'searchable_select_options dsl', type: :request do
 
         expect(json_response).to match(results: [a_hash_including(text: 'A post',
                                                                   id: kind_of(Numeric))],
-                                       pagination: { more: false })
+                                       pagination: { more: false, current: 1 })
       end
 
       it 'supports filtering via term parameter' do
@@ -40,7 +40,7 @@ RSpec.describe 'searchable_select_options dsl', type: :request do
 
         expect(json_response).to match(results: [a_hash_including(text: 'A post',
                                                                   id: kind_of(Numeric))],
-                                       pagination: { more: false })
+                                       pagination: { more: false, current: 1 })
       end
 
       it 'supports filtering via term parameter' do
@@ -65,7 +65,7 @@ RSpec.describe 'searchable_select_options dsl', type: :request do
 
         expect(json_response).to match(results: [a_hash_including(text: 'A POST',
                                                                   id: kind_of(Numeric))],
-                                       pagination: { more: false })
+                                       pagination: { more: false, current: 1 })
       end
 
       it 'supports filtering via term parameter' do
@@ -98,10 +98,20 @@ RSpec.describe 'searchable_select_options dsl', type: :request do
       Post.create!(title: 'Other post')
       Post.create!(title: 'Yet another post')
 
+      # Page 1 is now the first page (1-based pagination)
+      # With per_page: 2, should return first 2 posts
       get '/admin/test_post_paginations/all_options?page=1'
+
+      expect(json_response[:results].size).to eq(2)
+      expect(json_response[:pagination][:more]).to eq(true)
+      expect(json_response[:pagination][:current]).to eq(1)
+
+      # Page 2 should have the last post
+      get '/admin/test_post_paginations/all_options?page=2'
 
       expect(json_response[:results].size).to eq(1)
       expect(json_response[:pagination][:more]).to eq(false)
+      expect(json_response[:pagination][:current]).to eq(2)
     end
   end
 
@@ -116,7 +126,7 @@ RSpec.describe 'searchable_select_options dsl', type: :request do
         subject
         expect(json_response).to match(
           results: [{ text: 'A post', id: post.id, published: false }],
-          pagination: { more: false }
+          pagination: { more: false, current: 1 }
         )
       end
     end
@@ -131,7 +141,7 @@ RSpec.describe 'searchable_select_options dsl', type: :request do
         subject
         expect(json_response).to match(
           results: [{ text: 'A post', id: post.id, published: false }],
-          pagination: { more: false }
+          pagination: { more: false, current: 1 }
         )
       end
     end
