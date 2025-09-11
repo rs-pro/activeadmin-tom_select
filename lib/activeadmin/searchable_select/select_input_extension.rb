@@ -28,27 +28,52 @@ module ActiveAdmin
     # ignored.
     module SelectInputExtension
       # @api private
+      def to_html
+        super
+      rescue RuntimeError => e
+        # In development/test, display the error message
+        raise e unless Rails.env.development? || Rails.env.test?
+
+        template.content_tag(:div, e.message, class: 'searchable-select-error')
+      end
+
+      # @api private
       def input_html_options
-        options = super
-        options[:class] = [options[:class], 'searchable-select-input'].compact.join(' ')
-        options.merge('data-ajax-url' => ajax_url)
+        super.tap do |options|
+          options[:class] = [options[:class], 'searchable-select-input'].compact.join(' ')
+          options['data-ajax-url'] = ajax_url if ajax? && !SearchableSelect.inline_ajax_options
+          options['data-clearable'] = true if clearable?
+        end
       end
 
       # @api private
       def collection_from_options
         return super unless options[:ajax]
 
-        if SearchableSelect.inline_ajax_options
-          all_options_collection
-        else
-          selected_value_collection
-        end
+        collection = if SearchableSelect.inline_ajax_options
+                       all_options_collection
+                     else
+                       selected_value_collection
+                     end
+
+        # Remove any empty/blank options since we use clear button instead
+        collection.reject { |item| item.first.to_s.strip.empty? && item.last.to_s.strip.empty? }
       end
 
       private
 
+      def ajax?
+        options[:ajax].present?
+      end
+
+      def clearable?
+        # Default to true unless explicitly set to false
+        options.fetch(:clearable, true)
+      end
+
       def ajax_url
         return unless options[:ajax]
+
         [ajax_resource.route_collection_path(path_params),
          '/',
          option_collection.collection_action_name,
@@ -80,7 +105,7 @@ module ActiveAdmin
       end
 
       def selected_values
-        @object.send(input_name) if @object
+        @object&.send(input_name)
       end
 
       def option_collection_scope
@@ -112,12 +137,12 @@ module ActiveAdmin
 
       def raise_cannot_auto_detect_resource
         raise('Cannot auto detect resource to fetch options for searchable select input from. ' \
-              "Explicitly pass class of an ActiveAdmin resource:\n\n" \
-              "  f.input(:custom_category,\n" \
-              "          type: :searchable_select,\n" \
-              "          ajax: {\n" \
-              "            resource: Category\n" \
-              "          })\n")
+              "Explicitly pass class of an ActiveAdmin resource:\n\n  " \
+              "f.input(:custom_category,\n          " \
+              "type: :searchable_select,\n          " \
+              "ajax: {\n            " \
+              "resource: Category\n          " \
+              "})\n")
       end
 
       def ajax_option_collection_name
@@ -133,7 +158,10 @@ module ActiveAdmin
       end
 
       def ajax_options
-        options[:ajax] == true ? {} : options[:ajax]
+        # ActiveAdmin 4 may transform ajax hash to boolean
+        return {} if options[:ajax] == true || options[:ajax].nil?
+
+        options[:ajax]
       end
     end
   end

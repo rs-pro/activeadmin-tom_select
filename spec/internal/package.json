@@ -1,0 +1,21 @@
+{
+  "name": "app",
+  "private": true,
+  "devDependencies": {
+    "esbuild": "^0.25.9"
+  },
+  "scripts": {
+    "build:js": "node esbuild.config.js",
+    "build": "npm run build:js && bundle exec rake active_admin:build",
+    "watch:js": "node esbuild.config.js --watch",
+    "watch:css": "bundle exec rake active_admin:watch",
+    "watch": "npm run watch:js"
+  },
+  "dependencies": {
+    "@activeadmin/activeadmin": "^4.0.0-beta10",
+    "@rails/ujs": "^7.1.400",
+    "@rocket-sensei/activeadmin-searchable_select": "file:../../npm-package",
+    "tailwindcss": "^3.4.17",
+    "tom-select": "^2.4.3"
+  }
+}

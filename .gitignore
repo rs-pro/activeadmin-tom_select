@@ -1,13 +1,34 @@
+*.gem
 .bundle
 .ruby-version
 .ruby-gemset
-Gemfile.lock
-/gemfiles/*.lock
 /pkg/*
 /spec/internal/tmp
 /spec/internal/db/*.sqlite
 /spec/internal/db/*.sqlite-shm
 /spec/internal/db/*.sqlite-wal
 /spec/examples.txt
-/src
 /node_modules
+/vendor/bundle
+.cache
+/.cache
+
+# Generated/built files only
+/spec/internal/node_modules/
+/spec/internal/app/assets/builds/
+/spec/internal/public/select2/
+/spec/internal/public/assets/
+/spec/internal/public/assets-test/
+/spec/internal/storage/*
+/spec/internal/log/*
+/public/assets/
+/public/assets-test/
+
+# Debug and temporary files
+/debug_*.rb
+/spec/debug_*.rb
+/*.tgz
+
+# Code coverage reports
+/coverage/
+*.lcov

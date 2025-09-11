@@ -42,7 +42,11 @@ module ActiveAdmin
           }.merge(hash_of_additional_payload(record) || {})
         end
 
-        { results: results, pagination: { more: more } }
+        # Include current page in pagination info (1-based)
+        current_page = params[:page].to_i
+        current_page = 1 if current_page < 1
+
+        { results: results, pagination: { more: more, current: current_page } }
       end
 
       private
@@ -59,9 +63,14 @@ module ActiveAdmin
       end
 
       def paginate(scope, page_index)
+        # Use 1-based pagination (page 1 is the first page)
+        # Default to page 1 if not specified or invalid
         page_index = page_index.to_i
+        page_index = 1 if page_index < 1
 
-        records = scope.limit(per_page + 1).offset(page_index * per_page).to_a
+        # Calculate offset for 1-based pagination
+        offset = (page_index - 1) * per_page
+        records = scope.limit(per_page + 1).offset(offset).to_a
 
         [
           records.slice(0, per_page),

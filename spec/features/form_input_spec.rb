@@ -2,23 +2,22 @@ require 'rails_helper'
 
 require 'support/models'
 require 'support/capybara'
-require 'support/active_admin_helpers'
+
+ADMIN_POSTS_PATH = '/admin/posts'.freeze
 
 RSpec.describe 'form input', type: :request do
-  describe 'without ajax option' do
+  # The static admin/posts.rb file already configures searchable_select with ajax: true
+  # So we'll test with that configuration
+  describe 'with ajax option (from static admin file)' do
     before(:each) do
-      ActiveAdminHelpers.setup do
-        ActiveAdmin.register(Post) do
-          form do |f|
-            f.input :category, as: :searchable_select
-          end
-        end
-      end
+      ActiveAdmin::SearchableSelect.inline_ajax_options = true
     end
 
+    after(:each) do
+      ActiveAdmin::SearchableSelect.inline_ajax_options = false
+    end
     it 'renders select input with searchable-select-input css class' do
-      get '/admin/posts/new'
-
+      get "#{ADMIN_POSTS_PATH}/new"
       expect(response.body).to have_selector('select.searchable-select-input')
     end
 
@@ -26,14 +25,14 @@ RSpec.describe 'form input', type: :request do
       Category.create!(name: 'Travel')
       Category.create!(name: 'Music')
 
-      get '/admin/posts/new'
+      get "#{ADMIN_POSTS_PATH}/new"
 
       expect(response.body).to have_selector('.searchable-select-input option', text: 'Travel')
       expect(response.body).to have_selector('.searchable-select-input option', text: 'Music')
     end
 
     it 'does not set data-ajax-url attribute' do
-      get '/admin/posts/new'
+      get "#{ADMIN_POSTS_PATH}/new"
 
       expect(response.body).not_to have_selector('.searchable-select-input[data-ajax-url]')
     end
@@ -41,7 +40,7 @@ RSpec.describe 'form input', type: :request do
 
   shared_examples 'renders ajax based searchable select input' do
     it 'renders select input with searchable-select-input css class' do
-      get '/admin/posts/new'
+      get "#{ADMIN_POSTS_PATH}/new"
 
       expect(response.body).to have_selector('select.searchable-select-input')
     end
@@ -49,13 +48,13 @@ RSpec.describe 'form input', type: :request do
     it 'does not render options statically' do
       Category.create!(name: 'Travel')
 
-      get '/admin/posts/new'
+      get "#{ADMIN_POSTS_PATH}/new"
 
       expect(response.body).not_to have_selector('.searchable-select-input option', text: 'Travel')
     end
 
     it 'sets data-ajax-url attribute' do
-      get '/admin/posts/new'
+      get "#{ADMIN_POSTS_PATH}/new"
 
       expect(response.body).to have_selector('.searchable-select-input[data-ajax-url]')
     end
@@ -64,7 +63,7 @@ RSpec.describe 'form input', type: :request do
       category = Category.create!(name: 'Travel')
       post = Post.create!(title: 'A post', category: category)
 
-      get "/admin/posts/#{post.id}/edit"
+      get "#{ADMIN_POSTS_PATH}/#{post.id}/edit"
 
       expect(response.body).to have_selector('.searchable-select-input option[selected]',
                                              text: 'Travel')
@@ -72,105 +71,50 @@ RSpec.describe 'form input', type: :request do
   end
 
   describe 'with ajax option set to true' do
-    before(:each) do
-      ActiveAdminHelpers.setup do
-        ActiveAdmin.register(Category) do
-          searchable_select_options(scope: Category, text_attribute: :name)
-        end
-
-        ActiveAdmin.register(Post) do
-          form do |f|
-            f.input(:category,
-                    as: :searchable_select,
-                    ajax: true)
-          end
-        end
-      end
-    end
-
+    # Using static admin/posts.rb which already has ajax: true configured
     include_examples 'renders ajax based searchable select input'
   end
 
   describe 'with options collection name passed in ajax option' do
-    before(:each) do
-      ActiveAdminHelpers.setup do
-        ActiveAdmin.register(Category) do
-          searchable_select_options(name: 'custom', scope: Category, text_attribute: :name)
-        end
+    # Using static TestFormPostCustom admin and categories.rb which has 'custom' collection
+    include_examples 'renders ajax based searchable select input' do
+      let(:admin_path_prefix) { 'test_form_post_customs' }
 
-        ActiveAdmin.register(Post) do
-          form do |f|
-            f.input(:category,
-                    as: :searchable_select,
-                    ajax: {
-                      collection_name: 'custom'
-                    })
-          end
-        end
+      def get(path)
+        path = path.sub(ADMIN_POSTS_PATH, '/admin/test_form_post_customs')
+        super
       end
     end
-
-    include_examples 'renders ajax based searchable select input'
   end
 
   describe 'with options resource passed in ajax option' do
-    before(:each) do
-      ActiveAdminHelpers.setup do
-        ActiveAdmin.register(Category) do
-          searchable_select_options(scope: Category, text_attribute: :name)
-        end
+    # Using static TestFormPostResource admin
+    include_examples 'renders ajax based searchable select input' do
+      let(:admin_path_prefix) { 'test_form_post_resources' }
 
-        ActiveAdmin.register(Post) do
-          form do |f|
-            f.input(:category_id,
-                    as: :searchable_select,
-                    ajax: {
-                      resource: Category
-                    })
-          end
-        end
+      def get(path)
+        path = path.sub(ADMIN_POSTS_PATH, '/admin/test_form_post_resources')
+        super
       end
     end
-
-    include_examples 'renders ajax based searchable select input'
   end
 
   describe 'with options resource and collection name passed in ajax option' do
-    before(:each) do
-      ActiveAdminHelpers.setup do
-        ActiveAdmin.register(Category) do
-          searchable_select_options(name: 'custom', scope: Category, text_attribute: :name)
-        end
+    # Using static TestFormPostResourceCustom admin and categories.rb which has 'custom' collection
+    include_examples 'renders ajax based searchable select input' do
+      let(:admin_path_prefix) { 'test_form_post_resource_customs' }
 
-        ActiveAdmin.register(Post) do
-          form do |f|
-            f.input(:category_id,
-                    as: :searchable_select,
-                    ajax: {
-                      resource: Category,
-                      collection_name: 'custom'
-                    })
-          end
-        end
+      def get(path)
+        path = path.sub(ADMIN_POSTS_PATH, '/admin/test_form_post_resource_customs')
+        super
       end
     end
-
-    include_examples 'renders ajax based searchable select input'
   end
 
   describe 'with custom class attribute' do
-    before(:each) do
-      ActiveAdminHelpers.setup do
-        ActiveAdmin.register(Post) do
-          form do |f|
-            f.input :category, as: :searchable_select, input_html: { class: 'custom' }
-          end
-        end
-      end
-    end
-
+    # Using static TestFormPostClass admin
     it 'adds searchable-select-input css class' do
-      get '/admin/posts/new'
+      get '/admin/test_form_post_classes/new'
 
       expect(response.body).to have_selector('select.custom.searchable-select-input')
     end

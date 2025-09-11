@@ -5,8 +5,8 @@ require 'activeadmin/searchable_select/resource_dsl_extension'
 require 'activeadmin/searchable_select/select_input_extension'
 require 'activeadmin/searchable_select/version'
 
-ActiveAdmin::Resource.send :include, ActiveAdmin::SearchableSelect::ResourceExtension
-ActiveAdmin::ResourceDSL.send :include, ActiveAdmin::SearchableSelect::ResourceDSLExtension
+ActiveAdmin::Resource.include ActiveAdmin::SearchableSelect::ResourceExtension
+ActiveAdmin::ResourceDSL.include ActiveAdmin::SearchableSelect::ResourceDSLExtension
 
 module ActiveAdmin
   # Global settings for searchable selects
