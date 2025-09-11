@@ -265,3 +265,220 @@ Propshaft uses a dynamic assets resolver in development mode. However, when you 
 If you wish to have dynamic assets resolver enabled again, you need to clean your target folder (usually `public/assets`) and propshaft will start serving dynamic content from source.  One way to do this is to run `rails assets:clobber`.
 
 Another way to watch changes in your CSS & JS assets is by running `bin/dev` command instead of `rails server` that not only runs the server but also keeps looking for any changes in the assets and once it detects any changes, it compiles them while the server is running. This is possible because of the `Procfile.dev`.
+
+## 4. Specific Configuration for Test Environments
+
+### Understanding Propshaft's Test Mode
+
+Propshaft automatically configures itself for test environments with these defaults:
+
+```ruby
+# Automatically enabled in test environment
+config.assets.server = Rails.env.test?  # true for test environment
+config.assets.sweep_cache = false       # Disabled for faster tests
+```
+
+### Test Environment Configuration
+
+```ruby
+# config/environments/test.rb
+Rails.application.configure do
+  # Asset server is automatically enabled - no precompilation needed
+  config.assets.server = true
+  
+  # Optional: Add test-specific asset paths
+  config.assets.paths << Rails.root.join('spec/fixtures/assets')
+  
+  # Optional: Disable SRI for faster test execution
+  config.assets.integrity_hash_algorithm = nil
+  
+  # Optional: Customize asset prefix for isolated testing
+  # config.assets.prefix = '/test-assets'
+  
+  # Performance: Use faster file watcher (if using listen gem)
+  config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+end
+```
+
+### Testing Asset Integration
+
+#### RSpec Configuration
+
+```ruby
+# spec/rails_helper.rb
+RSpec.configure do |config|
+  # Ensure assets are available in feature specs
+  config.before(:suite) do
+    # Warm up asset cache for faster test execution
+    Rails.application.assets.load_path.assets
+  end
+  
+  # Clean up assets between tests if needed
+  config.after(:each) do
+    # Only if you modify asset paths during tests
+    # Rails.application.assets.load_path.clear_cache
+  end
+end
+```
+
+#### Testing Asset Helpers
+
+```ruby
+# spec/helpers/application_helper_spec.rb
+RSpec.describe ApplicationHelper, type: :helper do
+  describe "asset helpers" do
+    it "resolves asset paths correctly" do
+      expect(helper.asset_path('application.js')).to match(%r{^/assets/application-\w+\.js$})
+    end
+    
+    it "includes integrity hashes when configured" do
+      allow(Rails.application.config.assets).to receive(:integrity_hash_algorithm).and_return('sha384')
+      result = helper.javascript_include_tag('application', integrity: true)
+      expect(result).to include('integrity="sha384-')
+    end
+  end
+end
+```
+
+#### Feature Spec Asset Testing
+
+```ruby
+# spec/features/assets_spec.rb
+RSpec.describe "Asset loading", type: :feature do
+  it "serves JavaScript assets correctly" do
+    visit root_path
+    expect(page).to have_css('script[src*="/assets/application-"]')
+  end
+  
+  it "serves CSS assets correctly" do
+    visit root_path  
+    expect(page).to have_css('link[href*="/assets/application-"][rel="stylesheet"]')
+  end
+end
+```
+
+### Common Test Environment Issues and Solutions
+
+#### Issue 1: Assets Not Found in Tests
+**Symptom**: `Propshaft::MissingAssetError` in test environment
+**Solution**:
+```ruby
+# Ensure asset server is enabled in test.rb
+config.assets.server = true
+
+# Check that build artifacts exist
+# For jsbundling-rails/cssbundling-rails:
+bundle exec rake assets:precompile  # If assets need building
+```
+
+#### Issue 2: Slow Test Startup
+**Symptom**: Tests take long to start due to asset discovery
+**Solution**:
+```ruby
+# config/environments/test.rb
+# Disable sweep_cache (should be default)
+config.assets.sweep_cache = false
+
+# Exclude unnecessary paths
+config.assets.excluded_paths += [
+  Rails.root.join("app/assets/stylesheets"),  # If using cssbundling
+  Rails.root.join("app/javascript")           # If using jsbundling
+]
+```
+
+#### Issue 3: Inconsistent Asset Paths Between Environments
+**Symptom**: Tests pass but development/production fails with asset references
+**Solution**:
+```ruby
+# Use consistent asset path helpers across environments
+# In views, always use:
+<%= asset_path('image.png') %>        # Good
+# Instead of:
+"/assets/image.png"                   # Bad - won't work with digests
+```
+
+### Performance Optimization for Tests
+
+#### Precompile Once Strategy
+For CI/CD environments where you can precompile once:
+
+```bash
+# In CI setup
+bundle exec rake assets:precompile
+RAILS_ENV=test bundle exec rspec
+```
+
+#### Asset Path Caching
+```ruby
+# config/initializers/assets.rb (test environment)
+if Rails.env.test?
+  # Warm asset cache on initialization to avoid repeated discovery
+  Rails.application.config.after_initialize do
+    Rails.application.assets.load_path.assets
+  end
+end
+```
+
+### Integration with Test Coverage Tools
+
+#### SimpleCov Configuration
+```ruby
+# spec/spec_helper.rb
+require 'simplecov'
+SimpleCov.start 'rails' do
+  # Exclude built assets from coverage
+  add_filter 'app/assets/builds/'
+  add_filter 'vendor/assets/'
+end
+```
+
+### Docker and Containerized Testing
+
+#### Dockerfile Considerations
+```dockerfile
+# Dockerfile
+FROM ruby:3.2
+
+# Install Node.js for asset building
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+RUN apt-get install -y nodejs
+
+# Install dependencies
+COPY Gemfile Gemfile.lock package.json package-lock.json ./
+RUN bundle install && npm install
+
+# Copy source
+COPY . .
+
+# Build assets once for all test runs
+RUN bundle exec rake assets:precompile
+
+# Run tests
+CMD ["bundle", "exec", "rspec"]
+```
+
+### Migration Testing Strategy
+
+#### Before/After Asset Comparison
+```ruby
+# spec/migration/sprockets_to_propshaft_spec.rb
+RSpec.describe "Sprockets to Propshaft migration" do
+  let(:expected_assets) do
+    %w[application.js application.css logo.png favicon.ico]
+  end
+  
+  it "serves all expected assets" do
+    expected_assets.each do |asset|
+      expect(Rails.application.assets.resolver.resolve(asset)).to be_present
+    end
+  end
+  
+  it "maintains asset content integrity" do
+    # Test that specific assets contain expected content
+    asset = Rails.application.assets.load_path.find('application.js')
+    expect(asset.content).to include('expected_javascript_content')
+  end
+end
+```
+
+This comprehensive guide covers the complete migration from Sprockets to Propshaft with special attention to test environment configuration and common pitfalls.

@@ -4,6 +4,7 @@ ENV['RAILS_ENV'] ||= 'test'
 
 # Load required gems before Rails initialization
 require 'devise'
+require 'propshaft'
 
 # Load the Rails test application
 require_relative 'internal/config/environment'

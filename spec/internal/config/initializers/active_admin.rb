@@ -38,10 +38,11 @@ module ActionView
     module ImportmapHelperShim
       def javascript_importmap_tags(*, **)
         # In tests/dev, include built assets via Rails helpers so Propshaft
-        # can resolve digested paths.
+        # can resolve digested paths. Use proper Rails asset helpers for Propshaft.
         safe_join([
                     stylesheet_link_tag('active_admin', 'data-turbo-track': 'reload'),
-                    javascript_include_tag('active_admin', 'data-turbo-track': 'reload')
+                    javascript_include_tag('active_admin', 'data-turbo-track': 'reload',
+                                                           defer: true)
                   ], "\n")
       end
     end

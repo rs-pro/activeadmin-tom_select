@@ -31,22 +31,42 @@ export function initSearchableSelects(inputs, extra) {
     // Configure AJAX if URL is provided
     const ajaxUrl = element.dataset.ajaxUrl;
     if (ajaxUrl) {
-      options.load = function(query, callback) {
+      // Configure virtual scroll for pagination
+      options.plugins = options.plugins || [];
+      if (!options.plugins.includes('virtual_scroll')) {
+        options.plugins.push('virtual_scroll');
+      }
+      
+      // Set max options for virtual scroll
+      options.maxOptions = options.maxOptions || 200;
+      
+      // Configure the first URL for pagination
+      options.firstUrl = function(query) {
         const url = new URL(ajaxUrl, window.location.href);
         url.searchParams.set('term', query);
-        
-        // Tom Select uses 1-based pagination
-        if (this.currentPage) {
-          url.searchParams.set('page', this.currentPage - 1);
-        }
+        url.searchParams.set('page', 1);
+        return url.toString();
+      };
+      
+      // Main load function with pagination support
+      options.load = function(query, callback) {
+        // Get the appropriate URL (either first or next)
+        const url = this.getUrl(query);
         
         fetch(url)
           .then(response => response.json())
           .then(json => {
             // Handle pagination info if present
-            if (json.pagination) {
-              this.currentPage = (json.pagination.current || 0) + 1;
+            if (json.pagination && json.pagination.more) {
+              // Set up the next URL for virtual scroll (1-based pagination)
+              const nextUrl = new URL(ajaxUrl, window.location.href);
+              nextUrl.searchParams.set('term', query);
+              // Backend now uses 1-based pagination and returns current page
+              const nextPage = (json.pagination.current || 1) + 1;
+              nextUrl.searchParams.set('page', nextPage);
+              this.setNextUrl(query, nextUrl.toString());
             }
+            
             callback(json.results || json);
           })
           .catch(() => callback());
@@ -67,9 +87,19 @@ export function initSearchableSelects(inputs, extra) {
       options.placeholder = element.placeholder;
     }
     
+    // Check if element should be clearable (default to true for searchable selects)
+    const isClearable = element.dataset.clearable !== 'false';
+    
     // Map common Select2 options to Tom Select equivalents
-    if (options.allowClear) {
-      options.allowEmptyOption = true;
+    if (options.allowClear || isClearable) {
+      // Don't add empty option - we use clear_button plugin instead
+      // options.allowEmptyOption = true;
+      
+      // Add clear_button plugin (make sure plugins array exists)
+      options.plugins = options.plugins || [];
+      if (!options.plugins.includes('clear_button')) {
+        options.plugins.push('clear_button');
+      }
     }
     
     if (options.minimumInputLength) {

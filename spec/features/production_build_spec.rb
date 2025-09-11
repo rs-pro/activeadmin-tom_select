@@ -13,34 +13,6 @@ RSpec.describe 'production build compatibility', type: :feature do
       # Wait for page to load
       expect(page).to have_css('.searchable-select-input')
 
-      # Give JavaScript time to initialize
-      sleep 1
-
-      # Debug: check what's on the page
-      has_wrapper = page.has_css?('.ts-wrapper', wait: 0)
-      has_control = page.has_css?('.ts-control', wait: 0)
-
-      unless has_wrapper
-        # Save screenshot for debugging
-        page.save_screenshot('/tmp/test_fail.png')
-        puts 'DEBUG: No .ts-wrapper found'
-        puts "Has .ts-control: #{has_control}"
-        puts "Page has searchable inputs: #{page.all('.searchable-select-input').count}"
-
-        # Try manual initialization
-        page.execute_script("
-          if (typeof window.initSearchableSelects === 'function') {
-            console.log('Manually initializing Tom Select');
-            window.initSearchableSelects(document.querySelectorAll('.searchable-select-input'));
-          } else {
-            console.log('initSearchableSelects not found');
-          }
-        ")
-
-        # Wait a bit after manual init
-        sleep 0.5
-      end
-
       # Check that Tom Select wrapper is created
       expect(page).to have_css('.ts-wrapper', wait: 5)
     end
@@ -83,8 +55,8 @@ RSpec.describe 'production build compatibility', type: :feature do
       # Open the filter select - click the first tom-select control
       find('.ts-control', match: :first).click
 
-      # Type in search box (Tom Select uses different structure)
-      find('.ts-control input').set('Ruby')
+      # Type in search box (Tom Select uses different structure) - be more specific
+      find('.ts-control input', match: :first).set('Ruby')
 
       # Should only show matching option
       expect(page).to have_css('.ts-dropdown .option', text: 'Ruby Programming', wait: 5)

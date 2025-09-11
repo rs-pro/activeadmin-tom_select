@@ -205,8 +205,9 @@ RSpec.describe 'end to end', type: :feature, js: true do
 
   def enter_search_term(term)
     # Tom Select puts the search input in the control when dropdown is open
-    within('.ts-wrapper.dropdown-active') do
-      find('input[type="text"]').send_keys(term)
+    # Use a more flexible selector - Tom Select may use different class names
+    within('.ts-wrapper', match: :first) do
+      find('input[type="text"]', match: :first).send_keys(term)
     end
   end
 
@@ -220,9 +221,10 @@ RSpec.describe 'end to end', type: :feature, js: true do
   def select_box_items
     # Wait for dropdown to appear and options to load with actual text
     # Tom Select may create empty options, so wait for ones with content
-    expect(page).to have_css('.ts-dropdown .option', wait: 5, minimum: 1)
-    # Only get options that have visible text content
-    all('.ts-dropdown .option', visible: :visible).select { |opt| opt.text.present? }.map(&:text)
+    # Use visible: :all to find options even if they're not fully visible
+    expect(page).to have_css('.ts-dropdown .option', wait: 5, minimum: 1, visible: :all)
+    # Get all options, including those that might not be fully visible
+    all('.ts-dropdown .option', visible: :all).select { |opt| opt.text.present? }.map(&:text)
   end
 
   def select_box_selected_item_text

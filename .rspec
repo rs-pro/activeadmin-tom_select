@@ -1,3 +1,1 @@
 --require spec_helper
---pattern "spec/{features,unit,lib,support}/**/*_spec.rb"
---exclude-pattern "**/vendor/**/*,**/node_modules/**/*"

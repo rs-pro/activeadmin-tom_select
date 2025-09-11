@@ -14,7 +14,7 @@
   "dependencies": {
     "@activeadmin/activeadmin": "^4.0.0-beta10",
     "@rails/ujs": "^7.1.400",
-    "@rocket-sensei/activeadmin-searchable_select": "file:../..",
+    "@rocket-sensei/activeadmin-searchable_select": "file:../../npm-package",
     "tailwindcss": "^3.4.17",
     "tom-select": "^2.4.3"
   }

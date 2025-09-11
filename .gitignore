@@ -20,6 +20,7 @@
 /spec/internal/public/assets/
 /spec/internal/public/assets-test/
 /spec/internal/storage/*
+/spec/internal/log/*
 /public/assets/
 /public/assets-test/
 

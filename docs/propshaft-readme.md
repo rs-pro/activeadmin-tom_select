@@ -1,6 +1,18 @@
-# Propshaft
+# Propshaft: A Modern Asset Pipeline for Rails
 
 Propshaft is an asset pipeline library for Rails. It's built for an era where bundling assets to save on HTTP connections is no longer urgent, where JavaScript and CSS are either compiled by dedicated Node.js bundlers or served directly to the browsers, and where increases in bandwidth have made the need for minification less pressing. These factors allow for a dramatically simpler and faster asset pipeline compared to previous options, like [Sprockets](https://github.com/rails/sprockets-rails).
+
+## Table of Contents
+
+1. [Overview](#overview)
+2. [Architecture](#architecture) 
+3. [Asset Serving in Development/Test Mode](#asset-serving-in-developmenttest-mode)
+4. [Configuration and Asset Paths](#configuration-and-asset-paths)
+5. [Test Environment Specifics](#test-environment-specifics)
+6. [JavaScript and CSS Bundling Integration](#javascript-and-css-bundling-integration)
+7. [Common Patterns and Best Practices](#common-patterns-and-best-practices)
+
+## Overview
 
 So that's what Propshaft doesn't do. Here's what it does provide:
 
@@ -8,6 +20,107 @@ So that's what Propshaft doesn't do. Here's what it does provide:
 1. **Digest stamping**: All assets in the load path will be copied (or compiled) in a precompilation step for production that also stamps all of them with a digest hash, so you can use long-expiry cache headers for better performance. The digested assets can be referred to through their logical path because the processing leaves a manifest file that provides a way to translate.
 1. **Development server**: There's no need to precompile the assets in development. You can refer to them via the same asset_path helpers and they'll be served by a development server.
 1. **Basic compilers**: Propshaft was explicitly not designed to provide full transpiler capabilities. You can get that better elsewhere. But it does offer a simple input->output compiler setup that by default is used to translate `url(asset)` function calls in CSS to `url(digested-asset)` instead and source mapping comments likewise.
+
+## Architecture
+
+### Core Components
+
+```
+Propshaft::Assembly
+├── LoadPath          # Asset discovery and caching
+├── Resolver           # Path resolution (Dynamic/Static)
+│   ├── Dynamic        # Development/test mode
+│   └── Static         # Production with manifest
+├── Server            # Rack middleware for asset serving
+├── Processor         # Precompilation and digesting
+├── Compilers         # Asset transformation
+└── Manifest          # Asset mapping and integrity hashes
+```
+
+### Key Classes
+
+#### `Propshaft::Assembly`
+Central coordinator that manages all components. Created during Rails initialization and accessible via `Rails.application.assets`.
+
+```ruby
+# Core assembly configuration
+Rails.application.configure do
+  app.assets = Propshaft::Assembly.new(app.config.assets)
+end
+```
+
+#### `Propshaft::LoadPath`
+Manages asset discovery across multiple directories. Automatically includes:
+- `app/assets/**/*` (application assets)
+- `lib/assets/**/*` (library assets)
+- `vendor/assets/**/*` (third-party assets)
+- Engine assets from all loaded gems
+
+#### `Propshaft::Resolver::Dynamic`
+Used in development and test environments. Resolves assets on-demand without requiring precompilation.
+
+#### `Propshaft::Resolver::Static`
+Used in production. Relies on `.manifest.json` for fast asset resolution.
+
+## Asset Serving in Development/Test Mode
+
+### Dynamic Resolution Process
+
+1. **Request Interception**: `Propshaft::Server` middleware catches requests to `/assets/*`
+2. **Asset Discovery**: `LoadPath#find` searches configured paths for matching assets
+3. **Compilation**: Assets pass through registered compilers
+4. **Cache Headers**: Aggressive caching with ETags and immutable cache-control
+5. **Response**: Compiled content served with appropriate MIME type
+
+```ruby
+# Server middleware in action (simplified)
+def call(env)
+  if path.start_with?(@assembly.prefix) && (asset = @assembly.load_path.find(path))
+    [200, {
+      'Content-Type' => asset.content_type,
+      'ETag' => "\"#{asset.digest}\"",
+      'Cache-Control' => 'public, max-age=31536000, immutable'
+    }, [asset.compiled_content]]
+  end
+end
+```
+
+### Cache Sweeping
+
+In development/test, Propshaft monitors file changes:
+
+```ruby
+config.assets.sweep_cache = Rails.env.development?
+```
+
+When enabled, before each request:
+1. File watcher checks for modifications
+2. Asset cache cleared if changes detected
+3. New assets discovered and cached
+
+## Configuration and Asset Paths
+
+### Default Configuration (from Railtie)
+
+```ruby
+config.assets.paths          = []           # Auto-populated
+config.assets.excluded_paths = []           # Paths to exclude
+config.assets.version        = "1"          # Cache invalidation
+config.assets.prefix         = "/assets"    # URL prefix
+config.assets.server         = Rails.env.development? || Rails.env.test?
+config.assets.sweep_cache    = Rails.env.development?
+```
+
+### Path Resolution Order
+
+1. **Application paths**: `app/assets/**/*`
+2. **Library paths**: `lib/assets/**/*`  
+3. **Vendor paths**: `vendor/assets/**/*`
+4. **Engine paths**: From all loaded Rails engines/gems
+
+Paths are automatically prioritized:
+- Application assets take precedence over engine assets
+- Later additions to load path have lower priority
 
 
 ## Installation
@@ -119,3 +232,89 @@ But for greenfield apps using the default import-map approach, Propshaft can als
 ## License
 
 Propshaft is released under the [MIT License](https://opensource.org/licenses/MIT).
+
+## Compilation and Digesting
+
+### Asset Processing Pipeline
+
+1. **Discovery**: `LoadPath` finds all assets matching patterns
+2. **Compilation**: Each asset processed through registered compilers
+3. **Digesting**: Content hash generated using SHA1 + version string
+4. **Output**: Files written to `config.assets.output_path` (default: `public/assets/`)
+
+### Built-in Compilers
+
+#### CSS Asset URL Compiler
+Transforms relative URLs to digested versions:
+
+```css
+/* Input */
+background: url('./hero.jpg');
+
+/* Output */
+background: url('/assets/hero-abc123.jpg');
+```
+
+#### JavaScript Asset URL Compiler
+Processes `RAILS_ASSET_URL()` pseudo-functions:
+
+```javascript
+// Input
+const icon = RAILS_ASSET_URL('./icon.svg');
+
+// Output  
+const icon = '/assets/icon-def456.svg';
+```
+
+#### Source Map Compiler
+Updates source map references to match digested filenames.
+
+### Manifest Generation
+
+The manifest file (`.manifest.json`) maps logical paths to digested paths:
+
+```json
+{
+  "application.js": {
+    "digested_path": "application-abc123.js",
+    "integrity": "sha384-xyz789..."
+  }
+}
+```
+
+## Asset Organization
+
+```
+app/assets/
+├── builds/              # jsbundling-rails/cssbundling-rails output
+│   ├── application.js
+│   └── application.css
+├── images/             # Static assets
+│   └── logo.svg
+├── stylesheets/        # SCSS source (often excluded)
+│   └── application.scss
+└── javascripts/        # JS source (often excluded)  
+    └── application.js
+```
+
+## Error Handling
+
+### Missing Asset Handling
+```ruby
+# Propshaft raises MissingAssetError for missing assets
+begin
+  asset_path('nonexistent.js')
+rescue Propshaft::MissingAssetError => e
+  Rails.logger.error "Missing asset: #{e.message}"
+  # Fallback logic
+end
+```
+
+### Development Debugging
+```ruby
+# Show all available assets
+rake assets:reveal
+
+# Show asset full paths
+rake assets:reveal:full
+```
