@@ -39,6 +39,8 @@ Naming/FileName:
   Exclude:
     - 'lib/activeadmin-searchable_select.rb'
     - 'lib/rs-activeadmin-searchable_select.rb'
+    - 'lib/rs-activeadmin-tom_select.rb'
+    - 'lib/activeadmin-tom_select.rb'
 
 # Allow development dependencies in gemspec
 Gemspec/DevelopmentDependencies:
@@ -57,6 +59,10 @@ Metrics/ClassLength:
 Metrics/MethodLength:
   Exclude:
     - 'lib/generators/**/*'
+
+# Allow slightly longer modules for input extensions
+Metrics/ModuleLength:
+  Max: 110
 
 # Allow complex methods for generators
 Metrics/AbcSize:

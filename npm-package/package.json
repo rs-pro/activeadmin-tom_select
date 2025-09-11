@@ -1,7 +1,7 @@
 {
-  "name": "@rocket-sensei/activeadmin-searchable_select",
-  "version": "4.0.5",
-  "description": "Use searchable selects based on Tom Select in Active Admin forms and filters.",
+  "name": "@rocket-sensei/activeadmin-tom_select",
+  "version": "5.0.0",
+  "description": "Use Tom Select for searchable selects in Active Admin forms and filters.",
   "main": "src/index.js",
   "module": "src/index.js",
   "style": "src/tom-select-tailwind.css",
@@ -16,15 +16,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/glebtv/activeadmin-searchable_select.git"
+    "url": "git+https://github.com/rs-pro/activeadmin-tom_select.git"
   },
-  "author": "Codevise Solutions Ltd <info@codevise.de>",
+  "author": "Rocket Sensei <info@rs.pro>",
   "license": "MIT",
   "private": false,
   "bugs": {
-    "url": "https://github.com/glebtv/activeadmin-searchable_select/issues"
+    "url": "https://github.com/rs-pro/activeadmin-tom_select/issues"
   },
-  "homepage": "https://github.com/glebtv/activeadmin-searchable_select#readme",
+  "homepage": "https://github.com/rs-pro/activeadmin-tom_select#readme",
   "keywords": [
     "tom-select",
     "active",

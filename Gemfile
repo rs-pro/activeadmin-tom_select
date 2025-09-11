@@ -3,8 +3,10 @@ source 'https://rubygems.org'
 # Use ActiveAdmin 4.x beta
 gem 'activeadmin', '4.0.0.beta16'
 
-# Code coverage - needed for CI
-gem 'rspec_junit_formatter', require: false
-gem 'simplecov', require: false
+gemspec name: 'rs-activeadmin-tom_select'
 
-gemspec
+gem "devise", "~> 4.9", :group => :test
+
+gem "propshaft", "~> 1.2", :group => :test
+
+gem "rails", "~> 8.0", :group => :test

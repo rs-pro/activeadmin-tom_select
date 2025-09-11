@@ -1,6 +1,6 @@
-# Migration Guide: Updating to rs-activeadmin-searchable_select with Tom Select
+# Migration Guide: ActiveAdmin Tom Select
 
-This guide will help you migrate from the original `activeadmin-searchable_select` gem to our forked and updated version `rs-activeadmin-searchable_select`, which now uses Tom Select instead of Select2.
+This guide will help you migrate from the original `activeadmin-searchable_select` gem (or its fork) to the new `rs-activeadmin-tom_select` gem, which uses Tom Select instead of Select2.
 
 ## Quick Start (New Installation)
 
@@ -8,11 +8,11 @@ For new installations without a previous version:
 
 ```bash
 # Add to Gemfile
-echo "gem 'rs-activeadmin-searchable_select', '~> 5.0.0'" >> Gemfile
+echo "gem 'rs-activeadmin-tom_select', '~> 5.0.0'" >> Gemfile
 bundle install
 
 # Install NPM packages
-npm install @rocket-sensei/activeadmin-searchable_select tom-select
+npm install @rocket-sensei/activeadmin-tom_select tom-select
 
 # Then follow Step 3 and onward below
 ```
@@ -45,11 +45,12 @@ Our fork provides:
 Replace the old gem with our fork:
 
 ```ruby
-# Remove this:
+# Remove these:
 # gem 'activeadmin-searchable_select'
+# gem 'rs-activeadmin-searchable_select'
 
 # Add this:
-gem 'rs-activeadmin-searchable_select', '~> 5.0.0'
+gem 'rs-activeadmin-tom_select', '~> 5.0.0'
 
 # For Rails 7, also ensure you have Propshaft:
 gem 'propshaft' # Rails 8 includes this by default
@@ -66,10 +67,10 @@ Remove old packages and install the new ones:
 
 ```bash
 # Remove old packages if present
-npm uninstall @codevise/activeadmin-searchable_select jquery select2
+npm uninstall @codevise/activeadmin-searchable_select @rocket-sensei/activeadmin-searchable_select jquery select2
 
 # Install new packages (Tom Select instead of Select2)
-npm install @rocket-sensei/activeadmin-searchable_select tom-select
+npm install @rocket-sensei/activeadmin-tom_select tom-select
 ```
 
 ### Step 3: Update JavaScript Imports
@@ -86,7 +87,7 @@ import TomSelect from 'tom-select';
 window.TomSelect = TomSelect;
 
 // Import and auto-initialize searchable selects
-import { setupAutoInit } from '@rocket-sensei/activeadmin-searchable_select';
+import { setupAutoInit } from '@rocket-sensei/activeadmin-tom_select';
 setupAutoInit();
 ```
 
@@ -100,7 +101,7 @@ import TomSelect from 'tom-select';
 window.TomSelect = TomSelect;
 
 // Import the initialization function
-import { initSearchableSelects } from '@rocket-sensei/activeadmin-searchable_select';
+import { initSearchableSelects } from '@rocket-sensei/activeadmin-tom_select';
 
 // Initialize manually when needed
 document.addEventListener('DOMContentLoaded', function() {
@@ -137,7 +138,7 @@ If you're using importmap instead of esbuild, add to `config/importmap.rb`:
 
 ```ruby
 pin "tom-select", to: "https://ga.jspm.io/npm:tom-select@2.4.3/dist/js/tom-select.complete.min.js"
-pin "@rocket-sensei/activeadmin-searchable_select", to: "@rocket-sensei--activeadmin-searchable_select.js"
+pin "@rocket-sensei/activeadmin-tom_select", to: "@rocket-sensei--activeadmin-tom_select.js"
 ```
 
 And update your `app/javascript/active_admin.js`:
@@ -150,7 +151,7 @@ import TomSelect from "tom-select";
 window.TomSelect = TomSelect;
 
 // Import and auto-initialize searchable selects
-import { setupAutoInit } from "@rocket-sensei/activeadmin-searchable_select";
+import { setupAutoInit } from "@rocket-sensei/activeadmin-tom_select";
 setupAutoInit();
 ```
 
@@ -227,8 +228,8 @@ f.input :tags, as: :searchable_select, ajax: true, multiple: true
 ## Differences from Original Gem
 
 1. **Tom Select instead of Select2**: No jQuery dependency required!
-2. **NPM Scope**: Package is now `@rocket-sensei/activeadmin-searchable_select`
-3. **Gem Name**: Gem is now `rs-activeadmin-searchable_select`
+2. **NPM Scope**: Package is now `@rocket-sensei/activeadmin-tom_select`
+3. **Gem Name**: Gem is now `rs-activeadmin-tom_select`
 4. **Virtual Scroll**: Automatic pagination for large datasets
 5. **Rails 8 Ready**: Full support for Propshaft and modern Rails
 6. **Better Performance**: Smaller bundle size without jQuery
@@ -266,7 +267,7 @@ If you encounter issues:
 4. Check browser console for errors
 
 For bug reports or questions, please visit:
-https://github.com/glebtv/activeadmin-searchable_select/issues
+https://github.com/rs-pro/activeadmin-tom_select/issues
 
 ## Contributing
 

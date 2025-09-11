@@ -1,27 +1,27 @@
-# ActiveAdmin Searchable Select (RocketSensei Fork)
+# ActiveAdmin Tom Select
 
-[![Gem Version](https://badge.fury.io/rb/rs-activeadmin-searchable_select.svg)](http://badge.fury.io/rb/rs-activeadmin-searchable_select)
-[![NPM Version](https://badge.fury.io/js/@rocket-sensei%2Factiveadmin-searchable_select.svg)](https://badge.fury.io/js/@rocket-sensei%2Factiveadmin-searchable_select)
-[![npm](https://img.shields.io/npm/dm/@rocket-sensei/activeadmin-searchable_select)](https://www.npmjs.com/package/@rocket-sensei/activeadmin-searchable_select)
-[![Build Status](https://github.com/glebtv/activeadmin-searchable_select/actions/workflows/ci.yml/badge.svg)](https://github.com/glebtv/activeadmin-searchable_select/actions)
+[![Gem Version](https://badge.fury.io/rb/rs-activeadmin-tom_select.svg)](http://badge.fury.io/rb/rs-activeadmin-tom_select)
+[![NPM Version](https://badge.fury.io/js/@rocket-sensei%2Factiveadmin-tom_select.svg)](https://badge.fury.io/js/@rocket-sensei%2Factiveadmin-tom_select)
+[![npm](https://img.shields.io/npm/dm/@rocket-sensei/activeadmin-tom_select)](https://www.npmjs.com/package/@rocket-sensei/activeadmin-tom_select)
+[![Build Status](https://github.com/rs-pro/activeadmin-tom_select/actions/workflows/ci.yml/badge.svg)](https://github.com/rs-pro/activeadmin-tom_select/actions)
 
 Searchable select boxes (via [Tom Select](https://tom-select.js.org/)) for
 ActiveAdmin forms and filters. Extends the ActiveAdmin resource DSL to
 allow defining JSON endpoints to fetch options from asynchronously.
 
-**Note:** Version 5.0+ migrated from Select2 to Tom Select for better performance and smaller bundle size.
+**Note:** This gem provides Tom Select integration for ActiveAdmin. It was originally forked from activeadmin-searchable_select but has been completely rewritten to use Tom Select instead of Select2.
 
 ## Installation
 
-Add `rs-activeadmin-searchable_select` to your Gemfile:
+Add `rs-activeadmin-tom_select` to your Gemfile:
 
 ```ruby
-   gem 'rs-activeadmin-searchable_select'
+   gem 'rs-activeadmin-tom_select'
 ```
 
 ### ActiveAdmin 4.x with Rails 8 (esbuild/importmap/Propshaft)
 
-This fork is optimized for ActiveAdmin 4.x with Rails 8, supporting modern JavaScript bundlers and Propshaft. If you encounter "select2 is not a function" errors in production, see the [complete setup guide](docs/guide-update-your-app.md).
+This gem is optimized for ActiveAdmin 4.x with Rails 8, supporting modern JavaScript bundlers and Propshaft. See the [complete setup guide](docs/guide-update-your-app.md) for detailed instructions.
 
 #### Quick Install with Generator
 
@@ -37,25 +37,27 @@ rails generate active_admin:searchable_select:install --bundler=importmap
 
 1. Install npm packages:
 ```bash
-npm install @rocket-sensei/activeadmin-searchable_select jquery select2
+npm install @rocket-sensei/activeadmin-tom_select tom-select
 ```
 
 2. In `app/javascript/active_admin.js`:
 ```javascript
 import "@activeadmin/activeadmin";
-import $ from 'jquery';
-import select2 from 'select2';
+import TomSelect from 'tom-select';
 
-// Critical: Initialize select2 on jQuery (fixes production builds)
-select2($);
-window.$ = window.jQuery = $;
+// Make Tom Select available globally
+window.TomSelect = TomSelect;
 
-import '@rocket-sensei/activeadmin-searchable_select';
+// Import and auto-initialize searchable selects
+import { setupAutoInit } from '@rocket-sensei/activeadmin-tom_select';
+setupAutoInit();
 ```
 
-3. Add Select2 CSS to your ActiveAdmin stylesheet:
+3. Add Tom Select CSS to your ActiveAdmin stylesheet:
 ```css
-@import url('https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css');
+@import 'tom-select/dist/css/tom-select.css';
+/* Or use CDN: */
+@import url('https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/css/tom-select.css');
 ```
 
 ### ActiveAdmin 3.x and older
@@ -78,18 +80,19 @@ Import stylesheets and require javascripts:
 Add to `package.json`:
 ```json
 "dependencies": {
-  "@rocket-sensei/activeadmin-searchable_select": "^4.0.0"
+  "@rocket-sensei/activeadmin-tom_select": "^5.0.0"
 }
 ```
 
 In `app/javascript/packs/active_admin.js`:
 ```javascript
-import '@rocket-sensei/activeadmin-searchable_select';
+import { setupAutoInit } from '@rocket-sensei/activeadmin-tom_select';
+setupAutoInit();
 ```
 
 In `app/javascript/stylesheets/active_admin.scss`:
 ```css
-@import '@rocket-sensei/activeadmin-searchable_select';
+@import '@rocket-sensei/activeadmin-tom_select/css';
 ```
 
 ## Usage
@@ -389,13 +392,13 @@ for feature specs:
 
 ```
 
-### Passing options to Select2
+### Passing options to Tom Select
 
-It is possible to pass and define configuration options to Select2
+It is possible to pass and define configuration options to Tom Select
 via `data-attributes` using nested (subkey) options.
 
 Attributes need to be added to the `input_html` option in the form input.
-For example you can tell Select2 how long to wait after a user
+For example you can tell Tom Select how long to wait after a user
 has stopped typing before sending the request:
 
 ```ruby

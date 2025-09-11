@@ -72,13 +72,13 @@ jobs:
           
           # Extract it to a temporary location
           mkdir -p /tmp/npm-package
-          tar -xzf rocket-sensei-activeadmin-searchable_select-*.tgz -C /tmp/npm-package
+          tar -xzf rocket-sensei-activeadmin-tom_select-*.tgz -C /tmp/npm-package
           
           # Update spec/internal to use the extracted package
           cd spec/internal
           # Remove any existing symlink/folder
           rm -rf package
-          rm -rf node_modules/@rocket-sensei/activeadmin-searchable_select
+          rm -rf node_modules/@rocket-sensei/activeadmin-tom_select
           npm install
           
           # Install from the extracted package
@@ -131,7 +131,7 @@ jobs:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL || 'https://sonarcloud.io' }}
         with:
           args: >
-            -Dsonar.projectKey=glebtv_activeadmin-searchable_select
+            -Dsonar.projectKey=rs-pro_activeadmin-tom_select
             -Dsonar.ruby.coverage.reportPaths=coverage/coverage.json
             -Dsonar.ruby.rspec.reportPaths=rspec-results.xml
         continue-on-error: true
