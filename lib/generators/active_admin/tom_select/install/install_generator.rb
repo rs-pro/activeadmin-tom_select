@@ -17,8 +17,8 @@ module ActiveAdmin
         def install_npm_package
           return unless options[:bundler] != 'importmap'
 
-          say 'Installing @rocket-sensei/activeadmin-tom_select npm package...', :green
-          run 'npm install @rocket-sensei/activeadmin-tom_select'
+          say 'Installing activeadmin-tom_select npm package...', :green
+          run 'npm install activeadmin-tom_select'
         end
 
         def setup_javascript
@@ -90,7 +90,7 @@ module ActiveAdmin
               <<~JS
 
                 // ActiveAdmin Tom Select
-                import '@rocket-sensei/activeadmin-tom_select';
+                import 'activeadmin-tom_select';
               JS
             end
           else
@@ -100,7 +100,7 @@ module ActiveAdmin
                 import "@activeadmin/activeadmin";
 
                 // ActiveAdmin Tom Select
-                import '@rocket-sensei/activeadmin-tom_select';
+                import 'activeadmin-tom_select';
               JS
             end
           end
@@ -166,7 +166,7 @@ module ActiveAdmin
               <<~JS
 
                 // ActiveAdmin Tom Select
-                import '@rocket-sensei/activeadmin-tom_select';
+                import 'activeadmin-tom_select';
               JS
             end
           else

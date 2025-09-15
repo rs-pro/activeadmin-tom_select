@@ -81,7 +81,7 @@ jobs:
           cd ../spec/internal
           # Remove any existing symlink/folder
           rm -rf package
-          rm -rf node_modules/@rocket-sensei/activeadmin-tom_select
+          rm -rf node_modules/activeadmin-tom_select
           npm install
 
           # Install from the extracted package

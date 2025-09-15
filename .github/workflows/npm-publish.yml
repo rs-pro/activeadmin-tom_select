@@ -40,11 +40,11 @@ jobs:
         run: |
           echo "### NPM Package Published! 🎉" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Package: \`@rocket-sensei/activeadmin-tom_select@$(cd npm-package && npm pkg get version | tr -d '"')\`" >> $GITHUB_STEP_SUMMARY
+          echo "Package: \`activeadmin-tom_select@$(cd npm-package && npm pkg get version | tr -d '"')\`" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Install with:" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
-          echo "npm install @rocket-sensei/activeadmin-tom_select" >> $GITHUB_STEP_SUMMARY
+          echo "npm install activeadmin-tom_select" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "View on NPM: https://www.npmjs.com/package/@rocket-sensei/activeadmin-tom_select" >> $GITHUB_STEP_SUMMARY
+          echo "View on NPM: https://www.npmjs.com/package/activeadmin-tom_select" >> $GITHUB_STEP_SUMMARY

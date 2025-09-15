@@ -1,8 +1,8 @@
 # ActiveAdmin Tom Select
 
 [![Gem Version](https://badge.fury.io/rb/activeadmin-tom_select.svg)](http://badge.fury.io/rb/activeadmin-tom_select)
-[![NPM Version](https://badge.fury.io/js/@rocket-sensei%2Factiveadmin-tom_select.svg)](https://badge.fury.io/js/@rocket-sensei%2Factiveadmin-tom_select)
-[![npm](https://img.shields.io/npm/dm/@rocket-sensei/activeadmin-tom_select)](https://www.npmjs.com/package/@rocket-sensei/activeadmin-tom_select)
+[![NPM Version](https://badge.fury.io/js/activeadmin-tom_select.svg)](https://badge.fury.io/js/activeadmin-tom_select)
+[![npm](https://img.shields.io/npm/dm/activeadmin-tom_select)](https://www.npmjs.com/package/activeadmin-tom_select)
 [![Build Status](https://github.com/rs-pro/activeadmin-tom_select/actions/workflows/ci.yml/badge.svg)](https://github.com/rs-pro/activeadmin-tom_select/actions)
 
 Searchable select boxes (via [Tom Select](https://tom-select.js.org/)) for
@@ -37,7 +37,7 @@ rails generate active_admin:searchable_select:install --bundler=importmap
 
 1. Install npm packages:
 ```bash
-npm install @rocket-sensei/activeadmin-tom_select tom-select
+npm install activeadmin-tom_select tom-select
 ```
 
 2. In `app/javascript/active_admin.js`:
@@ -49,7 +49,7 @@ import TomSelect from 'tom-select';
 window.TomSelect = TomSelect;
 
 // Import and auto-initialize searchable selects
-import { setupAutoInit } from '@rocket-sensei/activeadmin-tom_select';
+import { setupAutoInit } from 'activeadmin-tom_select';
 setupAutoInit();
 ```
 
@@ -80,19 +80,19 @@ Import stylesheets and require javascripts:
 Add to `package.json`:
 ```json
 "dependencies": {
-  "@rocket-sensei/activeadmin-tom_select": "^5.0.0"
+  "activeadmin-tom_select": "^4.1.0"
 }
 ```
 
 In `app/javascript/packs/active_admin.js`:
 ```javascript
-import { setupAutoInit } from '@rocket-sensei/activeadmin-tom_select';
+import { setupAutoInit } from 'activeadmin-tom_select';
 setupAutoInit();
 ```
 
 In `app/javascript/stylesheets/active_admin.scss`:
 ```css
-@import '@rocket-sensei/activeadmin-tom_select/css';
+@import 'activeadmin-tom_select/css';
 ```
 
 ## Usage

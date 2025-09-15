@@ -12,7 +12,7 @@ echo "gem 'activeadmin-tom_select', '~> 4.1.0'" >> Gemfile
 bundle install
 
 # Install NPM packages
-npm install @rocket-sensei/activeadmin-tom_select tom-select
+npm install activeadmin-tom_select tom-select
 
 # Then follow Step 3 and onward below
 ```
@@ -25,7 +25,7 @@ Our fork provides:
 - ✅ Modern JavaScript bundler support (esbuild/webpack/importmap)
 - ✅ **Tom Select** instead of Select2 (no jQuery dependency!)
 - ✅ Virtual scroll for large datasets with pagination
-- ✅ Proper NPM package distribution under @rocket-sensei scope
+- ✅ Proper NPM package distribution as activeadmin-tom_select
 - ✅ Improved test suite with static ActiveAdmin registrations
 - ✅ Active maintenance and support
 
@@ -67,10 +67,10 @@ Remove old packages and install the new ones:
 
 ```bash
 # Remove old packages if present
-npm uninstall @codevise/activeadmin-searchable_select @rocket-sensei/activeadmin-searchable_select jquery select2
+npm uninstall @codevise/activeadmin-searchable_select activeadmin-searchable_select jquery select2
 
 # Install new packages (Tom Select instead of Select2)
-npm install @rocket-sensei/activeadmin-tom_select tom-select
+npm install activeadmin-tom_select tom-select
 ```
 
 ### Step 3: Update JavaScript Imports
@@ -87,7 +87,7 @@ import TomSelect from 'tom-select';
 window.TomSelect = TomSelect;
 
 // Import and auto-initialize searchable selects
-import { setupAutoInit } from '@rocket-sensei/activeadmin-tom_select';
+import { setupAutoInit } from 'activeadmin-tom_select';
 setupAutoInit();
 ```
 
@@ -101,7 +101,7 @@ import TomSelect from 'tom-select';
 window.TomSelect = TomSelect;
 
 // Import the initialization function
-import { initSearchableSelects } from '@rocket-sensei/activeadmin-tom_select';
+import { initSearchableSelects } from 'activeadmin-tom_select';
 
 // Initialize manually when needed
 document.addEventListener('DOMContentLoaded', function() {
@@ -138,7 +138,7 @@ If you're using importmap instead of esbuild, add to `config/importmap.rb`:
 
 ```ruby
 pin "tom-select", to: "https://ga.jspm.io/npm:tom-select@2.4.3/dist/js/tom-select.complete.min.js"
-pin "@rocket-sensei/activeadmin-tom_select", to: "@rocket-sensei--activeadmin-tom_select.js"
+pin "activeadmin-tom_select", to: "activeadmin-tom_select.js"
 ```
 
 And update your `app/javascript/active_admin.js`:
@@ -151,7 +151,7 @@ import TomSelect from "tom-select";
 window.TomSelect = TomSelect;
 
 // Import and auto-initialize searchable selects
-import { setupAutoInit } from "@rocket-sensei/activeadmin-tom_select";
+import { setupAutoInit } from "activeadmin-tom_select";
 setupAutoInit();
 ```
 
@@ -228,7 +228,7 @@ f.input :tags, as: :searchable_select, ajax: true, multiple: true
 ## Differences from Original Gem
 
 1. **Tom Select instead of Select2**: No jQuery dependency required!
-2. **NPM Scope**: Package is now `@rocket-sensei/activeadmin-tom_select`
+2. **NPM Package**: Package is now `activeadmin-tom_select`
 3. **Gem Name**: Gem is now `activeadmin-tom_select`
 4. **Virtual Scroll**: Automatic pagination for large datasets
 5. **Rails 8 Ready**: Full support for Propshaft and modern Rails

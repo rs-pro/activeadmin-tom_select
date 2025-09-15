@@ -1,5 +1,5 @@
 {
-  "name": "@rocket-sensei/activeadmin-tom_select",
+  "name": "activeadmin-tom_select",
   "version": "4.1.0",
   "description": "Use Tom Select for searchable selects in Active Admin forms and filters.",
   "main": "src/index.js",

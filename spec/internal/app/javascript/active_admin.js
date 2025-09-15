@@ -8,7 +8,7 @@ import TomSelect from 'tom-select';
 window.TomSelect = TomSelect;
 
 // Import and setup ActiveAdmin Tom Select
-import { setupAutoInit, initSearchableSelects } from '@rocket-sensei/activeadmin-tom_select';
+import { setupAutoInit, initSearchableSelects } from 'activeadmin-tom_select';
 
 // Make the init function globally available for tests
 window.initSearchableSelects = initSearchableSelects;
