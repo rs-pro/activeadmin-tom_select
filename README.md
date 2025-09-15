@@ -1,6 +1,6 @@
 # ActiveAdmin Tom Select
 
-[![Gem Version](https://badge.fury.io/rb/rs-activeadmin-tom_select.svg)](http://badge.fury.io/rb/rs-activeadmin-tom_select)
+[![Gem Version](https://badge.fury.io/rb/activeadmin-tom_select.svg)](http://badge.fury.io/rb/activeadmin-tom_select)
 [![NPM Version](https://badge.fury.io/js/@rocket-sensei%2Factiveadmin-tom_select.svg)](https://badge.fury.io/js/@rocket-sensei%2Factiveadmin-tom_select)
 [![npm](https://img.shields.io/npm/dm/@rocket-sensei/activeadmin-tom_select)](https://www.npmjs.com/package/@rocket-sensei/activeadmin-tom_select)
 [![Build Status](https://github.com/rs-pro/activeadmin-tom_select/actions/workflows/ci.yml/badge.svg)](https://github.com/rs-pro/activeadmin-tom_select/actions)
@@ -13,10 +13,10 @@ allow defining JSON endpoints to fetch options from asynchronously.
 
 ## Installation
 
-Add `rs-activeadmin-tom_select` to your Gemfile:
+Add `activeadmin-tom_select` to your Gemfile:
 
 ```ruby
-   gem 'rs-activeadmin-tom_select'
+   gem 'activeadmin-tom_select'
 ```
 
 ### ActiveAdmin 4.x with Rails 8 (esbuild/importmap/Propshaft)

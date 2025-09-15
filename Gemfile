@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 # Use ActiveAdmin 4.x beta
 gem 'activeadmin', '4.0.0.beta16'
 
-gemspec name: 'rs-activeadmin-tom_select'
+gemspec name: 'activeadmin-tom_select'
 
 gem "devise", "~> 4.9", :group => :test
 

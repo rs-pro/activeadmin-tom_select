@@ -1,6 +1,6 @@
 # Migration Guide: ActiveAdmin Tom Select
 
-This guide will help you migrate from the original `activeadmin-searchable_select` gem (or its fork) to the new `rs-activeadmin-tom_select` gem, which uses Tom Select instead of Select2.
+This guide will help you migrate from the original `activeadmin-searchable_select` gem (or its fork) to the new `activeadmin-tom_select` gem, which uses Tom Select instead of Select2.
 
 ## Quick Start (New Installation)
 
@@ -8,7 +8,7 @@ For new installations without a previous version:
 
 ```bash
 # Add to Gemfile
-echo "gem 'rs-activeadmin-tom_select', '~> 5.0.0'" >> Gemfile
+echo "gem 'activeadmin-tom_select', '~> 4.1.0'" >> Gemfile
 bundle install
 
 # Install NPM packages
@@ -29,7 +29,7 @@ Our fork provides:
 - ✅ Improved test suite with static ActiveAdmin registrations
 - ✅ Active maintenance and support
 
-## What's New in Version 5.0.0
+## What's New in Version 4.1.0
 
 - 🎉 **Tom Select**: Migrated from Select2 to Tom Select - no jQuery dependency!
 - 📜 **Virtual Scroll**: Automatic pagination for large datasets
@@ -50,7 +50,7 @@ Replace the old gem with our fork:
 # gem 'rs-activeadmin-searchable_select'
 
 # Add this:
-gem 'rs-activeadmin-tom_select', '~> 5.0.0'
+gem 'activeadmin-tom_select', '~> 4.1.0'
 
 # For Rails 7, also ensure you have Propshaft:
 gem 'propshaft' # Rails 8 includes this by default
@@ -229,7 +229,7 @@ f.input :tags, as: :searchable_select, ajax: true, multiple: true
 
 1. **Tom Select instead of Select2**: No jQuery dependency required!
 2. **NPM Scope**: Package is now `@rocket-sensei/activeadmin-tom_select`
-3. **Gem Name**: Gem is now `rs-activeadmin-tom_select`
+3. **Gem Name**: Gem is now `activeadmin-tom_select`
 4. **Virtual Scroll**: Automatic pagination for large datasets
 5. **Rails 8 Ready**: Full support for Propshaft and modern Rails
 6. **Better Performance**: Smaller bundle size without jQuery

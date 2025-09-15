@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rs-activeadmin-tom_select (5.0.0)
+    activeadmin-tom_select (4.1.0)
       activeadmin (>= 3.0, < 5)
       ransack (>= 1.8, < 5)
 
@@ -344,6 +344,7 @@ PLATFORMS
 
 DEPENDENCIES
   activeadmin (= 4.0.0.beta16)
+  activeadmin-tom_select!
   appraisal (~> 2.2)
   bundler (>= 1.5, < 3)
   capybara (~> 3.39)
@@ -355,7 +356,6 @@ DEPENDENCIES
   puma (~> 6.0)
   rails (~> 8.0)
   rake
-  rs-activeadmin-tom_select!
   rspec-rails (~> 6.0)
   rspec_junit_formatter
   rubocop (~> 1.50)

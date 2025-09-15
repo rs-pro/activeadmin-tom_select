@@ -3,7 +3,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'activeadmin/searchable_select/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'rs-activeadmin-tom_select'
+  spec.name          = 'activeadmin-tom_select'
   spec.version       = ActiveAdmin::SearchableSelect::VERSION
   spec.summary       = 'Use Tom Select for searchable selects in Active Admin forms and filters.'
   spec.license       = 'MIT'

@@ -9,4 +9,4 @@ gem "rails", "~> 7.1"
 gem "rspec_junit_formatter", require: false
 gem "simplecov", require: false
 
-gemspec name: "rs-activeadmin-tom_select", path: "../"
+gemspec name: "activeadmin-tom_select", path: "../"
