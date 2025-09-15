@@ -73,6 +73,10 @@ npm uninstall @codevise/activeadmin-searchable_select activeadmin-searchable_sel
 npm install activeadmin-tom_select tom-select
 ```
 
+**Note:** The `activeadmin-tom_select` package includes both JavaScript and CSS files:
+- JavaScript: Auto-initialization and helper functions
+- CSS: Tailwind-optimized Tom Select styles at `activeadmin-tom_select/src/tom-select-tailwind.css`
+
 ### Step 3: Update JavaScript Imports
 
 Update your `app/javascript/active_admin.js`:
@@ -110,9 +114,99 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 ```
 
-### Step 4: Add Tom Select CSS
+### Step 4: Configure CSS Build Process (For Tailwind CSS with ActiveAdmin 4)
 
-Add to your ActiveAdmin stylesheet (`app/assets/stylesheets/active_admin.css` or `.scss`):
+#### Option A: Using Tailwind CSS (Recommended for ActiveAdmin 4)
+
+1. First, ensure your `package.json` includes the necessary build scripts:
+
+```json
+{
+  "scripts": {
+    "build:js": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets",
+    "build:css": "tailwindcss -i ./app/assets/stylesheets/active_admin.tailwind.css -o ./app/assets/builds/active_admin.css --minify"
+  }
+}
+```
+
+2. Add the Tom Select Tailwind styles to your `app/assets/stylesheets/active_admin.tailwind.css`:
+
+```css
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* Import Tom Select Tailwind styles from the package */
+@import "activeadmin-tom_select/src/tom-select-tailwind.css";
+```
+
+3. Create a rake task for building CSS with Tailwind. Add to `lib/tasks/active_admin.rake`:
+
+```ruby
+namespace :active_admin do
+  desc 'Build Active Admin Tailwind stylesheets'
+  task :build do
+    require 'fileutils'
+
+    root = Rails.root
+
+    # Ensure builds directory exists
+    FileUtils.mkdir_p(File.join(root, 'app/assets/builds'))
+
+    # Build with Tailwind CLI
+    command = [
+      'npx', 'tailwindcss',
+      '-i', File.join(root, 'app/assets/stylesheets/active_admin.tailwind.css'),
+      '-o', File.join(root, 'app/assets/builds/active_admin.css'),
+      '-c', File.join(root, 'tailwind.config.js'),
+      '-m'
+    ]
+
+    system(*command, exception: true)
+
+    puts 'Built Active Admin CSS with Tailwind'
+  end
+
+  desc 'Watch Active Admin Tailwind stylesheets'
+  task :watch do
+    root = Rails.root
+
+    # Watch for changes
+    command = [
+      'npx', 'tailwindcss',
+      '--watch',
+      '-i', File.join(root, 'app/assets/stylesheets/active_admin.tailwind.css'),
+      '-o', File.join(root, 'app/assets/builds/active_admin.css'),
+      '-c', File.join(root, 'tailwind.config.js'),
+      '-m'
+    ]
+
+    system(*command)
+  end
+end
+
+# Enhance existing rake tasks
+if Rake::Task.task_defined?('assets:precompile')
+  Rake::Task['assets:precompile'].enhance(['active_admin:build'])
+end
+```
+
+4. Build your CSS:
+
+```bash
+# One-time build
+bundle exec rake active_admin:build
+
+# Or use npm script
+npm run build:css
+
+# For development with watch mode
+bundle exec rake active_admin:watch
+```
+
+#### Option B: Using Regular CSS (without Tailwind)
+
+If you're not using Tailwind CSS, add to your ActiveAdmin stylesheet (`app/assets/stylesheets/active_admin.css` or `.scss`):
 
 ```css
 /* Import Tom Select styles */
@@ -194,11 +288,45 @@ This usually happens when Tom Select isn't properly imported. Ensure:
 2. `window.TomSelect = TomSelect` is set to make it globally available
 3. The NPM package is installed: `npm install tom-select`
 
-### Styles Not Loading
+### Styles Not Loading / CSS Missing
+
+This is a common issue when migrating to ActiveAdmin 4 with Tailwind CSS. Here's how to fix it:
+
+#### For Tailwind CSS Users (ActiveAdmin 4):
+
+1. **Missing Tailwind Build Process**: Ensure you have the rake task for building CSS (see Step 4 above)
+
+2. **Check the Import Path**: The Tom Select styles should be imported from the package:
+   ```css
+   @import "activeadmin-tom_select/src/tom-select-tailwind.css";
+   ```
+
+3. **Build the CSS**: Run the build command:
+   ```bash
+   bundle exec rake active_admin:build
+   # or
+   npm run build:css
+   ```
+
+4. **Verify the Output**: Check that `app/assets/builds/active_admin.css` exists and contains Tom Select styles
+
+5. **Include in Layout**: Ensure your ActiveAdmin layout includes the built CSS:
+   ```erb
+   <%= stylesheet_link_tag "active_admin", "data-turbo-track": "reload" %>
+   ```
+
+#### For Non-Tailwind Users:
 
 1. Verify the Tom Select CSS import is in your stylesheet
 2. Check that your build process includes the stylesheets
 3. Clear your browser cache and restart Rails server
+
+#### Common CSS Issues:
+
+- **Dropdown not styled**: Missing Tom Select CSS - check import paths
+- **Width issues**: Add `.ts-wrapper { min-width: 50%; }` to your styles
+- **Z-index problems**: Tom Select dropdowns may need higher z-index in some layouts
+- **Missing icons**: Ensure the Tom Select CSS is fully loaded
 
 ### Ajax Options Not Loading
 
