@@ -9,8 +9,8 @@ ActiveAdmin.setup do |config|
   config.comments = false
 end
 
-# Load the searchable_select module first
-require 'activeadmin/searchable_select'
+# Load the tom_select module first
+require 'activeadmin/tom_select'
 
 # Register custom inputs with Formtastic
 require 'activeadmin/inputs/searchable_select_input'

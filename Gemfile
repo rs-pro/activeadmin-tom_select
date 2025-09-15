@@ -5,8 +5,8 @@ gem 'activeadmin', '4.0.0.beta16'
 
 gemspec name: 'activeadmin-tom_select'
 
-gem "devise", "~> 4.9", :group => :test
+gem 'devise', '~> 4.9', group: :test
 
-gem "propshaft", "~> 1.2", :group => :test
+gem 'propshaft', '~> 1.2', group: :test
 
-gem "rails", "~> 8.0", :group => :test
+gem 'rails', '~> 8.0', group: :test

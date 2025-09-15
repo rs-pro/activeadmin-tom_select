@@ -1,12 +1,12 @@
 require 'rails/generators'
 
 module ActiveAdmin
-  module SearchableSelect
+  module TomSelect
     module Generators
       class InstallGenerator < Rails::Generators::Base
         source_root File.expand_path('templates', __dir__)
 
-        desc 'Installs ActiveAdmin Searchable Select for ActiveAdmin 4.x'
+        desc 'Installs ActiveAdmin Tom Select for ActiveAdmin 4.x'
 
         class_option :bundler,
                      type: :string,
@@ -17,8 +17,8 @@ module ActiveAdmin
         def install_npm_package
           return unless options[:bundler] != 'importmap'
 
-          say 'Installing @codevise/activeadmin-searchable_select npm package...', :green
-          run 'npm install @codevise/activeadmin-searchable_select jquery select2'
+          say 'Installing @rocket-sensei/activeadmin-tom_select npm package...', :green
+          run 'npm install @rocket-sensei/activeadmin-tom_select'
         end
 
         def setup_javascript
@@ -33,29 +33,11 @@ module ActiveAdmin
         end
 
         def setup_stylesheets
-          if File.exist?('app/assets/stylesheets/active_admin.css')
-            say 'Adding Select2 styles to active_admin.css...', :green
-            prepend_to_file 'app/assets/stylesheets/active_admin.css' do
-              <<~CSS
-                @import url('https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css');
-
-              CSS
-            end
-          elsif File.exist?('app/assets/stylesheets/active_admin.scss')
-            say 'Adding Select2 styles to active_admin.scss...', :green
-            prepend_to_file 'app/assets/stylesheets/active_admin.scss' do
-              <<~SCSS
-                @import url('https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css');
-
-              SCSS
-            end
-          else
-            say 'Please manually add Select2 styles to your ActiveAdmin stylesheet', :yellow
-          end
+          say 'Tom Select styles are now included in the package', :green
         end
 
         def show_post_install_message
-          say "\n✅ ActiveAdmin Searchable Select has been installed!", :green
+          say "\n✅ ActiveAdmin Tom Select has been installed!", :green
 
           case options[:bundler]
           when 'esbuild'
@@ -103,12 +85,12 @@ module ActiveAdmin
           js_file = 'app/javascript/active_admin.js'
 
           if File.exist?(js_file)
-            say "Adding searchable_select to #{js_file}...", :green
+            say "Adding tom_select to #{js_file}...", :green
             append_to_file js_file do
               <<~JS
 
-                // ActiveAdmin Searchable Select
-                import '@codevise/activeadmin-searchable_select';
+                // ActiveAdmin Tom Select
+                import '@rocket-sensei/activeadmin-tom_select';
               JS
             end
           else
@@ -117,18 +99,8 @@ module ActiveAdmin
               <<~JS
                 import "@activeadmin/activeadmin";
 
-                // ActiveAdmin Searchable Select#{'  '}
-                import $ from 'jquery';
-                import select2 from 'select2';
-
-                // Critical: Initialize select2 on jQuery for production builds
-                select2($);
-
-                // Ensure jQuery is globally available
-                window.$ = window.jQuery = $;
-
-                // Import the searchable select functionality
-                import '@codevise/activeadmin-searchable_select';
+                // ActiveAdmin Tom Select
+                import '@rocket-sensei/activeadmin-tom_select';
               JS
             end
           end
@@ -158,18 +130,16 @@ module ActiveAdmin
             append_to_file 'config/importmap.rb' do
               <<~RUBY
 
-                # ActiveAdmin Searchable Select
-                pin "jquery", to: "https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"
-                pin "select2", to: "https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"
-                pin "activeadmin-searchable_select", to: "activeadmin-searchable_select.js"
+                # ActiveAdmin Tom Select
+                pin "activeadmin-tom_select", to: "activeadmin-tom_select.js"
               RUBY
             end
           end
 
           # Copy the vendor JavaScript file
           say 'Copying vendor JavaScript file...', :green
-          copy_file '../../../../vendor/assets/javascripts/activeadmin-searchable_select.js',
-                    'app/assets/javascripts/activeadmin-searchable_select.js'
+          copy_file '../../../../vendor/assets/javascripts/activeadmin-tom_select.js',
+                    'app/assets/javascripts/activeadmin-tom_select.js'
 
           # Update application.js
           js_file = 'app/javascript/application.js'
@@ -179,10 +149,8 @@ module ActiveAdmin
           append_to_file js_file do
             <<~JS
 
-              // ActiveAdmin Searchable Select
-              import "jquery"
-              import "select2"
-              import "activeadmin-searchable_select"
+              // ActiveAdmin Tom Select
+              import "activeadmin-tom_select"
             JS
           end
         end
@@ -193,21 +161,16 @@ module ActiveAdmin
           js_file = 'app/javascript/packs/active_admin.js'
 
           if File.exist?(js_file)
-            say "Adding searchable_select to #{js_file}...", :green
+            say "Adding tom_select to #{js_file}...", :green
             append_to_file js_file do
               <<~JS
 
-                // ActiveAdmin Searchable Select
-                import $ from 'jquery';
-                import select2 from 'select2';
-                select2($);
-                window.$ = window.jQuery = $;
-
-                import '@codevise/activeadmin-searchable_select';
+                // ActiveAdmin Tom Select
+                import '@rocket-sensei/activeadmin-tom_select';
               JS
             end
           else
-            say 'Please manually add the searchable_select import ' \
+            say 'Please manually add the tom_select import ' \
                 'to your ActiveAdmin JavaScript pack', :yellow
           end
         end

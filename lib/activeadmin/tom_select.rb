@@ -1,9 +1,9 @@
-require 'activeadmin/searchable_select/engine'
-require 'activeadmin/searchable_select/option_collection'
-require 'activeadmin/searchable_select/resource_extension'
-require 'activeadmin/searchable_select/resource_dsl_extension'
-require 'activeadmin/searchable_select/select_input_extension'
-require 'activeadmin/searchable_select/version'
+require 'activeadmin/tom_select/engine'
+require 'activeadmin/tom_select/option_collection'
+require 'activeadmin/tom_select/resource_extension'
+require 'activeadmin/tom_select/resource_dsl_extension'
+require 'activeadmin/tom_select/select_input_extension'
+require 'activeadmin/tom_select/version'
 
 ActiveAdmin::Resource.include ActiveAdmin::SearchableSelect::ResourceExtension
 ActiveAdmin::ResourceDSL.include ActiveAdmin::SearchableSelect::ResourceDSLExtension
