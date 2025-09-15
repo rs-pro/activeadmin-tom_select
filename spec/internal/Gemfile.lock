@@ -1,8 +1,9 @@
 PATH
   remote: ../..
   specs:
-    rs-activeadmin-searchable_select (4.0.5)
-      activeadmin (~> 4.0.0.beta)
+    activeadmin-tom_select (4.1.0)
+      activeadmin (>= 3.0, < 5)
+      ransack (>= 1.8, < 5)
 
 GEM
   remote: https://rubygems.org/
@@ -312,6 +313,7 @@ PLATFORMS
 
 DEPENDENCIES
   activeadmin (~> 4.0.0.beta)
+  activeadmin-tom_select!
   capybara (~> 3.39)
   capybara-playwright-driver (~> 0.5)
   cssbundling-rails
@@ -322,7 +324,6 @@ DEPENDENCIES
   propshaft
   puma (>= 5.0)
   rails (~> 8.0.2, >= 8.0.2.1)
-  rs-activeadmin-searchable_select!
   rspec-rails (~> 6.0)
   sqlite3 (>= 2.1)
   tzinfo-data

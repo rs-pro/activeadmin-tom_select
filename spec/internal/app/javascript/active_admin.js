@@ -7,8 +7,8 @@ import TomSelect from 'tom-select';
 // Make it globally available for the searchable select init
 window.TomSelect = TomSelect;
 
-// Import and setup ActiveAdmin Searchable Select  
-import { setupAutoInit, initSearchableSelects } from '@rocket-sensei/activeadmin-searchable_select';
+// Import and setup ActiveAdmin Tom Select
+import { setupAutoInit, initSearchableSelects } from '@rocket-sensei/activeadmin-tom_select';
 
 // Make the init function globally available for tests
 window.initSearchableSelects = initSearchableSelects;
@@ -16,4 +16,4 @@ window.initSearchableSelects = initSearchableSelects;
 // Initialize the module after everything is loaded
 setupAutoInit();
 
-console.log('ActiveAdmin JS loaded with Tom Select and Searchable Select');
+console.log('ActiveAdmin JS loaded with Tom Select');

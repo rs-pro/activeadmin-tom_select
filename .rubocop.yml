@@ -39,7 +39,6 @@ Lint/EmptyBlock:
 # Naming exception for gem main file
 Naming/FileName:
   Exclude:
-    - 'lib/activeadmin-searchable_select.rb'
     - 'lib/activeadmin-tom_select.rb'
 
 # Allow development dependencies in gemspec

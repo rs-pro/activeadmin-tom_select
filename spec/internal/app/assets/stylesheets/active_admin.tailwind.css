@@ -2,7 +2,7 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-@import "@rocket-sensei/activeadmin-searchable_select/src/tom-select-tailwind.css";
+@import "@rocket-sensei/activeadmin-tom_select/src/tom-select-tailwind.css";
 
 /* Additional batch actions dropdown styles that aren't in the ActiveAdmin plugin */
 @layer components {
