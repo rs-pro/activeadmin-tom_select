@@ -9,6 +9,7 @@
 /spec/internal/db/*.sqlite-wal
 /spec/examples.txt
 /node_modules
+/npm-package/node_modules
 /vendor/bundle
 .cache
 /.cache
