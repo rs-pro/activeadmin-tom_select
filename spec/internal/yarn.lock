@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@activeadmin/activeadmin@^4.0.0-beta10":
+"@activeadmin/activeadmin@^4.0.0-beta16":
   version "4.0.0-beta9"
   resolved "https://registry.npmjs.org/@activeadmin/activeadmin/-/activeadmin-4.0.0-beta9.tgz"
   integrity sha512-nsUSI4M5Zrujyjw92yQv/cV2edj7E6+D1HNZG0zqz98miPOxzPBJDXwpvQkE/iYSIeqc99NlLobFHxYXuzeB7Q==
