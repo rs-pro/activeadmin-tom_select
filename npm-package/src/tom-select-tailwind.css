@@ -103,7 +103,7 @@
 }
 
 .ts-wrapper.plugin-remove_button .item .remove {
-  @apply text-inherit no-underline align-middle inline-block p-0 px-1.5 border-l border-gray-300 rounded-r-sm box-border ml-1.5;
+  @apply text-inherit no-underline align-middle inline-block p-0 px-1.5 border-l border-gray-300 rounded-r-md box-border ml-1.5;
 }
 
 .ts-wrapper.plugin-remove_button .item .remove:hover {
@@ -146,12 +146,12 @@
 /* Control (Input) Styles */
 .ts-control,
 .ts-wrapper.single.input-active .ts-control {
-  @apply bg-white dark:bg-gray-900;
+  @apply bg-white dark:bg-gray-800;
   cursor: text;
 }
 
 .ts-control {
-  @apply border border-gray-300 dark:border-gray-600 p-2 w-full overflow-hidden relative z-10 box-border shadow-none rounded-sm flex flex-wrap;
+  @apply border border-gray-300 dark:border-gray-600 p-2 w-full overflow-hidden relative z-10 box-border shadow-none rounded-md flex flex-wrap;
 }
 
 .ts-wrapper.multi.has-items .ts-control {
@@ -159,7 +159,7 @@
 }
 
 .full .ts-control {
-  @apply bg-gray-50 dark:bg-gray-900 dark:text-gray-100;
+  @apply bg-gray-50 dark:bg-gray-800 dark:text-gray-100;
 }
 
 .disabled .ts-control,
@@ -177,7 +177,7 @@
 
 /* Multi-select Items */
 .ts-wrapper.multi .ts-control > div {
-  @apply cursor-pointer m-0 mr-1 my-1 px-2 py-1 bg-gray-100 text-gray-800 border-0 rounded-sm;
+  @apply cursor-pointer m-0 mr-1 my-1 px-2 py-1 bg-gray-100 text-gray-800 border-0 rounded-md;
 }
 
 .ts-wrapper.multi .ts-control > div.active {
@@ -242,7 +242,7 @@
 
 /* Dropdown Styles */
 .ts-dropdown {
-  @apply absolute top-full left-0 w-full z-50 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 mt-1 box-border rounded-sm shadow-sm overflow-hidden;
+  @apply absolute top-full left-0 w-full z-50 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 mt-1 box-border rounded-md shadow-sm overflow-hidden;
 }
 
 .ts-dropdown [data-selectable] {
@@ -343,24 +343,33 @@
   padding-right: 2.5rem;
 }
 
-/* Override ActiveAdmin's width: 100% on inputs inside Tom Select */
-.ts-wrapper.single .ts-control,
+/* Ensure single select inputs don't break layout */
 .ts-wrapper.single .ts-control input {
   width: auto !important;
 }
 
 /* ActiveAdmin Specific Overrides */
 .searchable_select.input .ts-wrapper {
-  min-width: 30%;
-  display: inline-block;
+  width: 100%;
+  display: block;
 }
 
 .searchable_select.input .ts-control {
   margin-top: 0;
+  width: 100% !important;
 }
 
 /* Filter Form Specific Styles */
 .filter_form .searchable_select.input .ts-wrapper {
+  width: 100%;
+}
+
+.filter_form .searchable_select.input .ts-control {
+  width: 100% !important;
+}
+
+/* Ensure full width for all searchable selects */
+.ts-wrapper {
   width: 100%;
 }
 
@@ -369,10 +378,7 @@
   display: none;
 }
 
-/* Dark Mode Support */
-.dark .ts-control {
-  @apply bg-gray-800 border-gray-600 text-gray-100;
-}
+/* Dark Mode Support - Already handled above, removing duplicate */
 
 .dark .ts-dropdown {
   @apply bg-gray-800 border-gray-600;
