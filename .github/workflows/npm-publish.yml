@@ -22,14 +22,17 @@ jobs:
 
       - name: Verify package files
         run: |
+          cd npm-package
           echo "Package files to be published:"
           npm pack --dry-run
           echo ""
-          echo "Package name: $(npm view . name)"
-          echo "Package version: $(npm view . version)"
+          echo "Package name: $(npm pkg get name | tr -d '"')"
+          echo "Package version: $(npm pkg get version | tr -d '"')"
 
       - name: Publish to NPM
-        run: npm publish --access public
+        run: |
+          cd npm-package
+          npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -37,7 +40,7 @@ jobs:
         run: |
           echo "### NPM Package Published! 🎉" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Package: \`@rocket-sensei/activeadmin-tom_select@$(npm view . version)\`" >> $GITHUB_STEP_SUMMARY
+          echo "Package: \`@rocket-sensei/activeadmin-tom_select@$(cd npm-package && npm pkg get version | tr -d '"')\`" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Install with:" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY

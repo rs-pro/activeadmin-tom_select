@@ -63,16 +63,19 @@ jobs:
             ${{ runner.os }}-playwright-
 
       - name: Install npm dependencies
-        run: npm install
+        run: |
+          cd npm-package
+          npm install
 
       - name: Build and install npm package
         run: |
           # Build the npm package
+          cd npm-package
           npm pack
           
           # Extract it to a temporary location
           mkdir -p /tmp/npm-package
-          tar -xzf rocket-sensei-activeadmin-tom_select-*.tgz -C /tmp/npm-package
+          tar -xzf *.tgz -C /tmp/npm-package
           
           # Update spec/internal to use the extracted package
           cd spec/internal
@@ -103,7 +106,9 @@ jobs:
 
       - name: Install Playwright browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install chromium
+        run: |
+          cd npm-package
+          npx playwright install chromium
 
       - name: Setup test database
         run: |
@@ -162,9 +167,14 @@ jobs:
         with:
           node-version: '22'
           cache: 'npm'
+          cache-dependency-path: npm-package/package-lock.json
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          cd npm-package
+          npm ci
 
       - name: Check package
-        run: npm pack --dry-run
+        run: |
+          cd npm-package
+          npm pack --dry-run
