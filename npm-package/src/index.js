@@ -148,6 +148,4 @@ export function setupAutoInit() {
       initSearchableSelects(selects);
     }
   });
-
-  console.log(`${MODULE_NAME} (Tom Select) initialized`);
 }

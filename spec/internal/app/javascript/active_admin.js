@@ -15,5 +15,3 @@ window.initSearchableSelects = initSearchableSelects;
 
 // Initialize the module after everything is loaded
 setupAutoInit();
-
-console.log('ActiveAdmin JS loaded with Tom Select');

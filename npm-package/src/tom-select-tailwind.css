@@ -28,7 +28,7 @@
 }
 
 .plugin-clear_button.single .clear-button {
-  @apply right-2;
+  right: 1.8rem;
 }
 
 .plugin-clear_button.focus.has-items .clear-button,
