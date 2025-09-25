@@ -10,7 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 0) do
+# Use appropriate version based on Rails version
+schema_version = Rails.version.start_with?('8') ? '8.0' : '7.1'
+ActiveRecord::Schema[schema_version].define(version: 0) do
   create_table 'active_admin_comments', force: :cascade do |t|
     t.string 'namespace'
     t.text 'body'

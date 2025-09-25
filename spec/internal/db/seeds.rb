@@ -50,7 +50,7 @@ rgb_colors_data = [
   { code: '#FFFFFF', description: 'White' }
 ]
 
-rgb_colors = rgb_colors_data.map do |color|
+rgb_colors_data.map do |color|
   RgbColor.find_or_create_by(code: color[:code]) do |rgb|
     rgb.description = color[:description]
   end
@@ -58,10 +58,7 @@ end
 
 # Create internal tag names
 10.times do |i|
-  InternalTagName.find_or_create_by(name: "Internal Tag #{i + 1}") do |tag|
-    tag.description = "Description for internal tag #{i + 1}"
-    tag.color_id = rgb_colors.sample.id
-  end
+  InternalTagName.find_or_create_by(name: "Internal Tag #{i + 1}")
 end
 
 # Create option types and values
@@ -72,7 +69,7 @@ option_types = []
 
   5.times do |j|
     OptionValue.find_or_create_by(
-      value: "Value #{j + 1} for #{option_type.name}",
+      name: "Value #{j + 1} for #{option_type.name}",
       option_type_id: option_type.id
     )
   end
@@ -114,7 +111,7 @@ end
 
 # Update posts with colors
 Post.all.each do |post|
-  post.update(color: colors.sample) if post.color_id.nil?
+  post.update(color_id: colors.sample.id) if post.color_id.nil?
 end
 
 # Create Tags
