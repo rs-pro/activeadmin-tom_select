@@ -12,7 +12,7 @@ RSpec.describe 'inline_ajax_options setting', type: :request do
       Category.create!(name: 'Music')
       Category.create!(name: 'Cooking')
 
-      ActiveAdmin::SearchableSelect.inline_ajax_options = true
+      ActiveAdmin::TomSelect.inline_ajax_options = true
       get '/admin/test_inline_ajax_posts/new'
 
       expect(response.body).to have_selector('.searchable-select-input option',

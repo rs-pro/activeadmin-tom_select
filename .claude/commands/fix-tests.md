@@ -142,7 +142,7 @@ The gem's JavaScript is in `app/assets/javascripts/active_admin/searchable_selec
 ### 4. Inline AJAX Options Mode
 For testing without real AJAX calls, enable inline mode:
 ```ruby
-ActiveAdmin::SearchableSelect.inline_ajax_options = true
+ActiveAdmin::TomSelect.inline_ajax_options = true
 ```
 This renders all options statically in the HTML.
 

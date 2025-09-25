@@ -1,5 +1,5 @@
 module ActiveAdmin
-  module SearchableSelect
+  module TomSelect
     # @api private
     module ResourceExtension
       def searchable_select_option_collections

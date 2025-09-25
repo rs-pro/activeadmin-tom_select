@@ -1,13 +1,15 @@
 require 'active_admin'
 
 module ActiveAdmin
-  module SearchableSelect
+  module TomSelect
     # @api private
     class Engine < ::Rails::Engine
       engine_name 'activeadmin_tom_select'
 
       initializer 'activeadmin_tom_select.setup' do
         ActiveSupport.on_load(:active_admin) do
+          require 'activeadmin/inputs/tom_select_input'
+          require 'activeadmin/inputs/filters/tom_select_input'
           require 'activeadmin/inputs/searchable_select_input'
           require 'activeadmin/inputs/filters/searchable_select_input'
         end

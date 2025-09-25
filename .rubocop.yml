@@ -61,7 +61,7 @@ Metrics/MethodLength:
 
 # Allow slightly longer modules for input extensions
 Metrics/ModuleLength:
-  Max: 110
+  Max: 115
 
 # Allow complex methods for generators
 Metrics/AbcSize:

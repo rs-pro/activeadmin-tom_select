@@ -1,6 +1,24 @@
 # CHANGELOG
 
-### Version 5.0.0 (Draft - Unreleased)
+### Version 4.1.1
+
+#### ✨ Improvements
+- **New Input Type**: Added `TomSelectInput` as the primary input class, with `SearchableSelectInput` now as a legacy alias for backward compatibility
+- **Module Renaming**: Renamed internal module from `ActiveAdmin::SearchableSelect` to `ActiveAdmin::TomSelect` for consistency
+- **NPM Package Name**: Changed npm package name from `@rocket-sensei/activeadmin-tom_select` to `activeadmin-tom_select` (without organization prefix)
+- **Style Fixes**:
+  - Fixed dark mode background colors to match ActiveAdmin inputs (#374151)
+  - Fixed dark mode text color visibility
+  - Fixed border radius to match ActiveAdmin design (rounded-md)
+  - Fixed full width styling for select inputs
+- **Documentation**: Updated README to show `as: :tom_select` usage (with backward compatibility note)
+
+#### 🔄 Migration
+- New code should use `f.input :field, as: :tom_select`
+- Legacy `as: :searchable_select` continues to work for backward compatibility
+- NPM install command: `npm install activeadmin-tom_select` (no organization prefix)
+
+### Version 4.1.0
 
 [Compare changes](https://github.com/glebtv/activeadmin-searchable_select/compare/1-8-stable...master)
 

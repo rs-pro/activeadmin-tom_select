@@ -137,7 +137,7 @@
 .ts-dropdown,
 .ts-control,
 .ts-control input {
-  color: #303030;
+  @apply text-gray-900 dark:text-gray-100;
   font-family: inherit;
   font-size: 13px;
   line-height: 18px;

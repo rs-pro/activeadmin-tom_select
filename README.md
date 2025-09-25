@@ -100,12 +100,12 @@ In `app/javascript/stylesheets/active_admin.scss`:
 ### Making Select Boxes Searchable
 
 To add search functionality to a select box, use the
-`:searchable_select` input type:
+`:tom_select` input type:
 
 ```ruby
    ActiveAdmin.register Product do
      form do |f|
-       f.input(:category, as: :searchable_select)
+       f.input(:category, as: :tom_select)
      end
    end
 ```
@@ -114,16 +114,18 @@ This also works for filters:
 
 ```ruby
    ActiveAdmin.register Product do
-     filter(:category, as: :searchable_select)
+     filter(:category, as: :tom_select)
    end
 ```
+
+**Note:** The legacy `:searchable_select` input type is still supported for backward compatibility but `:tom_select` is recommended for new code.
 
 By default, you can only select one at a time for a filter. You can
 specify a multi-select with:
 
 ```ruby
    ActiveAdmin.register Product do
-     filter(:category, as: :searchable_select, multiple: true)
+     filter(:category, as: :tom_select, multiple: true)
    end
 ```
 
@@ -137,7 +139,7 @@ once the user begins to type:
 
    ActiveAdmin.register Product do
      filter(:category,
-            as: :searchable_select,
+            as: :tom_select,
             ajax: true)
    end
 ```
@@ -209,7 +211,7 @@ based on the input attribute name, you can pass an object with a
    ActiveAdmin.register Product do
      form do |f|
        f.input(:additional_category,
-               as: :searchable_select,
+               as: :tom_select,
                ajax: { resource: Category })
      end
    end
@@ -238,7 +240,7 @@ To specify which collection to use, pass an object with a
    ActiveAdmin.register Product do
      form do |f|
         f.input(:category,
-                as: :searchable_select,
+                as: :tom_select,
                 ajax: { collection_name: :favorites })
      end
    end
@@ -288,7 +290,7 @@ You can pass additional parameters to the options endpoint:
    ActiveAdmin.register Product do
      form do |f|
         f.input(:category,
-                as: :searchable_select,
+                as: :tom_select,
                 ajax: {
                   params: {
                     some: 'value'
@@ -357,7 +359,7 @@ ActiveAdmin.register(Variant) do
   form do |f|
     ...
     f.input(:option_value,
-            as: :searchable_select,
+            as: :tom_select,
             ajax: {
               resource: OptionValue,
               path_params: {
@@ -386,7 +388,7 @@ for feature specs:
 ```ruby
   RSpec.configure do |config|
     config.before(:each) do |example|
-      ActiveAdmin::SearchableSelect.inline_ajax_options = (example.metadata[:type] == :feature)
+      ActiveAdmin::TomSelect.inline_ajax_options = (example.metadata[:type] == :feature)
     end
   end
 
@@ -404,7 +406,7 @@ has stopped typing before sending the request:
 ```ruby
    ...
    f.input(:category,
-           as: :searchable_select,
+           as: :tom_select,
            ajax: true,
            input_html: {
              data: {

@@ -10,11 +10,11 @@ RSpec.describe 'form input', type: :request do
   # So we'll test with that configuration
   describe 'with ajax option (from static admin file)' do
     before(:each) do
-      ActiveAdmin::SearchableSelect.inline_ajax_options = true
+      ActiveAdmin::TomSelect.inline_ajax_options = true
     end
 
     after(:each) do
-      ActiveAdmin::SearchableSelect.inline_ajax_options = false
+      ActiveAdmin::TomSelect.inline_ajax_options = false
     end
     it 'renders select input with searchable-select-input css class' do
       get "#{ADMIN_POSTS_PATH}/new"

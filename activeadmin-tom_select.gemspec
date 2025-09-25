@@ -4,7 +4,7 @@ require 'activeadmin/tom_select/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'activeadmin-tom_select'
-  spec.version       = ActiveAdmin::SearchableSelect::VERSION
+  spec.version       = ActiveAdmin::TomSelect::VERSION
   spec.summary       = 'Use Tom Select for searchable selects in Active Admin forms and filters.'
   spec.license       = 'MIT'
   spec.authors       = ['Rocket Sensei']
@@ -35,8 +35,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec_junit_formatter'
   spec.add_development_dependency 'simplecov'
 
-  spec.add_runtime_dependency 'activeadmin', '>= 3.0', '< 5'
-  spec.add_runtime_dependency 'ransack', '>= 1.8', '< 5'
+  spec.add_dependency 'activeadmin', '>= 3.0', '< 5'
+  spec.add_dependency 'ransack', '>= 1.8', '< 5'
 
   spec.metadata['rubygems_mfa_required'] = 'true'
   spec.metadata['allowed_push_host'] = 'https://rubygems.org'

@@ -5,12 +5,12 @@ require 'activeadmin/tom_select/resource_dsl_extension'
 require 'activeadmin/tom_select/select_input_extension'
 require 'activeadmin/tom_select/version'
 
-ActiveAdmin::Resource.include ActiveAdmin::SearchableSelect::ResourceExtension
-ActiveAdmin::ResourceDSL.include ActiveAdmin::SearchableSelect::ResourceDSLExtension
+ActiveAdmin::Resource.include ActiveAdmin::TomSelect::ResourceExtension
+ActiveAdmin::ResourceDSL.include ActiveAdmin::TomSelect::ResourceDSLExtension
 
 module ActiveAdmin
   # Global settings for searchable selects
-  module SearchableSelect
+  module TomSelect
     # Statically render all options into searchable selects with
     # `ajax` option set to true. This can be used to ease ui driven
     # integration testing.

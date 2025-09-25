@@ -1,7 +1,7 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-- `lib/`: Ruby engine, extensions, and DSL under `ActiveAdmin::SearchableSelect`.
+- `lib/`: Ruby engine, extensions, and DSL under `ActiveAdmin::TomSelect`.
 - `app/assets/`: Legacy Sprockets JS/CSS entry points for ActiveAdmin.
 - `src/`: ESM sources for the npm package (`searchable_select.js/.scss`).
 - `vendor/assets/javascripts/`: Importmap-friendly JS build.
@@ -19,7 +19,7 @@
 
 ## Coding Style & Naming Conventions
 - Ruby: 2-space indent, TargetRuby 3.0, max line length 100; follow RuboCop rules.
-- Names: Ruby files in `lib/activeadmin/searchable_select/` use snake_case; modules under `ActiveAdmin::SearchableSelect`.
+- Names: Ruby files in `lib/activeadmin/tom_select/` use snake_case; modules under `ActiveAdmin::TomSelect`.
 - JS: ESM modules in `src/`; keep imports explicit. Avoid global jQuery except for ActiveAdmin integration.
 
 ## Testing Guidelines

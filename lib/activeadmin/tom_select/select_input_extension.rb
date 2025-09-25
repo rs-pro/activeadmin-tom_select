@@ -1,5 +1,5 @@
 module ActiveAdmin
-  module SearchableSelect
+  module TomSelect
     # Mixin for searchable select inputs.
     #
     # Supports the same options as inputs of type `:select`.
@@ -40,9 +40,8 @@ module ActiveAdmin
       # @api private
       def input_html_options
         super.tap do |options|
-          options[:class] = [options[:class], 'searchable-select-input'].compact.join(' ')
-          options['data-ajax-url'] = ajax_url if ajax? && !SearchableSelect.inline_ajax_options
-          options['data-clearable'] = true if clearable?
+          add_css_class(options)
+          add_data_attributes(options)
         end
       end
 
@@ -50,7 +49,7 @@ module ActiveAdmin
       def collection_from_options
         return super unless options[:ajax]
 
-        collection = if SearchableSelect.inline_ajax_options
+        collection = if TomSelect.inline_ajax_options
                        all_options_collection
                      else
                        selected_value_collection
@@ -61,6 +60,16 @@ module ActiveAdmin
       end
 
       private
+
+      def add_css_class(options)
+        css_class = self.class.name.demodulize.underscore.dasherize
+        options[:class] = [options[:class], css_class].compact.join(' ')
+      end
+
+      def add_data_attributes(options)
+        options['data-ajax-url'] = ajax_url if ajax? && !TomSelect.inline_ajax_options
+        options['data-clearable'] = true if clearable?
+      end
 
       def ajax?
         options[:ajax].present?

@@ -1,5 +1,5 @@
 module ActiveAdmin
-  module SearchableSelect
+  module TomSelect
     # Mixin for ActiveAdmin resource DSL
     module ResourceDSLExtension
       # Define a collection action to serve options JSON data for

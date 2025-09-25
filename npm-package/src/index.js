@@ -3,7 +3,7 @@
 import TomSelect from 'tom-select';
 
 const MODULE_NAME = 'ActiveAdmin Searchable Select';
-const SELECTOR = '.searchable-select-input';
+const SELECTOR = '.searchable-select-input, .tom-select-input';
 const INITIALIZED_CLASS = 'tom-select-initialized';
 
 // Core initialization function
