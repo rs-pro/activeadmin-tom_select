@@ -26,7 +26,7 @@ module ActiveAdmin
     #
     # If the `ajax` option is present, the `collection` option is
     # ignored.
-    module SelectInputExtension
+    module SelectInputExtension # rubocop:disable Metrics/ModuleLength
       # @api private
       def to_html
         super
@@ -46,18 +46,31 @@ module ActiveAdmin
       end
 
       # @api private
+      # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
+      # rubocop:disable Metrics/PerceivedComplexity
       def collection_from_options
-        return super unless options[:ajax]
+        if ajax?
+          collection = if TomSelect.inline_ajax_options
+                         all_options_collection
+                       else
+                         selected_value_collection
+                       end
 
-        collection = if TomSelect.inline_ajax_options
-                       all_options_collection
-                     else
-                       selected_value_collection
-                     end
-
-        # Remove any empty/blank options since we use clear button instead
-        collection.reject { |item| item.first.to_s.strip.empty? && item.last.to_s.strip.empty? }
+          # Remove any empty/blank options since we use clear button instead
+          collection.reject { |item| item.first.to_s.strip.empty? && item.last.to_s.strip.empty? }
+        else
+          # When not using ajax, get the original collection
+          collection = super
+          # Add empty option at the beginning if not present to prevent auto-selection
+          if collection.present? && collection.none? { |item| item.last.to_s.strip.empty? }
+            [['', '']] + collection
+          else
+            collection
+          end
+        end
       end
+      # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
+      # rubocop:enable Metrics/PerceivedComplexity
 
       private
 
@@ -72,7 +85,8 @@ module ActiveAdmin
       end
 
       def ajax?
-        options[:ajax].present?
+        # Default to true unless explicitly set to false
+        options[:ajax] != false
       end
 
       def clearable?
@@ -81,7 +95,7 @@ module ActiveAdmin
       end
 
       def ajax_url
-        return unless options[:ajax]
+        return unless ajax?
 
         [ajax_resource.route_collection_path(path_params),
          '/',

@@ -1,5 +1,5 @@
 ActiveAdmin.register Variant do
-  belongs_to :product
+  belongs_to :product, optional: true
 
   permit_params :price, :option_value_id, :product_id
 
@@ -21,7 +21,7 @@ ActiveAdmin.register Variant do
               as: :searchable_select,
               ajax: {
                 resource: OptionValue,
-                path_params: {
+                params: {
                   option_type_id: f.object.product&.option_type_id
                 }
               })

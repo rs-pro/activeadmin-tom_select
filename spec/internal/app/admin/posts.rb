@@ -12,15 +12,15 @@ ActiveAdmin.register Post do
   end
 
   filter :title
-  filter :category, as: :searchable_select, ajax: true
-  filter :user, as: :searchable_select, ajax: true
+  filter :category, as: :searchable_select
+  filter :user, as: :searchable_select
 
   form do |f|
     f.inputs do
       f.input :title
       f.input :body
-      f.input :category, as: :searchable_select, ajax: true
-      f.input :user, as: :searchable_select, ajax: true
+      f.input :category, as: :searchable_select
+      f.input :user, as: :searchable_select
     end
     f.actions
   end
