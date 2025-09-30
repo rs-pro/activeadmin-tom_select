@@ -33,3 +33,4 @@
 # Code coverage reports
 /coverage/
 *.lcov
+rspec-results.xml
