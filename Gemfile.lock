@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    activeadmin-tom_select (4.1.1)
+    activeadmin-tom_select (4.1.2)
       activeadmin (>= 3.0, < 5)
       ransack (>= 1.8, < 5)
 
