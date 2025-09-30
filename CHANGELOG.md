@@ -1,5 +1,17 @@
 # CHANGELOG
 
+### Version 4.1.2
+
+#### 🐛 Bug Fixes
+- **SonarQube Integration**: Fixed coverage path issues preventing SonarQube from reading test coverage reports in CI
+- **SimpleCov Configuration**: Reverted to standard SimpleCov JSON formatter for better compatibility
+- **CI Workflow**: Improved coverage reporting by using absolute paths instead of relative paths
+
+#### 🔧 Technical Improvements
+- **Removed CodeCov**: Simplified CI by removing unused CodeCov integration (using SonarQube exclusively for coverage)
+- **SonarQube Configuration**: Updated `sonar-project.properties` to include npm-package in sources and exclude built assets
+- **Appraisal Updates**: Updated all Appraisal gemfiles to latest dependency versions
+
 ### Version 4.1.1
 
 #### ✨ Improvements
