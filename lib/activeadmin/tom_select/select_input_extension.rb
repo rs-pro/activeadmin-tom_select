@@ -144,7 +144,8 @@ module ActiveAdmin
           raise('The required ajax endpoint is missing. ' \
                 "Add `searchable_select_options` to the '#{model_name}' admin resource:\n\n  " \
                 "ActiveAdmin.register #{model_name} do\n    " \
-                "searchable_select_options  # No arguments needed - uses smart defaults!\n  " \
+                "searchable_select_options(scope: #{model_name},\n                               " \
+                "text_attribute: :name)  # or :title, :email, etc.\n  " \
                 "end\n\n" \
                 "Or disable ajax mode for this input:\n  " \
                 "f.input :#{method}, as: :searchable_select, ajax: false")

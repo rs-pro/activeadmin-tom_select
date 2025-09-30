@@ -4,7 +4,6 @@ module ActiveAdmin
     class OptionCollection
       def initialize(name, options)
         @name = name
-        @resource_class = options[:resource_class]
         @scope = extract_scope_option(options)
         @display_text = extract_display_text_option(options)
         @filter = extract_filter_option(options)
@@ -81,37 +80,28 @@ module ActiveAdmin
 
       def extract_scope_option(options)
         options.fetch(:scope) do
-          # Default to Model.all if resource_class is available
-          if @resource_class
-            @resource_class.all
-          else
-            raise('Missing option: scope. ' \
-                  'Pass the collection of items to render options for.')
-          end
+          raise('Missing option: scope. ' \
+                'Pass the collection of items to render options for.')
         end
       end
 
       def extract_display_text_option(options)
         options.fetch(:display_text) do
-          text_attribute = options.fetch(:text_attribute) { auto_detect_text_attribute }
+          text_attribute = options.fetch(:text_attribute) do
+            raise('Missing option: text_attribute. ' \
+                  'Pass the name of the attribute to use for display text.')
+          end
 
           ->(record) { record.send(text_attribute) }
         end
       end
 
-      def auto_detect_text_attribute
-        return nil unless @resource_class
-
-        # Try to auto-detect the best attribute to use for display
-        %w[name title email username].each do |attr|
-          return attr.to_sym if @resource_class.column_names.include?(attr)
-        end
-        :id
-      end
-
       def extract_filter_option(options)
         options.fetch(:filter) do
-          text_attribute = options.fetch(:text_attribute) { auto_detect_text_attribute }
+          text_attribute = options.fetch(:text_attribute) do
+            raise('Missing option: text_attribute. ' \
+                  'Pass the name of the attribute to use for filtering.')
+          end
 
           ->(term, scope) { scope.ransack("#{text_attribute}_cont" => term).result }
         end
