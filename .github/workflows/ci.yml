@@ -116,11 +116,12 @@ jobs:
       - name: Fix coverage paths for SonarQube
         if: matrix.ruby == '3.4' && matrix.gemfile == 'rails_7.x_active_admin_4.x'
         run: |
-          # SonarQube needs relative paths in coverage report
-          # Replace absolute paths with relative paths
+          # SonarQube runs in Docker container where workspace is /github/workspace
+          # Coverage has paths like /home/runner/work/activeadmin-tom_select/activeadmin-tom_select/
+          # Need to replace GitHub runner paths with Docker container paths
           if [ -f coverage/coverage.json ]; then
-            sed -i "s|$GITHUB_WORKSPACE/||g" coverage/coverage.json
-            echo "Coverage paths fixed for SonarQube"
+            sed -i "s|/home/runner/work/activeadmin-tom_select/activeadmin-tom_select/|/github/workspace/|g" coverage/coverage.json
+            echo "Coverage paths fixed for SonarQube Docker container"
           fi
 
       - name: SonarQube Scan
