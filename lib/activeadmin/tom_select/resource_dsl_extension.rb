@@ -44,6 +44,9 @@ module ActiveAdmin
       #   "pagination": { "more": "false" }
       # }
       def searchable_select_options(name: :all, **options)
+        # Pass the resource model class so OptionCollection can provide defaults
+        options[:resource_class] ||= config.resource_class if config.resource_class
+
         option_collection = OptionCollection.new(name, options)
         config.searchable_select_option_collections[name] = option_collection
 

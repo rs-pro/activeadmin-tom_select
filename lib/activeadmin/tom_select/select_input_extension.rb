@@ -31,10 +31,11 @@ module ActiveAdmin
       def to_html
         super
       rescue RuntimeError => e
-        # In development/test, display the error message
-        raise e unless Rails.env.development? || Rails.env.test?
-
-        template.content_tag(:div, e.message, class: 'searchable-select-error')
+        # Display helpful error message
+        error_html = e.message.gsub("\n", '<br>').html_safe
+        error_style = 'color: red; padding: 10px; background: #fee; ' \
+                      'border: 1px solid #fcc; border-radius: 4px; margin: 5px 0;'
+        template.content_tag(:div, error_html, class: 'searchable-select-error', style: error_style)
       end
 
       # @api private
@@ -135,12 +136,18 @@ module ActiveAdmin
         option_collection.scope(template, path_params.merge(ajax_params))
       end
 
-      def option_collection
+      def option_collection # rubocop:disable Metrics/MethodLength
         ajax_resource
           .searchable_select_option_collections
           .fetch(ajax_option_collection_name) do
-          raise("No option collection named '#{ajax_option_collection_name}' " \
-                "defined in '#{ajax_resource_class.name}' admin.")
+          model_name = ajax_resource_class.name
+          raise('The required ajax endpoint is missing. ' \
+                "Add `searchable_select_options` to the '#{model_name}' admin resource:\n\n  " \
+                "ActiveAdmin.register #{model_name} do\n    " \
+                "searchable_select_options  # No arguments needed - uses smart defaults!\n  " \
+                "end\n\n" \
+                "Or disable ajax mode for this input:\n  " \
+                "f.input :#{method}, as: :searchable_select, ajax: false")
         end
       end
 
