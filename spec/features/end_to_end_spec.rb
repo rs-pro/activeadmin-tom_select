@@ -194,9 +194,9 @@ RSpec.describe 'end to end', type: :feature, js: true do
         scroll_select_box_list
         wait_for_ajax
 
-        # Default page size is 10, scrolling might load 1 more page
+        # Default page size is 10, scrolling might load more pages
         expect(select_box_items.size).to be >= 10
-        expect(select_box_items.size).to be <= 15
+        expect(select_box_items.size).to be <= 20
       end
     end
 

@@ -38,9 +38,7 @@ RSpec.describe 'searchable select', type: :feature do
     end
 
     visit '/admin/test_error_post2s'
-    expect(page).to have_content(
-      "No option collection named 'nonexistent_collection' defined in 'Category' admin."
-    )
+    expect(page).to have_content('The required ajax endpoint is missing')
   end
 
   it 'shows helpful error message if ajax resource does not have an admin' do

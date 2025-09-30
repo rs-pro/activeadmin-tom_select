@@ -192,17 +192,19 @@ RSpec.describe 'searchable_select_options dsl', type: :request do
     expect(json_response).to include(results: array_including(a_hash_including(text: 'A post')))
   end
 
-  it 'fails with helpful message if scope option is missing' do
+  it 'works with auto-defaults when scope option is missing' do
+    # Should not raise error anymore - uses Model.all as default
     expect do
       ActiveAdminHelpers.setup do
         ActiveAdmin.register(Post) do
           searchable_select_options(text_attribute: :title)
         end
       end
-    end.to raise_error(/Missing option: scope/)
+    end.not_to raise_error
   end
 
-  it 'fails with helpful message if display_text are missing' do
+  it 'works with auto-defaults when display_text is missing' do
+    # Should not raise error anymore - auto-detects text attribute
     expect do
       ActiveAdminHelpers.setup do
         ActiveAdmin.register(Post) do
@@ -210,18 +212,19 @@ RSpec.describe 'searchable_select_options dsl', type: :request do
                                     filter: ->(_term, scope) { scope })
         end
       end
-    end.to raise_error(/Missing option: display_text/)
+    end.not_to raise_error
   end
 
-  it 'fails with helpful message if filter option is missing' do
+  it 'works with auto-defaults when filter option is missing' do
+    # Should not raise error anymore - uses text attribute for Ransack filter
     expect do
       ActiveAdminHelpers.setup do
         ActiveAdmin.register(Post) do
           searchable_select_options(scope: Post,
-                                    display_text: ->(_term, scope) { scope })
+                                    display_text: ->(record) { record.title }) # rubocop:disable Style/SymbolProc
         end
       end
-    end.to raise_error(/Missing option: filter/)
+    end.not_to raise_error
   end
 
   def json_response
