@@ -113,14 +113,6 @@ jobs:
         run: |
           bundle exec rspec --format progress --format RspecJunitFormatter --out rspec-results.xml
 
-      - name: Upload coverage to Codecov
-        if: matrix.ruby == '3.4' && matrix.gemfile == 'rails_7.x_active_admin_4.x'
-        uses: codecov/codecov-action@v5
-        with:
-          file: ./coverage/coverage.json
-          fail_ci_if_error: false
-          token: ${{ secrets.CODECOV_TOKEN }}
-      
       - name: SonarQube Scan
         if: matrix.ruby == '3.4' && matrix.gemfile == 'rails_7.x_active_admin_4.x' && github.event_name != 'pull_request'
         uses: sonarsource/sonarqube-scan-action@v3

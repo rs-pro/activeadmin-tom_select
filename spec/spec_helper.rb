@@ -4,16 +4,23 @@ begin
   require 'simplecov'
   require 'simplecov_json_formatter'
 
+  # Load custom formatter that generates relative paths
+  require_relative 'support/relative_path_json_formatter'
+
   SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new(
     [
       SimpleCov::Formatter::HTMLFormatter,
-      SimpleCov::Formatter::JSONFormatter
+      RelativePathJSONFormatter
     ]
   )
 
   SimpleCov.start do
     # Configure coverage directory
     coverage_dir 'coverage'
+
+    # Use relative paths in coverage reports for CI compatibility
+    # This ensures SonarQube can find files in different environments
+    root Dir.pwd
 
     # Add filters to exclude non-application code
     add_filter '/spec/'
