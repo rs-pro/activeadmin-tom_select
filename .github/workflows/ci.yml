@@ -113,6 +113,16 @@ jobs:
         run: |
           bundle exec rspec --format progress --format RspecJunitFormatter --out rspec-results.xml
 
+      - name: Fix coverage paths for SonarQube
+        if: matrix.ruby == '3.4' && matrix.gemfile == 'rails_7.x_active_admin_4.x'
+        run: |
+          # SonarQube needs relative paths in coverage report
+          # Replace absolute paths with relative paths
+          if [ -f coverage/coverage.json ]; then
+            sed -i "s|$GITHUB_WORKSPACE/||g" coverage/coverage.json
+            echo "Coverage paths fixed for SonarQube"
+          fi
+
       - name: SonarQube Scan
         if: matrix.ruby == '3.4' && matrix.gemfile == 'rails_7.x_active_admin_4.x' && github.event_name != 'pull_request'
         uses: sonarsource/sonarqube-scan-action@v3
