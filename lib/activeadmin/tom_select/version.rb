@@ -1,5 +1,5 @@
 module ActiveAdmin
   module TomSelect
-    VERSION = '4.1.2'.freeze
+    VERSION = '4.2.0.beta1'.freeze
   end
 end

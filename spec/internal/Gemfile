@@ -12,6 +12,7 @@ gem 'puma', '>= 5.0'
 gem 'jsbundling-rails'
 # Bundle and process CSS [https://github.com/rails/cssbundling-rails]
 gem 'cssbundling-rails'
+gem 'tailwindcss-rails', '~> 4.4.0'
 
 # ActiveAdmin and dependencies
 gem 'activeadmin', '~> 4.0.0.beta'

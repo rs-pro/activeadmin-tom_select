@@ -12,10 +12,9 @@
     "watch": "npm run watch:js"
   },
   "dependencies": {
-    "@activeadmin/activeadmin": "^4.0.0-beta16",
+    "@activeadmin/activeadmin": "^4.0.0-beta19",
     "@rails/ujs": "^7.1.400",
     "activeadmin-tom_select": "file:../../npm-package",
-    "tailwindcss": "^3.4.17",
     "tom-select": "^2.4.3"
   }
 }

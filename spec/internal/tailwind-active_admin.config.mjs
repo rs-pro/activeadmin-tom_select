@@ -1,9 +1,11 @@
-const execSync = require("node:child_process").execSync;
+import { execSync } from "child_process";
+import activeAdminPlugin from "@activeadmin/activeadmin/plugin";
+
 const activeAdminPath = execSync("bundle show activeadmin", {
-  encoding: "utf-8",
+  encoding: "utf-8"
 }).trim();
 
-module.exports = {
+export default {
   content: [
     `${activeAdminPath}/vendor/javascript/flowbite.js`,
     `${activeAdminPath}/plugin.js`,
@@ -12,7 +14,10 @@ module.exports = {
     "./app/views/active_admin/**/*.{arb,erb,html,rb}",
     "./app/views/admin/**/*.{arb,erb,html,rb}",
     "./app/views/layouts/active_admin*.{erb,html}",
+    "./app/javascript/**/*.js",
     "./app/assets/controllers/active_admin/**/*.js",
+    "../../npm-package/src/**/*.{js,css}"
   ],
-  darkMode: "selector"
+  darkMode: "selector",
+  plugins: [activeAdminPlugin]
 };

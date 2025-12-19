@@ -8,12 +8,16 @@ namespace :active_admin do
     # Ensure builds directory exists
     FileUtils.mkdir_p(File.join(root, 'app/assets/builds'))
 
+    # Build Active Admin JavaScript bundle
+    system('node', File.join(root, 'esbuild.config.js'), exception: true)
+
+    tailwind_cli = File.join(root, 'bin/tailwindcss')
+
     # Build with Tailwind CLI
     command = [
-      'npx', 'tailwindcss',
+      tailwind_cli,
       '-i', File.join(root, 'app/assets/stylesheets/active_admin.tailwind.css'),
       '-o', File.join(root, 'app/assets/builds/active_admin.css'),
-      '-c', File.join(root, 'tailwind.config.js'),
       '-m'
     ]
 
@@ -26,13 +30,14 @@ namespace :active_admin do
   task :watch do
     root = File.expand_path('../../', __dir__)
 
+    tailwind_cli = File.join(root, 'bin/tailwindcss')
+
     # Watch for changes
     command = [
-      'npx', 'tailwindcss',
+      tailwind_cli,
       '--watch',
       '-i', File.join(root, 'app/assets/stylesheets/active_admin.tailwind.css'),
       '-o', File.join(root, 'app/assets/builds/active_admin.css'),
-      '-c', File.join(root, 'tailwind.config.js'),
       '-m'
     ]
 
