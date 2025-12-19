@@ -33,8 +33,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop-rspec', '~> 3.0'
 
   spec.add_development_dependency 'rspec_junit_formatter'
-  spec.add_development_dependency 'simplecov'
   spec.add_development_dependency 'semmy', '~> 1.1'
+  spec.add_development_dependency 'simplecov'
 
   spec.add_dependency 'activeadmin', '>= 3.0', '< 5'
   spec.add_dependency 'ransack', '>= 1.8', '< 5'
