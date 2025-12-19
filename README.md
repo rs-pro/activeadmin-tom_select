@@ -80,7 +80,7 @@ Import stylesheets and require javascripts:
 Add to `package.json`:
 ```json
 "dependencies": {
-  "activeadmin-tom_select": "^4.1.0"
+  "activeadmin-tom_select": "^4.2.0-beta1"
 }
 ```
 
