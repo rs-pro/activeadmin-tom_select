@@ -14,7 +14,7 @@
   "dependencies": {
     "@activeadmin/activeadmin": "^4.0.0-beta19",
     "@rails/ujs": "^7.1.400",
-    "activeadmin-tom_select": "file:../../npm-package",
+    "activeadmin-tom_select": "file:../../../../tmp/npm-package/package",
     "tom-select": "^2.4.3"
   }
 }
