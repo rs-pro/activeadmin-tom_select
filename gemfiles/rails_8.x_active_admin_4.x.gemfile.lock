@@ -196,7 +196,6 @@ GEM
       mime-types-data (~> 3.2025, >= 3.2025.0507)
     mime-types-data (3.2025.0924)
     mini_mime (1.1.5)
-    mini_portile2 (2.8.9)
     minitest (6.0.0)
       prism (~> 1.5)
     net-imap (0.6.2)
@@ -352,8 +351,6 @@ GEM
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.13.2)
     simplecov_json_formatter (0.1.4)
-    sqlite3 (2.8.1)
-      mini_portile2 (~> 2.8.0)
     sqlite3 (2.8.1-aarch64-linux-gnu)
     sqlite3 (2.8.1-aarch64-linux-musl)
     sqlite3 (2.8.1-arm-linux-gnu)
@@ -391,6 +388,7 @@ PLATFORMS
   arm-linux-musl
   arm64-darwin
   x86_64-darwin
+  x86_64-linux
   x86_64-linux-gnu
   x86_64-linux-musl
 
