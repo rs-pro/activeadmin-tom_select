@@ -34,3 +34,6 @@
 /coverage/
 *.lcov
 rspec-results.xml
+
+# Playwright browsers cache (act, CI)
+ms-playwright/
