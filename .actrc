@@ -14,6 +14,8 @@
 --pull=false
 
 # Bind working directory for better performance with local files
+# Note: With --bind, SQLite may have locking issues with parallel jobs.
+# Run with '-j 1' or '--jobs 1' to serialize jobs if needed.
 --bind
 
 # Use host network for faster downloads and to avoid network issues

@@ -23,6 +23,8 @@ jobs:
       BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/${{ matrix.gemfile }}.gemfile
       RAILS_ENV: test
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/ms-playwright
+      # Unique database suffix for parallel test execution
+      GITHUB_JOB: test-ruby${{ matrix.ruby }}-${{ matrix.gemfile }}
 
     steps:
       - uses: actions/checkout@v5
