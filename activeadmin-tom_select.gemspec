@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'database_cleaner-active_record', '~> 2.1'
   spec.add_development_dependency 'rake'
   spec.add_development_dependency 'rspec-rails', '~> 6.0'
-  spec.add_development_dependency 'sqlite3', '~> 2.1'
+  spec.add_development_dependency 'sqlite3', '~> 2.9'
 
   spec.add_development_dependency 'capybara', '~> 3.39'
   spec.add_development_dependency 'capybara-playwright-driver', '~> 0.5'
