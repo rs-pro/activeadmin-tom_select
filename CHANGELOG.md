@@ -1,5 +1,21 @@
 # CHANGELOG
 
+### Version 4.2.0.beta3
+
+#### 🔄 Dependencies
+- **ActiveAdmin Update**: Updated ActiveAdmin from 4.0.0.beta19 to 4.0.0.beta20
+  - Now requires Rails 7.2+ (dropped support for Rails 7.0 and 7.1)
+  - Added Ruby 4.0 to CI test matrix
+- **Appraisal Updates**: Updated Appraisal gemfiles to use Rails 7.2 and ActiveAdmin 4.0.0.beta20
+
+#### 📚 Documentation
+- Added comprehensive ActiveAdmin v4.0.0 beta changelog to `docs/activeadmin-4-changelog.md`
+  - Includes all changes from beta1 through beta20
+  - Documents breaking changes, new features, and migration path
+
+#### 🔧 Technical Improvements
+- **CI Workflow**: Added Ruby 4.0 to test matrix for future compatibility
+
 ### Version 4.1.2
 
 #### 🐛 Bug Fixes

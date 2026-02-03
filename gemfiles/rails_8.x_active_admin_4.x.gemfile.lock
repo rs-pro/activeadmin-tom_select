@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    activeadmin-tom_select (4.2.0.beta2)
+    activeadmin-tom_select (4.2.0.beta3)
       activeadmin (>= 3.0, < 5)
       ransack (>= 1.8, < 5)
 
@@ -54,14 +54,14 @@ GEM
       erubi (~> 1.11)
       rails-dom-testing (~> 2.2)
       rails-html-sanitizer (~> 1.6)
-    activeadmin (4.0.0.beta19)
+    activeadmin (4.0.0.beta20)
       arbre (~> 2.0)
       csv
       formtastic (>= 5.0)
       formtastic_i18n (>= 0.7)
       inherited_resources (~> 2.0)
       kaminari (>= 1.2.1)
-      railties (>= 7.0)
+      railties (>= 7.2)
       ransack (>= 4.0)
     activejob (8.1.1)
       activesupport (= 8.1.1)
@@ -360,16 +360,6 @@ GEM
     sqlite3 (2.8.1-x86_64-linux-gnu)
     sqlite3 (2.8.1-x86_64-linux-musl)
     stringio (3.2.0)
-    tailwindcss-rails (4.4.0)
-      railties (>= 7.0.0)
-      tailwindcss-ruby (~> 4.0)
-    tailwindcss-ruby (4.1.18)
-    tailwindcss-ruby (4.1.18-aarch64-linux-gnu)
-    tailwindcss-ruby (4.1.18-aarch64-linux-musl)
-    tailwindcss-ruby (4.1.18-arm64-darwin)
-    tailwindcss-ruby (4.1.18-x86_64-darwin)
-    tailwindcss-ruby (4.1.18-x86_64-linux-gnu)
-    tailwindcss-ruby (4.1.18-x86_64-linux-musl)
     thor (1.4.0)
     timeout (0.6.0)
     tsort (0.2.0)
@@ -402,7 +392,7 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
-  activeadmin (= 4.0.0.beta19)
+  activeadmin (= 4.0.0.beta20)
   activeadmin-tom_select!
   appraisal (~> 2.2)
   bundler (>= 1.5, < 3)
@@ -423,7 +413,6 @@ DEPENDENCIES
   semmy (~> 1.1)
   simplecov
   sqlite3 (~> 2.1)
-  tailwindcss-rails (~> 4.4.0)
 
 BUNDLED WITH
    2.6.7

@@ -1,6 +1,6 @@
 # Setting Up an ActiveAdmin 4 Extension Gem (Combustion)
 
-This guide mirrors the working setup used in this repo: ActiveAdmin 4.0.0.beta19 + Tailwind CSS v4 + Combustion test app.
+This guide mirrors the working setup used in this repo: ActiveAdmin 4.0.0.beta20 + Tailwind CSS v4 + Combustion test app.
 
 ## 1. Gem Dependencies
 
@@ -10,7 +10,7 @@ source "https://rubygems.org"
 gemspec
 
 gem "rails", "~> 7.2"
-gem "activeadmin", "4.0.0.beta19"
+gem "activeadmin", "4.0.0.beta20"
 gem "sqlite3"
 gem "puma"
 
@@ -151,19 +151,31 @@ import "your_gem";
     "build": "npm run build:js && npm run build:css"
   },
   "devDependencies": {
-    "@activeadmin/activeadmin": "^4.0.0-beta19",
+    "@activeadmin/activeadmin": "^4.0.0-beta20",
     "esbuild": "^0.24.2"
   }
 }
 ```
 
-## 11. ActiveAdmin 4.0.0.beta19 Notes (from upgrade guide)
+## 11. ActiveAdmin 4.0.0.beta20 Notes (from upgrade guide)
 
+**Version Requirements:**
+- Rails 7.2+ (Rails 7.0 and 7.1 are no longer supported)
+- Ruby 3.2+ (Ruby 3.0 and 3.1 are no longer supported)
+
+**Breaking Changes from earlier v4 betas:**
 - `_site_header.html.erb` container class changed from `sticky` to `fixed`.
 - `active_admin.html.erb` adds the `pt-16` utility class.
 - Tailwind v4 requires `@import "tailwindcss"` + `@config`.
-- jQuery and jQuery UI removed; `columns` and `tabs` removed.
+- jQuery and jQuery UI removed; `columns` and `tabs` components removed.
 - Replace `default_main_content` with `render "show_default"`.
 - Replace `as: :datepicker` with `as: :date_picker`.
 - Replace `active_admin_comments` with `active_admin_comments_for(resource)`.
 - Replace `attributes_table` with `attributes_table_for(resource)` in sidebars.
+
+**New in beta20:**
+- Parent menu item linking support
+- Improved comments pagination styling
+- Better vertical spacing for has-many forms
+- Pointer cursor restored on eligible buttons
+- Various accessibility improvements

@@ -1,6 +1,6 @@
 # Migration Guide: ActiveAdmin Tom Select (Tailwind v4)
 
-This guide helps you migrate from `activeadmin-searchable_select` to `activeadmin-tom_select` on ActiveAdmin 4.0.0.beta19 with Tailwind CSS v4.
+This guide helps you migrate from `activeadmin-searchable_select` to `activeadmin-tom_select` on ActiveAdmin 4.0.0.beta20 with Tailwind CSS v4.
 
 ## Quick Start (New Installation)
 
@@ -15,9 +15,10 @@ npm install activeadmin-tom_select tom-select
 ## Why Update?
 
 - Tom Select replaces Select2 (no jQuery)
-- ActiveAdmin 4.0.0.beta19 compatible
+- ActiveAdmin 4.0.0.beta20 compatible (requires Rails 7.2+)
 - Tailwind CSS v4 styles included
 - Auto-init helpers for searchable selects
+- Ruby 3.2+ and 4.0 compatible
 
 ## 1. Update Gemfile
 
@@ -48,7 +49,7 @@ import { setupAutoInit } from "activeadmin-tom_select";
 setupAutoInit();
 ```
 
-## 4. Tailwind CSS Build (ActiveAdmin 4.0.0.beta19)
+## 4. Tailwind CSS Build (ActiveAdmin 4.0.0.beta20)
 
 ### 4.1 Tailwind Input
 
@@ -177,13 +178,25 @@ end
 - Ensure `window.TomSelect` is set.
 - Ensure `setupAutoInit()` runs.
 
-## ActiveAdmin 4.0.0.beta19 Notes (from upgrade guide)
+## ActiveAdmin 4.0.0.beta20 Notes (from upgrade guide)
 
+**Version Requirements:**
+- Rails 7.2+ (Rails 7.0 and 7.1 are no longer supported)
+- Ruby 3.2+ (Ruby 3.0 and 3.1 are no longer supported)
+
+**Breaking Changes from earlier v4 betas:**
 - `_site_header.html.erb` container class changed from `sticky` to `fixed`.
 - `active_admin.html.erb` adds the `pt-16` utility class.
 - Tailwind v4 requires `@import "tailwindcss"` + `@config`.
-- jQuery and jQuery UI removed; `columns` and `tabs` removed.
+- jQuery and jQuery UI removed; `columns` and `tabs` components removed.
 - Replace `default_main_content` with `render "show_default"`.
 - Replace `as: :datepicker` with `as: :date_picker`.
 - Replace `active_admin_comments` with `active_admin_comments_for(resource)`.
 - Replace `attributes_table` with `attributes_table_for(resource)` in sidebars.
+
+**New in beta20:**
+- Parent menu item linking support
+- Improved comments pagination styling
+- Better vertical spacing for has-many forms
+- Pointer cursor restored on eligible buttons
+- Various accessibility improvements

@@ -1,6 +1,6 @@
 # Setting Up a Standalone ActiveAdmin 4 App (Tailwind v4)
 
-This guide creates a new Rails app with ActiveAdmin 4.0.0.beta19, Tailwind CSS v4, and optional AA extension gems.
+This guide creates a new Rails app with ActiveAdmin 4.0.0.beta20, Tailwind CSS v4, and optional AA extension gems.
 
 ## 1. Create Rails App
 
@@ -13,7 +13,7 @@ cd my_admin_app
 
 ```ruby
 # ActiveAdmin 4 beta
-gem "activeadmin", "4.0.0.beta19"
+gem "activeadmin", "4.0.0.beta20"
 
 # Required by ActiveAdmin 4
 gem "importmap-rails", "~> 2.0"
@@ -105,7 +105,7 @@ import "@activeadmin/activeadmin";
 
 ```bash
 bundle binstubs tailwindcss-ruby --force
-npm install @activeadmin/activeadmin@^4.0.0-beta19
+npm install @activeadmin/activeadmin@^4.0.0-beta20
 npm run build
 ```
 
@@ -117,13 +117,25 @@ rails server
 
 Visit http://localhost:3000/admin
 
-## ActiveAdmin 4.0.0.beta19 Notes (from upgrade guide)
+## ActiveAdmin 4.0.0.beta20 Notes (from upgrade guide)
 
+**Version Requirements:**
+- Rails 7.2+ (Rails 7.0 and 7.1 are no longer supported)
+- Ruby 3.2+ (Ruby 3.0 and 3.1 are no longer supported)
+
+**Breaking Changes from earlier v4 betas:**
 - `_site_header.html.erb` container class changed from `sticky` to `fixed`.
 - `active_admin.html.erb` adds the `pt-16` utility class.
 - Tailwind v4 requires `@import "tailwindcss"` + `@config`.
-- jQuery and jQuery UI removed; `columns` and `tabs` removed.
+- jQuery and jQuery UI removed; `columns` and `tabs` components removed.
 - Replace `default_main_content` with `render "show_default"`.
 - Replace `as: :datepicker` with `as: :date_picker`.
 - Replace `active_admin_comments` with `active_admin_comments_for(resource)`.
 - Replace `attributes_table` with `attributes_table_for(resource)` in sidebars.
+
+**New in beta20:**
+- Parent menu item linking support
+- Improved comments pagination styling
+- Better vertical spacing for has-many forms
+- Pointer cursor restored on eligible buttons
+- Various accessibility improvements
