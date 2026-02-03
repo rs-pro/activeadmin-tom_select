@@ -20,7 +20,7 @@ test:
   <<: *default
   # Use unique database per job for parallel testing (act, CI)
   # GITHUB_JOB is set by GitHub Actions, ACT_TEST_ID for local act testing
-  database: storage/test<%= ENV.fetch('GITHUB_JOB') { ENV.fetch('ACT_TEST_ID', '') %>.sqlite3 %>
+  database: storage/test<%= ENV.fetch('GITHUB_JOB') { ENV.fetch('ACT_TEST_ID', '') } %>.sqlite3
 
 
 # SQLite3 write its data on the local filesystem, as such it requires
