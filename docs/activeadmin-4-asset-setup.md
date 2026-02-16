@@ -153,9 +153,39 @@ From ActiveAdmin's upgrade guide:
 - Run `bundle binstubs tailwindcss-ruby --force`.
 - Confirm `bin/tailwindcss` exists.
 
+### CSS Import Fails: "Failed to find 'activeadmin-tom_select/css'"
+
+This error occurs when using Tailwind CSS v3 with `npx tailwindcss` CLI because postcss-import doesn't support npm subpath exports.
+
+**Solution 1: Configure postcss-import to resolve from node_modules (recommended)**
+
+Create `postcss.config.js` in your project root:
+
+```javascript
+module.exports = {
+  plugins: {
+    'postcss-import': {
+      path: ['node_modules']
+    },
+    'tailwindcss': {},
+    'autoprefixer': {},
+  }
+}
+```
+
+Then use clean imports in your CSS:
+
+```css
+@import "activeadmin-tom_select/src/tom-select-tailwind.css";
+```
+
+**For Tailwind v4:** Use `@import "activeadmin-tom_select/css"` with the `@config` directive.
+
 ### ActiveAdmin styles not loading
 - Verify `app/assets/builds/active_admin.css` exists.
-- Check that `active_admin.tailwind.css` imports `activeadmin-tom_select/css`.
+- Check that CSS imports are correct (see above).
+- Run `npm install` to ensure packages are installed.
+- Ensure `postcss.config.js` exists if using Tailwind v3.
 
 ### Tom Select not initializing
 - Verify `window.TomSelect` in the console.

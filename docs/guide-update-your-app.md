@@ -170,13 +170,58 @@ end
 
 ## Troubleshooting
 
+### CSS Import Fails: "Failed to find 'activeadmin-tom_select/css'"
+
+This error occurs when using Tailwind CSS v3 with `npx tailwindcss` CLI because postcss-import doesn't support npm subpath exports.
+
+**Solution 1: Configure postcss-import to resolve from node_modules (recommended)**
+
+Create `postcss.config.js` in your project root:
+
+```javascript
+module.exports = {
+  plugins: {
+    'postcss-import': {
+      path: ['node_modules']
+    },
+    'tailwindcss': {},
+    'autoprefixer': {},
+  }
+}
+```
+
+Then use clean imports in your CSS:
+
+```css
+/* app/assets/stylesheets/active_admin.tailwind.css */
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@import "activeadmin-tom_select/src/tom-select-tailwind.css";
+```
+
+**Solution 2: Tailwind CSS v4 with bin/tailwindcss**
+
+Tailwind v4's CLI has better module resolution. Use the `@config` directive:
+
+```css
+@import "tailwindcss";
+@config "../../../tailwind-active_admin.config.mjs";
+
+@import "activeadmin-tom_select/css";
+```
+
 ### Styles missing
 - Confirm `app/assets/builds/active_admin.css` exists.
-- Verify `active_admin.tailwind.css` imports `activeadmin-tom_select/css`.
+- Verify `active_admin.tailwind.css` imports are correct (see above).
+- Run `npm install` to ensure packages are installed.
+- Ensure `postcss.config.js` exists if using Tailwind v3.
 
 ### Tom Select not initializing
 - Ensure `window.TomSelect` is set.
 - Ensure `setupAutoInit()` runs.
+- Check browser console for JavaScript errors.
 
 ## ActiveAdmin 4.0.0.beta20 Notes (from upgrade guide)
 
