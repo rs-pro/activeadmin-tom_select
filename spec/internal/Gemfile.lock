@@ -1,7 +1,7 @@
 PATH
   remote: ../..
   specs:
-    activeadmin-tom_select (4.2.0.beta1)
+    activeadmin-tom_select (4.2.0.beta4)
       activeadmin (>= 3.0, < 5)
       ransack (>= 1.8, < 5)
 
@@ -186,6 +186,7 @@ GEM
       mime-types-data (~> 3.2025, >= 3.2025.0507)
     mime-types-data (3.2025.0924)
     mini_mime (1.1.5)
+    mini_portile2 (2.8.9)
     minitest (6.0.0)
       prism (~> 1.5)
     net-imap (0.6.2)
@@ -198,6 +199,9 @@ GEM
     net-smtp (0.5.1)
       net-protocol
     nio4r (2.7.5)
+    nokogiri (1.18.10)
+      mini_portile2 (~> 2.8.2)
+      racc (~> 1.4)
     nokogiri (1.18.10-aarch64-linux-gnu)
       racc (~> 1.4)
     nokogiri (1.18.10-aarch64-linux-musl)
@@ -304,6 +308,8 @@ GEM
       rspec-support (~> 3.13)
     rspec-support (3.13.6)
     securerandom (0.4.1)
+    sqlite3 (2.8.1)
+      mini_portile2 (~> 2.8.0)
     sqlite3 (2.8.1-aarch64-linux-gnu)
     sqlite3 (2.8.1-aarch64-linux-musl)
     sqlite3 (2.8.1-arm-linux-gnu)

@@ -42,9 +42,10 @@
   resolved "https://registry.npmjs.org/@rails/ujs/-/ujs-7.1.2.tgz"
   integrity sha512-c5x02djEKEVVE4qfN4XgElJS4biM0xxtIVpcJ0ZHLK116U19rowTtmD0AJ/RCb3Xaewa4GPIWLlwgeC0dCQqzw==
 
-"activeadmin-tom_select@file:../../../../tmp/npm-package/package":
+"activeadmin-tom_select@file:../../npm-package/activeadmin-tom_select-4.2.0-beta3.tgz":
   version "4.2.0-beta3"
-  resolved "file:../../../../tmp/npm-package/package"
+  resolved "file:../../npm-package/activeadmin-tom_select-4.2.0-beta3.tgz"
+  integrity sha512-YmK4GbnnuPTxnyStj670S3Um5stNjK2G1TiU/81ubuBl9QZaKuZ77WRAm1UQHQaW4CkBpXwvPB4MonsReU2Vaw==
 
 esbuild@^0.25.9:
   version "0.25.9"
