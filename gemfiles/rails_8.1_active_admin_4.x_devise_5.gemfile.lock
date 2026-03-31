@@ -407,7 +407,7 @@ DEPENDENCIES
   activeadmin (= 4.0.0.beta20)
   activeadmin-tom_select!
   appraisal (~> 2.2)
-  bundler (>= 1.5, < 3)
+  bundler (>= 1.5)
   capybara (~> 3.39)
   capybara-playwright-driver (~> 0.5)
   combustion (~> 1.5)
