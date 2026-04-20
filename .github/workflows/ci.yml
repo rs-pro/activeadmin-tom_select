@@ -52,7 +52,7 @@ jobs:
       - name: Get Playwright version
         id: playwright-version
         run: |
-          PLAYWRIGHT_VERSION=$(bundle exec playwright --version | sed 's/Version //')
+          PLAYWRIGHT_VERSION=chromium
           echo "version=$PLAYWRIGHT_VERSION" >> $GITHUB_OUTPUT
 
       # Cache Playwright browsers
@@ -95,7 +95,8 @@ jobs:
       - name: Install Playwright browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: |
-          bundle exec playwright install chromium
+          cd spec/internal
+          npx playwright install chromium
 
       - name: Setup test database
         run: |
