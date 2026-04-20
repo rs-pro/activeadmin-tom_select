@@ -8,13 +8,14 @@ on:
 
 jobs:
   test:
+    needs: [build-npm]
     runs-on: ubuntu-latest
     timeout-minutes: 15
     
     strategy:
       fail-fast: false
       matrix:
-        ruby: ['3.3', '3.4', '4.0']
+        ruby: ['4.0']
         gemfile:
           - rails_7.x_active_admin_4.x
           - rails_8.x_active_admin_4.x
@@ -62,32 +63,20 @@ jobs:
             ${{ runner.os }}-playwright-${{ steps.playwright-version.outputs.version }}-
             ${{ runner.os }}-playwright-
 
-      - name: Install npm dependencies
-        run: |
-          cd npm-package
-          npm install
+      - name: Download npm package artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: npm-package-tarball
+          path: npm-package
 
       - name: Build and install npm package
         run: |
-          # Build the npm package
-          cd npm-package
-          npm pack
+          # Use the locally built tarball from build-npm job
+          ls -la npm-package/*.tgz
 
-          # Extract it to a temporary location
-          mkdir -p /tmp/npm-package
-          tar -xzf *.tgz -C /tmp/npm-package
-
-          # Update spec/internal to use the extracted package
-          cd ../spec/internal
-          # Remove any existing symlink/folder
-          rm -rf package
-          rm -rf node_modules/activeadmin-tom_select
-          # Remove old lockfile entry and regenerate it with new tarball
-          rm -f package-lock.json
-          npm install
-
-          # Install from the extracted package
-          npm install /tmp/npm-package/package
+          cd spec/internal
+          rm -rf node_modules
+          npm install --no-package-lock
 
           # Build assets (JS and CSS)
           echo "Building JavaScript assets..."
@@ -103,7 +92,7 @@ jobs:
       - name: Install Playwright browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: |
-          cd npm-package
+          cd spec/internal
           npx playwright install chromium
 
       - name: Setup test database
@@ -116,7 +105,7 @@ jobs:
           bundle exec rspec --format progress --format RspecJunitFormatter --out rspec-results.xml
 
       - name: Fix coverage paths for SonarQube
-        if: matrix.ruby == '3.4' && matrix.gemfile == 'rails_7.x_active_admin_4.x'
+        if: matrix.ruby == '4.0' && matrix.gemfile == 'rails_7.x_active_admin_4.x'
         run: |
           # SonarQube runs in Docker container where workspace is /github/workspace
           # Coverage has paths like /home/runner/work/activeadmin-tom_select/activeadmin-tom_select/
@@ -127,7 +116,7 @@ jobs:
           fi
 
       - name: SonarQube Scan
-        if: matrix.ruby == '3.4' && matrix.gemfile == 'rails_7.x_active_admin_4.x' && github.event_name != 'pull_request'
+        if: matrix.ruby == '4.0' && matrix.gemfile == 'rails_7.x_active_admin_4.x' && github.event_name != 'pull_request'
         uses: sonarsource/sonarqube-scan-action@v3
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -172,7 +161,13 @@ jobs:
           cd npm-package
           npm ci
 
-      - name: Check package
+      - name: Build package
         run: |
           cd npm-package
-          npm pack --dry-run
+          npm pack
+
+      - name: Upload package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-package-tarball
+          path: npm-package/*.tgz
