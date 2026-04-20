@@ -2,6 +2,9 @@
 .bundle
 .ruby-version
 .ruby-gemset
+.npmrc
+npm-package/.npmrc
+spec/internal/.npmrc
 /pkg/*
 /spec/internal/tmp
 /spec/internal/db/*.sqlite
