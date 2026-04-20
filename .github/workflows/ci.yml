@@ -82,6 +82,8 @@ jobs:
           # Remove any existing symlink/folder
           rm -rf package
           rm -rf node_modules/activeadmin-tom_select
+          # Remove old lockfile entry and regenerate it with new tarball
+          rm -f package-lock.json
           npm install
 
           # Install from the extracted package
@@ -139,14 +141,14 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v5
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.4'
+          ruby-version: '4.0'
           bundler-cache: true
 
       - name: Run RuboCop
