@@ -52,7 +52,7 @@ jobs:
       - name: Get Playwright version
         id: playwright-version
         run: |
-          PLAYWRIGHT_VERSION=chromium
+          PLAYWRIGHT_VERSION=$(node -e "console.log(require('./spec/internal/package.json').devDependencies.playwright || 'chromium')")
           echo "version=$PLAYWRIGHT_VERSION" >> $GITHUB_OUTPUT
 
       # Cache Playwright browsers
@@ -61,9 +61,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ github.workspace }}/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ steps.playwright-version.outputs.version }}-${{ hashFiles('**/package-lock.json', '**/yarn.lock', '**/pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-playwright-${{ steps.playwright-version.outputs.version }}
           restore-keys: |
-            ${{ runner.os }}-playwright-${{ steps.playwright-version.outputs.version }}-
+            ${{ runner.os }}-playwright-${{ steps.playwright-version.outputs.version }}
             ${{ runner.os }}-playwright-
 
       - name: Download npm package artifact
