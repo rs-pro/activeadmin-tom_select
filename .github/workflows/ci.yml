@@ -42,21 +42,6 @@ jobs:
           node-version: '22'
           registry-url: 'https://registry.npmjs.org'
 
-      # Get Playwright version for cache key
-      - name: Get Playwright version
-        id: playwright-version
-        run: |
-          PLAYWRIGHT_VERSION=$(node -e "console.log(require('./spec/internal/package.json').devDependencies.playwright || 'chromium')")
-          echo "version=$PLAYWRIGHT_VERSION" >> $GITHUB_OUTPUT
-
-      # Cache Playwright browsers
-      - name: Cache Playwright browsers
-        id: playwright-cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ github.workspace }}/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ steps.playwright-version.outputs.version }}
-
       - name: Download npm package artifact
         uses: actions/download-artifact@v4
         with:
@@ -85,8 +70,7 @@ jobs:
 
       - name: Install Playwright browsers
         run: |
-          cd spec/internal
-          npx playwright install --with-deps chromium
+          npx --prefix spec/internal playwright install --with-deps chromium
 
       - name: Setup test database
         run: |
