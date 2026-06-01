@@ -32,6 +32,7 @@ spec/internal/.npmrc
 /debug_*.rb
 /spec/debug_*.rb
 /*.tgz
+/npm-package/*.tgz
 
 # Code coverage reports
 /coverage/
