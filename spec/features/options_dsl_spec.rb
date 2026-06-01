@@ -27,6 +27,16 @@ RSpec.describe 'searchable_select_options dsl', type: :request do
 
         expect(titles).to eq(['A post', 'Other post'])
       end
+
+      it 'does not filter when term parameter is blank' do
+        Post.create!(title: 'A post')
+        Post.create!(title: 'Other post')
+
+        get '/admin/test_post_text_attrs/all_options?term='
+        titles = json_response[:results].pluck(:text)
+
+        expect(titles).to eq(['A post', 'Other post'])
+      end
     end
   end
 

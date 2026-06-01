@@ -37,6 +37,9 @@
   "peerDependencies": {
     "tom-select": "^2.4.3"
   },
+  "dependencies": {
+    "tom-select": "^2.4.3"
+  },
   "files": [
     "src/**/*"
   ]

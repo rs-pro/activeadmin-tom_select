@@ -59,7 +59,7 @@ module ActiveAdmin
       end
 
       def filter(scope, term)
-        term ? @filter.call(term, scope) : scope
+        term.present? ? @filter.call(term, scope) : scope
       end
 
       def paginate(scope, page_index)

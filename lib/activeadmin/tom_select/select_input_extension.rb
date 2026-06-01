@@ -121,7 +121,7 @@ module ActiveAdmin
 
       def selected_records
         @selected_records ||=
-          if selected_values
+          if selected_values.present?
             option_collection_scope.where(id: selected_values)
           else
             []
@@ -129,7 +129,9 @@ module ActiveAdmin
       end
 
       def selected_values
-        @object&.send(input_name)
+        Array.wrap(@object&.send(input_name)).filter_map do |value|
+          value.respond_to?(:id) ? value.id : value.presence
+        end
       end
 
       def option_collection_scope

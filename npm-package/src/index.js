@@ -76,6 +76,11 @@ export function initSearchableSelects(inputs, extra) {
       options.valueField = options.valueField || 'id';
       options.labelField = options.labelField || 'text';
       options.searchField = options.searchField || ['text'];
+      options.score = options.score || function() {
+        return function() {
+          return 1;
+        };
+      };
       
       // Enable remote loading features
       options.preload = options.preload !== false ? 'focus' : false;
